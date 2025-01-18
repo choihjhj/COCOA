@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cocoa.mapper.EpCommentMapper">
+
+	<select id="selectLikDesc"
+		resultType="com.cocoa.domain.EpCommentDTO">
+	<![CDATA[
+	    SELECT *
+	    FROM epcomment
+	    WHERE epId = #{epId}
+	    AND rownum <= 10
+	    ORDER BY likecnt DESC
+ 	]]>
+	</select>
+
+	<select id="selecDateDesc"
+		resultType="com.cocoa.domain.EpCommentDTO">
+	<![CDATA[
+	    SELECT *
+	    FROM epcomment
+	    WHERE epId = #{epId}
+	    AND rownum <= 10
+	    ORDER BY writedate DESC
+ 	]]>
+	</select>
+
+
+	<!-- 좋아요 증가 쿼리 -->
+	<update id="likeUpdateEpcomment">
+		UPDATE EPCOMMENT
+		SET likecnt = likecnt + 1
+		WHERE
+		commentid = #{commentId}
+	</update>
+
+	<insert id="likeInsertLikecomment">
+		INSERT INTO
+		LIKECOMMENT (LIKECOMMENTID, USERID,
+		COMMENTID)
+		VALUES (LIKECOMMENT_ID_SEQ.NEXTVAL, #{userId}, #{commentId})
+
+	</insert>
+
+	<select id="likeSelectEpcomment" resultType="int">
+	<![CDATA[
+		SELECT count(*) 
+		FROM likecomment 
+		WHERE userid=#{userId} AND commentid=#{commentId}
+ 	]]>
+	</select>
+	<!-- 좋아요 취소 쿼리 -->
+
+	<update id="dislikeUpdateEpcomment">
+		UPDATE EPCOMMENT
+		SET likecnt = likecnt - 1
+		WHERE
+		commentid = #{commentId}
+	</update>
+	<delete id="dislikeDeleteLikecomment">
+		DELETE FROM
+		LIKECOMMENT
+		WHERE
+		commentid = #{commentId}
+		AND userid=#{userId}
+	</delete>
+
+	<insert id="insertComment">
+		INSERT INTO
+		EPCOMMENT(COMMENTID, USERID, EPID,
+		COMMENTBODY)
+		VALUES (COMMENT_ID_SEQ.NEXTVAL, #{userId}, #{epId},
+		#{commentBody})
+	</insert>
+
+	<delete id="deleteComment">
+		DELETE FROM
+		EPCOMMENT
+		WHERE
+		commentid = #{commentId}
+	</delete>
+
+	<update id="updateComment">
+		UPDATE EPCOMMENT
+		SET
+		commentbody = #{commentBody},
+		writedate = sysdate
+		WHERE
+		commentid = #{commentId}
+	</update>
+
+	<select id="selectComment" resultType="com.cocoa.domain.EpCommentDTO">
+		SELECT *
+		FROM epcomment
+		WHERE COMMENTID = #{commentId}
+	</select>
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cocoa.mapper.PurchaseMapper">
+
+	<select id="selectEpToonIdByUserId" resultType="com.cocoa.domain.PurchaseVO">
+		select p.epid, e.toonid, e.epnumber
+		from purchase p 
+		join episode e
+		on p.epid = e.epid
+		where userid = #{userId}
+        order by p.purchasedate
+	</select>
+
+
+	<select id="selectByUserId" resultType="java.lang.Integer">
+	<![CDATA[
+   	 select epid from purchase where userid = #{userid}
+	]]>
+	</select>
+	
+	<select id="select" resultType="int">
+	<![CDATA[
+    	SELECT 
+    	CASE 
+    	WHEN EXISTS (
+        	SELECT 1 
+        	FROM purchase 
+        	WHERE userid = #{userId} AND epid = #{epId}
+    	) THEN 1 ELSE 0 
+    	END
+    	FROM 
+    		dual
+	]]>
+	</select>
+	
+
+	<insert id="insert">
+		<selectKey keyProperty="purchaseId" resultType="int" order="BEFORE">
+		<![CDATA[
+				SELECT 
+						PURCHASE_ID_SEQ.nextval 
+				FROM 
+						dual
+		]]>
+		</selectKey>		
+		<![CDATA[
+				INSERT INTO purchase (purchaseid, userid, epid,PURCHASEDATE )
+				VALUES (#{purchaseId}, #{userId}, #{epId},SYSDATE)
+		]]>
+	</insert>
+
+	<update id="update">
+	<![CDATA[
+		UPDATE 
+				toonuser
+		SET 
+				cocoa = cocoa - #{price}
+		WHERE 
+				userid = #{p.userId}
+	]]>
+	</update>
+</mapper>

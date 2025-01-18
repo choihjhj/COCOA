@@ -1,0 +1,78 @@
+body {
+    background: #343a40;;
+    font-family: "Raleway";
+    color: #ddd;
+    margin: 0;
+   	padding: 0;
+}
+
+div.charge-div {
+    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    padding: 20px;
+    background: #333;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px #000;
+}
+
+.cocoa-icon {
+    width: 16px;      /* 원하는 너비로 조절 */
+    height: 16px;     /* 원하는 높이로 조절 */
+    margin-right: 1px;  /* 오른쪽 마진으로 텍스트와의 간격 조절 */
+}
+
+form.charge {
+    display: flex;
+    flex-direction: column;
+}
+
+fieldset {
+    color: #ddd;
+    margin-bottom: 20px;
+}
+
+legend {
+    text-align: center;
+    color: #f1575b;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    
+}
+
+input[type="radio"] {
+    cursor: pointer;
+    margin-bottom: 10px;
+    display: inline-block;
+    
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    margin: 5px 0px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    border: 1px solid #222;
+    background: #f5f5f5;
+    color: #000;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 10px;
+    border-radius: 10px;
+    background: #f1575b;
+    color: #f5f5f5;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}

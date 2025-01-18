@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cocoa.mapper.ChargeMapper">
+
+	<insert id="insert">
+        <![CDATA[
+        	INSERT INTO charge (chargeid, userid, creditnumber, creditpwd, amount)
+       		VALUES (charge_id_seq.nextval, #{userId}, #{creditNumber}, #{creditPwd}, #{amount})
+        ]]>
+	</insert>
+
+	<update id="update">
+    <![CDATA[
+        UPDATE 
+        		toonuser
+        SET 
+        		cocoa = cocoa + #{amount}
+        WHERE 
+        		userid = #{userId}
+    ]]>
+	</update>
+
+</mapper>

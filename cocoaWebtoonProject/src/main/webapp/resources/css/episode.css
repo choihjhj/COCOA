@@ -1,0 +1,236 @@
+body {
+    position: relative;
+    font-family: "Raleway";
+    margin: 0;
+    padding: 0;
+    background-color: #343a40;
+ }
+ 
+ .webtoon-image-container {
+     display: flex;
+     justify-content: center;
+     margin-bottom: 20px;
+     flex-direction: column;
+ }
+ 
+ .webtoon-image {
+     max-width: 100%;
+     height: auto;
+ }
+ 
+ 
+ .container {
+     width: 100%;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+ }
+ 
+ .webtoon-info {
+     color: #333;
+     background: #f8f8f8;
+     padding: 20px;
+     box-sizing: border-box;
+     border-radius: 10px;
+     margin-bottom: 20px;
+ }
+ 
+ .c1 {
+     position: relative;
+     margin: 50px auto; /* 중앙 정렬 */
+     width: 70%;
+     background: #f0f0f0;
+     padding: 20px;
+     box-sizing: border-box;
+     border-radius: 10px;
+ }
+ 
+ .comment-input-container {
+     display: flex;
+     align-items: center;
+     margin-top: 20px;
+ }
+ 
+ .comment-input {
+     flex-grow: 1; /* 댓글 입력창을 가능한 넓게 */
+     padding: 10px;
+     border: 1px solid #ccc;
+     border-radius: 5px;
+     margin-right: 10px; /* 작성 버튼과의 간격 */
+ }
+ 
+ /* 댓글 영역 */
+ .comments {   
+     margin-top: 50px;
+     width: 70%;
+     background: #f0f0f0;
+     padding: 17px;
+     box-sizing: border-box;
+     border-radius: 10px;
+     margin-bottom: 20px;
+     margin-left: auto;
+     margin-right: auto;
+ }
+ 
+ .comment-list {
+     list-style: none;
+     padding: 0;
+ }
+ 
+ .comment-item {
+     position: relative;
+     border-bottom: 1px solid #ddd;
+     padding: 10px 0;
+ }
+ 
+ .comment-header {
+     position: relative;
+     /* align-items: center; */
+     /* justify-content: space-between; */
+     margin-bottom: 15px;
+ }
+ 
+ .comment-author{
+    font-weight: bold;
+    margin-right: auto;
+    
+ }
+ 
+ .comment-author {
+     font-size: 16px;
+     color: #555;
+ }
+
+ .comment-likes {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    border: none;
+
+}
+
+
+
+
+
+ .comment-date {
+     font-size: 12px;
+     color: lightslategray
+ }
+ 
+ .comment-body {
+    display : flex;
+     font-size: 16px;
+     color: #333;
+ }
+ 
+ /* 이전/다음/목록 버튼 */
+ .button-container {
+     margin-top: 20px;
+     display: flex;
+     gap:172px;
+     margin-bottom: 10px;
+     justify-content: center;  
+ }
+ 
+ .prev-button,
+ .next-button,
+ .category-button {
+     display: inline-block;
+     padding: 10px 20px;
+     background: #222;
+     color: #fff;
+     text-decoration: none;
+     border-radius: 5px;
+ }
+ 
+ .prev-button:hover,
+ .next-button:hover,
+ .category-button:hover {
+     background: palevioletred;
+ }
+ 
+ .sort-buttons {
+     width: 70%;
+     display: flex;
+     justify-content: flex-start;
+     margin-left: auto;
+     margin-right: auto;
+ }
+ .sort-button.active {
+    background: red;
+    font-weight: bold;
+ }
+ .submit-comment, .sort-button, .modifyButton, .removeButton, .cancelButton, .saveButton{
+     padding: 10px;
+     background: #222; 
+     color: #fff; 
+     border: none;
+     cursor: pointer;
+     border-radius: 5px;
+     margin-right: 5px; 
+ }
+ 
+ .sort-button:hover {
+     background: palevioletred; 
+ }
+ 
+ .active-button {
+     background-color: pink; 
+      
+ }
+ 
+ 
+ .likeButton {
+     position: absolute; /*부모요소가 relative일 경우 자식요소의 위치를 원하는곳에 위치시킨다. */
+     top: 0; 
+     right: 30px;  
+     background-image: url('/resources/image/like.png'); 
+     background-repeat: no-repeat;
+     background-size: cover;
+     border: none;
+     cursor: pointer;
+     width: 35px;  
+     height: 35px; 
+     transition: transform 0.2s;
+ }
+ 
+ .likeButton[liked] {
+     background-image: url('/resources/image/coco.png');
+ }
+ 
+ .likeButton:hover {
+     transform: scale(1.10); 
+ }
+ 
+ 
+ /* 이동 버튼 스타일 */
+ .scroll{
+   position: fixed;
+   bottom: 20px;
+   right: 20px;
+   border : none;
+   transition: opacity 0.3s ease-in-out;
+ }
+ 
+ .modifyButton  {
+     position: absolute;
+     bottom: 10px;
+     right: 52px; /* `right` 값을 조정하여 버튼 간의 간격을 조절하실 수 있습니다. */
+ }
+ 
+ .removeButton{
+     position: absolute;
+     right: 0
+ }
+ 
+ .commentbody {
+     padding: 10px;
+     padding-bottom: 5px;
+     padding-left:0px;
+     margin-top:0;
+     margin-bottom:0;
+     border:1px solid rgba(0,0,0,0);
+ }
+ 
+ 

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.cocoa.mapper.WebToonMapper">
+
+	<select id="selectAll" parameterType="int" resultType="com.cocoa.domain.WebToonDTO">
+		SELECT *
+		FROM WebToon
+		WHERE dayofweek = #{dayOfWeek}
+	</select>
+
+	<select id="selectByToonId" parameterType="int" resultType="com.cocoa.domain.WebToonDTO">
+		SELECT w.*, e.*
+		FROM WEBTOON w
+		JOIN EPISODE e ON w.toonid = e.toonid
+		WHERE w.toonid = #{toonId}
+	</select>	
+
+	<select id="selectBySearchBox" parameterType="string" resultType="com.cocoa.domain.WebToonDTO">
+		SELECT *
+        FROM WEBTOON
+        WHERE REPLACE(toonname, ' ', '') LIKE '%' || REPLACE(#{keyword}, ' ', '') || '%'
+      	OR REPLACE(author, ' ', '') LIKE '%' || REPLACE(#{keyword}, ' ', '') || '%'
+	</select>
+	
+	<select id="getWebToon" parameterType="int" resultType="com.cocoa.domain.WebToonDTO">
+		SELECT *
+		FROM WebToon
+		WHERE toonid = #{toonId}
+	</select>
+
+	
+</mapper>

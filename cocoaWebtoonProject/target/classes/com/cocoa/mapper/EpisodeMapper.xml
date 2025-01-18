@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.cocoa.mapper.EpisodeMapper">
+	
+	<select id="selectByToonId" parameterType="int" resultType="com.cocoa.domain.EpisodeDTO">
+	<![CDATA[
+		SELECT *
+		FROM EPISODE		
+		WHERE toonid = #{toonId}
+		ORDER BY epnumber DESC
+	]]>
+	</select>
+	
+	<select id="selectByEpId" parameterType="int" resultType="com.cocoa.domain.EpisodeDTO">
+	<![CDATA[
+		SELECT *
+		FROM EPISODE		
+		WHERE epid = #{epId}
+		 ]]>
+	</select>
+	
+	<select id="selectEpidByToonId" parameterType="int" resultType="int">
+	  <![CDATA[
+	    SELECT epid
+	    FROM EPISODE
+	    WHERE toonid = #{toonId}
+   	    ORDER BY epnumber 
+	  ]]>
+	</select>
+
+	
+
+</mapper>

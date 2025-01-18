@@ -1,0 +1,45 @@
+.header {
+	display: flex;
+	justify-content: space-between;
+	background: 343a40;
+	overflow: hidden;
+	border-radius: 5px;
+}
+
+.storage, .main { /*와*/
+	margin-right: auto;
+}
+
+.main {
+	margin-left: 45px; /* left 먼저적용후 margin-right:auto 적용 */
+}
+
+
+.logo, .search, .storage, .main {
+	background-repeat: no-repeat;
+	background-size: 40px 40px;
+	border: none;
+	text-indent: -20000px;
+	width: 40px;
+	height: 40px;
+}
+
+.myinfo {
+	background-image: url('/resources/image/person.svg');
+}
+
+.login {
+	background-image: url('/resources/image/info.svg');
+}
+
+.search {
+	background-image: url('/resources/image/search.svg');
+}
+
+.storage {
+	background-image:  url('../image/storage.svg');
+}
+
+.main {
+	background-image: url('/resources/image/cocoa.png');
+}

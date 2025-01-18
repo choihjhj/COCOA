@@ -1,0 +1,49 @@
+body {
+    background-color:#343a40;
+    font-family: "Raleway";
+    
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center;     /* 세로 중앙 정렬 */
+    min-height: 100vh;       /* 화면 높이로 설정 */
+    margin: 0;     
+    padding: 0;          
+}
+
+
+
+/* .image {
+    width: 70%;
+    height: 100px; 
+    background-color: #ddd; 
+    overflow: hidden;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    margin: 10px auto;
+    margin-top: 100px
+}
+
+.image img {
+    width: 100%;
+    height: auto;
+} */
+
+.history {
+    position: relative;
+    margin: 50px auto; /* 중앙 정렬 */
+    width: 45%;
+    background: #f0f0f0;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+.hitory-item {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}

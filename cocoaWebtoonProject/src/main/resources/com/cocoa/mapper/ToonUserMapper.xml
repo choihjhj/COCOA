@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cocoa.mapper.ToonUserMapper">
+	<insert id="insert">
+		INSERT INTO 
+			toonuser (userid,pwd,birthday,username,phone,cocoa)
+		VALUES
+			(#{userId},#{pwd},#{birthday},#{userName},#{phone},#{cocoa})
+	</insert>
+
+	<select id="selectUserById" resultType="com.cocoa.domain.ToonUserDTO">
+	
+		SELECT 
+			*
+	 	FROM 
+	 		toonuser 
+	 	WHERE 
+	 		userid=#{userId}
+	</select>	
+		
+	<delete id="deleteByUserId">
+		DELETE FROM 
+			toonuser 
+		WHERE 
+			userid = #{userId}
+	</delete>
+	
+	<select id="selectCphistory" parameterType="string" resultType="com.cocoa.domain.CphistoryDTO">
+        <![CDATA[
+        SELECT
+            TO_CHAR(chargedate, 'YYYY-MM-DD HH24:MI:SS') AS historydate,
+            '충전' AS cptype,
+            amount AS cocoa
+        FROM
+            charge
+        WHERE
+            userid = #{userId}
+        UNION
+        SELECT
+            TO_CHAR(purchasedate, 'YYYY-MM-DD HH24:MI:SS') AS historydate,
+            '결제' AS cptype,
+            e.price AS cocoa
+        FROM
+            purchase
+        JOIN
+            EPISODE e ON purchase.epid = e.epid
+        WHERE
+            userid = #{userId}
+        ORDER BY historydate DESC
+        ]]>
+	</select>
+	
+	<select id="idDupCheck" resultType="int">
+		select count(*)
+		from toonuser
+		where userId = #{userId}
+	</select>
+	
+	
+</mapper>

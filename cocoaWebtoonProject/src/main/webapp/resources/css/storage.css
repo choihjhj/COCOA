@@ -1,0 +1,135 @@
+body {
+   position: relative;
+   font-family: "Raleway";
+   margin: 0;
+   padding: 0;
+   background-color: #343a40;
+}
+
+nav {
+   max-width: 610px;
+   margin: 10px auto;
+   border-radius: 10px;
+   background-color: #212529;
+   color: white;
+   padding: 10px;
+   text-align: center;
+}
+
+nav p {
+   display: inline-block;
+   color: rgb(68, 68, 68);
+   text-decoration: none;
+   margin: 0 10px;
+}
+
+nav p.active {
+   color: white;
+   font-weight: bold;
+}
+
+footer {
+   max-width: 610px;
+   margin: 10px auto;
+   border-radius: 10px;
+   background-color: #212529;
+   color: white;
+   padding: 10px;
+   text-align: center;
+}
+
+
+main {
+   max-width: 1200px;
+   margin: 0 auto;
+   padding: 5px;
+}
+
+section {
+   max-width: 640px;
+   margin: 0 auto;
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+}
+
+article {
+   background-color: white;
+   border: 0;
+   padding: 0;
+   margin: 5px;
+   width: 149px;
+   height: 248px;
+   box-sizing: border-box;
+   position: relative; 
+   /* box-sizing을 border-box로 설정하여 너비에 padding과 border가 포함되도록 함 */
+   border-radius: 14px;
+   text-align: center;
+}
+
+article img {
+   max-width: 100%;
+   border-radius: 10px;
+   display: block;
+   margin-bottom: 0;
+}
+
+.person {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+   display: block;
+   position: absolute;
+   z-index: 2;
+}
+
+.bg {
+   position: absolute;
+   z-index: 1;
+   width: 100%;
+   height: 100%;
+   
+
+}
+
+.title {
+   position: absolute;
+   z-index: 3;
+   top: 25%;
+}
+
+.epNumber {
+   position: absolute;
+   z-index: 5;
+   top: 80%;
+   color: white;
+   text-align: center;
+   left: 50%; /* 원하는 수평 위치 조정 (가운데 정렬을 위해 50%로 설정) */
+   transform: translate(-50%, -50%); /* 수평/수직 가운데 정렬 */
+   padding: 8px; /* 그라데이션과 글자 사이의 간격을 조절합니다 */
+   border-radius: 5px; /* 그라데이션 배경의 모서리를 둥글게 만듭니다 */
+ }
+
+ article::after {
+   content: '';
+   position: absolute;
+   top: 80%;
+   left: 0;
+   width: 100%;
+   height: 45%;
+   background: linear-gradient(to top, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1) 100%);
+   z-index: 4;
+   border-radius: 7px 7px 7px 7px;
+   pointer-events: none;
+}
+
+.noresult {
+   text-align: center; /* 화면 가운데 정렬 */
+   font-size: 24px; /* 글자 크기 조절 */
+   color: white; /* 흰색으로 설정 */
+   margin-top: 100px;
+   margin-bottom: 100px;
+}
+
+ 
+ 
