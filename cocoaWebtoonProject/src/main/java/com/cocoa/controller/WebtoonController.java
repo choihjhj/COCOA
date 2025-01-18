@@ -21,7 +21,7 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @RequestMapping("/*")
 @RequiredArgsConstructor
-public class WebtoonListController {
+public class WebtoonController {
 
 	private final WebToonService webtoonservice;
 	private final EpisodeService episodeservice;
