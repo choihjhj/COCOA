@@ -55,11 +55,6 @@
 			</c:forEach>
 		</section>
 	</main>
- 
-
-	<footer>
-		<p>COCOA 공동대표: 최혜지, 박은성, 허준행</p>
-	</footer>
 </body>
 
 </html>
