@@ -25,7 +25,7 @@
 	<header>
 		<div class="search-container">
 			<div class="search-box">
-				<form class="search" id="searchform" action="/search" method="get">
+				<form class="search" id="searchform" action="/search/ajax" method="get">
 					<input id="input" type="text" name="keyword" class="search-input" autocomplete="off" placeholder="작품, 작가를 입력하세요." maxlength="30">
 					<button class="search-button">검색</button>
 				</form>
@@ -35,15 +35,9 @@
 
 
 	<main>
-		<section>
-			<c:forEach items="${webtoons}" var="webtoon">
-				<article class="webtoonlist">
-					<img class="bg" src="${path}/resources/image/bg/${webtoon.toonId}_bg.jpg" alt="${webtoon.toonId}"> 
-					<img class="person" src="${path}/resources/image/person/${webtoon.toonId}_person.png">
-					<img class="title" src="${path}/resources/image/title/${webtoon.toonId}_title.png">
-				</article>
-			</c:forEach>
-		</section>
+		<section id="webtoon-list">
+        <!-- 검색 결과 여기에 출력 -->
+    </section>
 	</main>
 
 </body>
