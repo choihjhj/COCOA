@@ -7,6 +7,7 @@ root-context.xml
 
 # Ignore the images directory in the specified path
 /cocoaWebtoonProject/src/main/webapp/resources/image/
+/cocoaWebtoonProject/src/main/webapp/resources/video/
 
 ### Eclipse ###
 .metadata
