@@ -15,6 +15,7 @@ import com.cocoa.domain.WebToonDTO;
 import com.cocoa.service.EpisodeService;
 import com.cocoa.service.PurchaseService;
 import com.cocoa.service.ToonUserService;
+import com.cocoa.service.WebToonService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -28,22 +29,30 @@ public class PurchaseController {
 	private final PurchaseService purchaseService;
 	private final EpisodeService episodeService;
 	private final ToonUserService toonUserService;
+	private final WebToonService webtoonservice;
 	
 	@GetMapping("/purchase")
 	public String purchase(Integer toonId, Integer epId, HttpServletRequest request, RedirectAttributes rttr, Model model) {
 
-		HttpSession session = request.getSession();
-		ToonUserDTO ToonUserDTO = (ToonUserDTO) session.getAttribute("ToonUserDTO");
+		ToonUserDTO loggedInUser  = getLoggedInUser(request);
 
-		if (ToonUserDTO == null) {
-			rttr.addAttribute("origin", "purchase");
+		if (loggedInUser  == null) {
+			rttr.addAttribute("origin", "purchase"); //origin 어느 페이지에서 접속요청 했는지 확인하는 flag
 			rttr.addAttribute("toonId", toonId);
 			return "redirect:/login"; // 로그인 페이지 URL
-		} else {
-			// 전달받은 epId로 에피소드 객체 세션에 저장
-			session.setAttribute("EpisodeDTO", episodeService.getEpisode(epId));
-			return "/purchase";
-		}
+		} 
+		
+		
+		EpisodeDTO episode = episodeService.getEpisode(epId);
+		model.addAttribute("EpisodeDTO", episode);
+		
+		WebToonDTO webtoon = webtoonservice.getWebToon(toonId);
+		model.addAttribute("ToonName", webtoon.getToonName()); //웹툰 Name 출력위해 model에 담기
+		
+		model.addAttribute("UserCocoa", loggedInUser.getCocoa()); //유저 Cocoa잔액 출력위해 model에 담기
+		return "/purchase";
+		
+		
 	}		
 
 	@PostMapping(value = "/purchase")
@@ -78,21 +87,25 @@ public class PurchaseController {
 
 	}
 	
+	 private ToonUserDTO getLoggedInUser(HttpServletRequest request) {
+	        return (ToonUserDTO) request.getSession().getAttribute("ToonUserDTO");
+	    }
 	
-	@GetMapping("/mystorage")
-	public void mystorage(HttpServletRequest request, Model model) {
-		HttpSession session = request.getSession();
-		ToonUserDTO toonUserDTO = (ToonUserDTO) session.getAttribute("ToonUserDTO");
-		
-		// 로그인 했으면 구매한 에피소드 목록을 전송해야 함
-		if(toonUserDTO != null) {
-			log.info(purchaseService.getPurchasedEpToonId(toonUserDTO.getUserId()));
-			model.addAttribute("loginresult", 1);
-			model.addAttribute("PurchaseVO",purchaseService.getPurchasedEpToonId(toonUserDTO.getUserId()));	
-		} else {
-			model.addAttribute("loginresult", 0);
-		}
-		
-	}
+	
+//	@GetMapping("/mystorage")
+//	public void mystorage(HttpServletRequest request, Model model) {
+//		HttpSession session = request.getSession();
+//		ToonUserDTO toonUserDTO = (ToonUserDTO) session.getAttribute("ToonUserDTO");
+//		
+//		// 로그인 했으면 구매한 에피소드 목록을 전송해야 함
+//		if(toonUserDTO != null) {
+//			log.info(purchaseService.getPurchasedEpToonId(toonUserDTO.getUserId()));
+//			model.addAttribute("loginresult", 1);
+//			model.addAttribute("PurchaseVO",purchaseService.getPurchasedEpToonId(toonUserDTO.getUserId()));	
+//		} else {
+//			model.addAttribute("loginresult", 0);
+//		}
+//		
+//	}
 
 }

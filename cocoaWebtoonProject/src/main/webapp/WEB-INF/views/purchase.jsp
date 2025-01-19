@@ -16,21 +16,21 @@
 </head>
 <body>
 
-	<div id="form" class="form" data-episode-id="${sessionScope.EpisodeDTO.epId}">
-		<div class="webtoon-info" data-toon-id="${sessionScope.WebToonDTO.toonId}">
-			<h1 id="webtoon-title">${sessionScope.WebToonDTO.toonName}</h1>
-			<h2 id="episode">${sessionScope.EpisodeDTO.epNumber} 화</h2>
-			<h2 id="episode">${sessionScope.EpisodeDTO.epTitle}</h2>
+	<div id="form" class="form" data-episode-id="${EpisodeDTO.epId}">
+		<div class="webtoon-info" data-toon-id="${EpisodeDTO.toonId}">
+			<h1 id="webtoon-title">${ToonName}</h1>
+			<h2 id="episode">${EpisodeDTO.epNumber} 화</h2>
+			<h2 id="episode">${EpisodeDTO.epTitle}</h2>
 		</div>
 		
 		<div class="image">
-			<img src="/resources/image/thumbnail/${sessionScope.EpisodeDTO.epId}.jpg">
+			<img src="/resources/image/thumbnail/${EpisodeDTO.epId}.jpg">
 		</div>
 		
 		<div class="split_sections">
 			
-			<div class="section price"  id="price">유료 회차 코코아 가격: ${sessionScope.EpisodeDTO.price} </div>
-			<div class="section balance" id="cocoabalance" >내 코코아 잔액 : ${sessionScope.ToonUserDTO.cocoa} </div>
+			<div class="section price"  id="price">유료 회차 코코아 가격: ${EpisodeDTO.price} </div>
+			<div class="section balance" id="cocoabalance" >내 코코아 잔액 : ${UserCocoa} </div>
 
 			<div class="btn_group">
 				<button class="charge_btn">충전하기</button>
@@ -46,7 +46,4 @@
 	</div>
 	
 
-	<input type="hidden" value="${webtoon}" id="webtoon" />
-	<input type="hidden" value="${episode}" id="episode" />
-	<input type="hidden" value="${loginUser}" id="loginUser" />
 </body>

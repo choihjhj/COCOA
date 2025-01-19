@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cocoa.domain.ToonUserDTO;
+import com.cocoa.service.PurchaseService;
 import com.cocoa.service.ToonUserService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import lombok.extern.log4j.Log4j;
 public class ToonUserController {
 
 	private final ToonUserService toonUserService;
+	private final PurchaseService purchaseService;
 
 	@GetMapping("/login")
 	public String loginPage(@RequestParam(name = "toonId", required = false) Integer toonId,
@@ -152,5 +154,22 @@ public class ToonUserController {
 		} else {
 			return "1";
 		}
+	}
+	
+	
+	@GetMapping("/mystorage")
+	public void mystorage(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		ToonUserDTO toonUserDTO = (ToonUserDTO) session.getAttribute("ToonUserDTO");
+		
+		// 로그인 했으면 구매한 에피소드 목록을 전송해야 함
+		if(toonUserDTO != null) {
+			log.info(purchaseService.getPurchasedEpToonId(toonUserDTO.getUserId()));
+			model.addAttribute("loginresult", 1);
+			model.addAttribute("PurchaseVO",purchaseService.getPurchasedEpToonId(toonUserDTO.getUserId()));	
+		} else {
+			model.addAttribute("loginresult", 0);
+		}
+		
 	}
 }
