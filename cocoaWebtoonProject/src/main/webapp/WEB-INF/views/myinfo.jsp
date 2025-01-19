@@ -21,8 +21,8 @@
 <body>
 	<%@include file="./header.jsp" %>
 	<div class="container">
-		<div class="balance">아이디 : ${sessionScope.ToonUserDTO.userId}</div>
-		<div class="balance">${sessionScope.ToonUserDTO.cocoa} 코코아</div>
+		<div class="balance">아이디 : ${ToonUserDTO.userId}</div>
+		<div class="balance">${ToonUserDTO.cocoa} 코코아</div>
 
 		
 		<div class="btn-group">

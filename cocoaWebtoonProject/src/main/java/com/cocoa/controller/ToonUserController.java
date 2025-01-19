@@ -94,10 +94,11 @@ public class ToonUserController {
 	@GetMapping("/myinfo")
 	public String myinfo(HttpServletRequest request, Model model, RedirectAttributes rttr) {
 		log.info("myinfo 페이지 요청");
-		HttpSession session = request.getSession();
-		ToonUserDTO ToonUserDTO = (ToonUserDTO) session.getAttribute("ToonUserDTO");
+		
+		ToonUserDTO loggedInUser  = getLoggedInUser(request);
 
-		if (ToonUserDTO != null) {
+		if (loggedInUser != null) {
+			model.addAttribute("ToonUserDTO",toonUserService.login(loggedInUser));
 			return "myinfo";
 		} else {
 			// loginUser가 null인 경우 로그인 페이지로 리다이렉트 또는 다른 처리를 수행
@@ -172,4 +173,10 @@ public class ToonUserController {
 		}
 		
 	}
+	
+	
+	private ToonUserDTO getLoggedInUser(HttpServletRequest request) {
+		 return (ToonUserDTO) request.getSession().getAttribute("ToonUserDTO");
+	    }
+	
 }
