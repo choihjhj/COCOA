@@ -108,10 +108,10 @@ public class ToonUserController {
 	}
 
 	@GetMapping("/logout")
-	public String logout(HttpServletRequest request) {
+	public String logout(HttpServletRequest request, RedirectAttributes rttr) {
 		log.info("logout 요청");
 		HttpSession session = request.getSession();
-		session.invalidate();
+		session.invalidate(); // 세션 무효화 (로그아웃)
 		return "redirect:/layout";
 	}
 
