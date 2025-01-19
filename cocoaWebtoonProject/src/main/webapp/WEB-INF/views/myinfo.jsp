@@ -40,11 +40,8 @@
 			</button>
 			</form>
 			
-			<form id="removeForm" method="get" action="/remove">
-			<button class="btn" id="remove">
-				<a href="/remove">회원탈퇴</a>
-			</button>
-			</form>
+			<!-- 회원탈퇴 -->			
+			<button class="btn" id="remove">회원탈퇴</button>
 		</div>
 	</div>
 

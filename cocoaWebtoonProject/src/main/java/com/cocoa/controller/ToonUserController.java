@@ -3,10 +3,14 @@ package com.cocoa.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -108,22 +112,34 @@ public class ToonUserController {
 	}
 
 	@GetMapping("/logout")
-	public String logout(HttpServletRequest request, RedirectAttributes rttr) {
+	public String logout(HttpServletRequest request) {
 		log.info("logout 요청");
 		HttpSession session = request.getSession();
 		session.invalidate(); // 세션 무효화 (로그아웃)
 		return "redirect:/layout";
 	}
 
-	@GetMapping("/remove")
-	public String remove(HttpServletRequest request) {
+	@DeleteMapping("/remove")
+	@ResponseBody
+	public ResponseEntity<String> remove(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		ToonUserDTO toonUserDTO = (ToonUserDTO) session.getAttribute("ToonUserDTO");
-		log.info("회원 탈퇴 유저 : " + toonUserDTO);
-		toonUserService.removeUser(toonUserDTO.getUserId());
-		session.invalidate();
-		log.info("회원탈퇴 완료");
-		return "redirect:/login";
+		
+		if (toonUserDTO == null) {
+	        log.warn("회원 탈퇴 요청 중 로그인되지 않은 사용자.");
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+	    }
+
+	    try {
+	        log.info("회원 탈퇴 유저 : " + toonUserDTO);
+	        toonUserService.removeUser(toonUserDTO.getUserId());
+	        session.invalidate(); // 세션 무효화
+	        log.info("회원탈퇴 완료");
+	        return ResponseEntity.ok("회원탈퇴가 완료되었습니다.");
+	    } catch (Exception e) {
+	        log.error("회원 탈퇴 중 오류 발생", e);
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원탈퇴에 실패했습니다.");
+	    }
 	}
 
 	@GetMapping("/cocoahistory")
