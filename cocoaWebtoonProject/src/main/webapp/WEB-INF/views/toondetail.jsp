@@ -24,20 +24,20 @@
 			<%@include file="./header.jsp" %>
 
 				<!-- 웹툰 이미지 배경 정보 -->
-				<div class="parent" data-toon-id ="${sessionScope.WebToonDTO.toonId}">
+				<div class="parent" data-toon-id ="${WebToonDTO.toonId}">
 
 					<video title="#" class="object-contain w-full h-full pointer-events-auto " style="background: none;"
 						autoplay muted>
-						<source type="video/webm" src="/resources/video/${sessionScope.WebToonDTO.toonId}.webm">
+						<source type="video/webm" src="/resources/video/${WebToonDTO.toonId}.webm">
 					</video>
 
-					<img src="/resources/image/banner/${sessionScope.WebToonDTO.toonId}_banner.jpg" alt="Banner">
+					<img src="/resources/image/banner/${WebToonDTO.toonId}_banner.jpg" alt="Banner">
 
 					<div class="banner">
 						<div class="webtoon-info">
-							<h1 id="webtoon-title">${sessionScope.WebToonDTO.toonName}</h1>
-							<h2 id="webtoon-artist">${sessionScope.WebToonDTO.author}</h2>
-							<p id="webtoon-desc">${sessionScope.WebToonDTO.summary}</p>
+							<h1 id="webtoon-title">${WebToonDTO.toonName}</h1>
+							<h2 id="webtoon-artist">${WebToonDTO.author}</h2>
+							<p id="webtoon-desc">${WebToonDTO.summary}</p>
 						</div>
 					</div>
 				</div>
