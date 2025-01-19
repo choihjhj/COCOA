@@ -36,6 +36,7 @@
 				<button class="charge_btn">충전하기</button>
 
 				<form class="purchaseaction" id="purchase" action="/purchase" method="post">
+					<input type="hidden" name="epId" value="${EpisodeDTO.epId}">
 					<button class="purchase_btn" type="submit" >구매하기</button>
 				</form>
 

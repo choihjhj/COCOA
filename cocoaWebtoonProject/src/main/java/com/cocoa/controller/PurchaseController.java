@@ -1,7 +1,6 @@
 package com.cocoa.controller;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,7 +48,7 @@ public class PurchaseController {
 		WebToonDTO webtoon = webtoonservice.getWebToon(toonId);
 		model.addAttribute("ToonName", webtoon.getToonName()); //웹툰 Name 출력위해 model에 담기
 		
-		model.addAttribute("UserCocoa", loggedInUser.getCocoa()); //유저 Cocoa잔액 출력위해 model에 담기
+		model.addAttribute("UserCocoa", toonUserService.login(loggedInUser).getCocoa()); //변동된 유저 Cocoa잔액 출력위해 model에 담기
 		return "/purchase";
 		
 		
@@ -59,53 +58,32 @@ public class PurchaseController {
 	public String purchaseaction(HttpServletRequest request, RedirectAttributes rttr) throws Exception {
 
 		log.info("purchase post 들어옴");
-		HttpSession session = request.getSession();
-		ToonUserDTO toonUserDTO = (ToonUserDTO) session.getAttribute("ToonUserDTO");
-		EpisodeDTO episodeDTO = (EpisodeDTO) session.getAttribute("EpisodeDTO");
-		WebToonDTO webtoonDTO = (WebToonDTO) session.getAttribute("WebToonDTO");
+		ToonUserDTO loggedInUser  = getLoggedInUser(request);		
+		if (loggedInUser == null) {
+	        return "redirect:/login";
+	    }
+		
+		Integer epId = Integer.parseInt(request.getParameter("epId"));
 
-		PurchaseDTO purchaseDTO = new PurchaseDTO();
-		purchaseDTO.setUserId(toonUserDTO.getUserId());
-		purchaseDTO.setEpId(episodeDTO.getEpId());
+	    // 구매 로직
+	    EpisodeDTO episodeDTO = episodeService.getEpisode(epId);
+	    
+	    PurchaseDTO purchaseDTO = new PurchaseDTO();
+	    purchaseDTO.setUserId(loggedInUser.getUserId());
+	    purchaseDTO.setEpId(episodeDTO.getEpId());
+	    	    
+	    purchaseService.purchase(purchaseDTO, episodeDTO.getPrice());
 
-		try {
-			int result = purchaseService.purchase(purchaseDTO, episodeDTO.getPrice());
-			log.info("구매 결과 :" + result);
-			session.removeAttribute("EpisodeDTO");
-			ToonUserDTO lastestUserInfo = toonUserService.login(toonUserDTO);
-			// 유저 정보 업데이트
-			session.setAttribute("ToonUserDTO", lastestUserInfo);
-			
-			rttr.addAttribute("toonId",webtoonDTO.getToonId());
-			return "redirect:/toondetail";
-
-		} catch (Exception ex) {
-
-			throw ex; // 예외를 던져서 CommonExceptionAdvice 클래스에서 처리하도록 함
-
-		}
+	    
+	    rttr.addAttribute("toonId", episodeDTO.getToonId());
+	    return "redirect:/toondetail";
+		
 
 	}
 	
 	 private ToonUserDTO getLoggedInUser(HttpServletRequest request) {
-	        return (ToonUserDTO) request.getSession().getAttribute("ToonUserDTO");
+		 return (ToonUserDTO) request.getSession().getAttribute("ToonUserDTO");
 	    }
 	
-	
-//	@GetMapping("/mystorage")
-//	public void mystorage(HttpServletRequest request, Model model) {
-//		HttpSession session = request.getSession();
-//		ToonUserDTO toonUserDTO = (ToonUserDTO) session.getAttribute("ToonUserDTO");
-//		
-//		// 로그인 했으면 구매한 에피소드 목록을 전송해야 함
-//		if(toonUserDTO != null) {
-//			log.info(purchaseService.getPurchasedEpToonId(toonUserDTO.getUserId()));
-//			model.addAttribute("loginresult", 1);
-//			model.addAttribute("PurchaseVO",purchaseService.getPurchasedEpToonId(toonUserDTO.getUserId()));	
-//		} else {
-//			model.addAttribute("loginresult", 0);
-//		}
-//		
-//	}
 
 }
