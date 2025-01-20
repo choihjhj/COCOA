@@ -2,7 +2,6 @@ package com.cocoa.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -10,15 +9,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.cocoa.domain.ToonUserDTO;
 import com.cocoa.service.PurchaseService;
+import com.cocoa.service.SessionService;
 import com.cocoa.service.ToonUserService;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
@@ -29,6 +26,7 @@ public class ToonUserController {
 
 	private final ToonUserService toonUserService;
 	private final PurchaseService purchaseService;
+	private final SessionService sessionservice;
 
 	@GetMapping("/login")
 	public String loginPage(@RequestParam(name = "toonId", required = false) Integer toonId,
@@ -99,7 +97,7 @@ public class ToonUserController {
 	public String myinfo(HttpServletRequest request, Model model, RedirectAttributes rttr) {
 		log.info("myinfo 페이지 요청");
 		
-		ToonUserDTO loggedInUser  = getLoggedInUser(request);
+		ToonUserDTO loggedInUser  = sessionservice.getLoggedInUser(request);
 
 		if (loggedInUser != null) {
 			model.addAttribute("ToonUserDTO",toonUserService.login(loggedInUser));
@@ -190,9 +188,5 @@ public class ToonUserController {
 		
 	}
 	
-	
-	private ToonUserDTO getLoggedInUser(HttpServletRequest request) {
-		 return (ToonUserDTO) request.getSession().getAttribute("ToonUserDTO");
-	    }
 	
 }
