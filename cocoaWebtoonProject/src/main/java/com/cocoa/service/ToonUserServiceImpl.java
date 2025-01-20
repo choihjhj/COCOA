@@ -2,13 +2,11 @@ package com.cocoa.service;
 
 import java.util.Collections;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import com.cocoa.domain.CphistoryDTO;
 import com.cocoa.domain.ToonUserDTO;
 import com.cocoa.mapper.ToonUserMapper;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
@@ -20,6 +18,7 @@ public class ToonUserServiceImpl implements ToonUserService {
 	private final ToonUserMapper toonUserMapper;
 
 	@Override
+	@Transactional
 	public int signUp(ToonUserDTO user) {
 		try {
 			log.info(user);
@@ -33,6 +32,7 @@ public class ToonUserServiceImpl implements ToonUserService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public ToonUserDTO login(ToonUserDTO user) {
 		try {
 			ToonUserDTO dbUser = toonUserMapper.selectUserById(user.getUserId());
@@ -49,12 +49,14 @@ public class ToonUserServiceImpl implements ToonUserService {
 	}
 
 	@Override
+	@Transactional
 	public int removeUser(String userId) {
 		// 삭제되면 1 삭제되지 않으면 0 반환
 		return toonUserMapper.deleteByUserId(userId);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<CphistoryDTO> findCphistory(String userId) {
 		List<CphistoryDTO> list = toonUserMapper.selectCphistory(userId);
 		Collections.reverse(list);
@@ -71,6 +73,7 @@ public class ToonUserServiceImpl implements ToonUserService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public boolean idDupCheck(String userId) {
 		int result = toonUserMapper.idDupCheck(userId);
 
