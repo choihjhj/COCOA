@@ -1,7 +1,6 @@
 package com.cocoa.service;
 
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.cocoa.domain.PurchaseDTO;
@@ -18,12 +17,14 @@ public class PurchaseServiceImpl implements PurchaseService {
 	private final PurchaseMapper purchaseMapper;
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<PurchaseVO> getPurchasedEpToonId(String userId) {
 		return purchaseMapper.selectEpToonIdByUserId(userId);
 	}
 	
 	
 	@Override
+	@Transactional(readOnly = true)
 	public List<Integer> getPurchasedEpId(String userId) {
 		log.info(userId);
 		return purchaseMapper.selectByUserId(userId);

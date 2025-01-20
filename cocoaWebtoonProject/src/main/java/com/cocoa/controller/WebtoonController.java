@@ -12,6 +12,7 @@ import com.cocoa.domain.ToonUserDTO;
 import com.cocoa.domain.WebToonDTO;
 import com.cocoa.service.EpisodeService;
 import com.cocoa.service.PurchaseService;
+import com.cocoa.service.SessionService;
 import com.cocoa.service.WebToonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -25,6 +26,7 @@ public class WebtoonController {
 	private final WebToonService webtoonservice;
 	private final EpisodeService episodeservice;
 	private final PurchaseService purchaseservice;
+	private final SessionService sessionservice;
 
 	@GetMapping(value ="/toondetail")
 	public String toondetail(@RequestParam("toonId") int toonId, HttpServletRequest request, Model model) {
@@ -40,7 +42,8 @@ public class WebtoonController {
 		model.addAttribute("episodes", episodes);
 		
 		// 로그인 상태 확인 후, 구매한 에피소드 정보 전달
-		ToonUserDTO loggedInUser = (ToonUserDTO) request.getSession().getAttribute("ToonUserDTO");
+		ToonUserDTO loggedInUser = sessionservice.getLoggedInUser(request);
+				
 		// 로그인 한 상태일 때 구매한 웹툰Id를 jsp로 전달
 		if (loggedInUser != null) {
 	        List<Integer> purchasedEpIds = purchaseservice.getPurchasedEpId(loggedInUser.getUserId());

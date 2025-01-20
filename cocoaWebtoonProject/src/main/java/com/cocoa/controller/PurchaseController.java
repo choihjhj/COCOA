@@ -13,9 +13,9 @@ import com.cocoa.domain.ToonUserDTO;
 import com.cocoa.domain.WebToonDTO;
 import com.cocoa.service.EpisodeService;
 import com.cocoa.service.PurchaseService;
+import com.cocoa.service.SessionService;
 import com.cocoa.service.ToonUserService;
 import com.cocoa.service.WebToonService;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
@@ -29,11 +29,12 @@ public class PurchaseController {
 	private final EpisodeService episodeService;
 	private final ToonUserService toonUserService;
 	private final WebToonService webtoonservice;
+	private final SessionService sessionservice;
 	
 	@GetMapping("/purchase")
 	public String purchase(Integer toonId, Integer epId, HttpServletRequest request, RedirectAttributes rttr, Model model) {
 
-		ToonUserDTO loggedInUser  = getLoggedInUser(request);
+		ToonUserDTO loggedInUser  = sessionservice.getLoggedInUser(request);
 
 		if (loggedInUser  == null) {
 			rttr.addAttribute("origin", "purchase"); //origin 어느 페이지에서 접속요청 했는지 확인하는 flag
@@ -58,7 +59,7 @@ public class PurchaseController {
 	public String purchaseaction(HttpServletRequest request, RedirectAttributes rttr) throws Exception {
 
 		log.info("purchase post 들어옴");
-		ToonUserDTO loggedInUser  = getLoggedInUser(request);		
+		ToonUserDTO loggedInUser  = sessionservice.getLoggedInUser(request);		
 		if (loggedInUser == null) {
 	        return "redirect:/login";
 	    }
@@ -80,10 +81,6 @@ public class PurchaseController {
 		
 
 	}
-	
-	 private ToonUserDTO getLoggedInUser(HttpServletRequest request) {
-		 return (ToonUserDTO) request.getSession().getAttribute("ToonUserDTO");
-	    }
 	
 
 }
