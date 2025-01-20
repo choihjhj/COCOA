@@ -33,16 +33,19 @@ public class PurchaseController {
 	
 	@GetMapping("/purchase")
 	public String purchase(Integer toonId, Integer epId, HttpServletRequest request, RedirectAttributes rttr, Model model) {
-
+		
 		ToonUserDTO loggedInUser  = sessionservice.getLoggedInUser(request);
 
 		if (loggedInUser  == null) {
 			rttr.addAttribute("origin", "purchase"); //origin 어느 페이지에서 접속요청 했는지 확인하는 flag
-			rttr.addAttribute("toonId", toonId);
+			rttr.addAttribute("toonId", toonId); //-----------나중에 처리하기------
 			return "redirect:/login"; // 로그인 페이지 URL
 		} 
 		
-		
+		//구매하려는 toonId, epId 세션에 저장(충전하고 세션데이터 읽어서/purchase?toonId={toonId}&epId={epId}로 들어오려고)
+		request.getSession().setAttribute("toonId", toonId);
+		request.getSession().setAttribute("epId", epId);
+				
 		EpisodeDTO episode = episodeService.getEpisode(epId);
 		model.addAttribute("EpisodeDTO", episode);
 		
@@ -64,16 +67,17 @@ public class PurchaseController {
 	        return "redirect:/login";
 	    }
 		
-		Integer epId = Integer.parseInt(request.getParameter("epId"));
+		int epId = (Integer) request.getSession().getAttribute("epId"); //epId가 null이면 NullPointerException 발생
 
 	    // 구매 로직
-	    EpisodeDTO episodeDTO = episodeService.getEpisode(epId);
-	    
+	    EpisodeDTO episodeDTO = episodeService.getEpisode(epId);	    
 	    PurchaseDTO purchaseDTO = new PurchaseDTO();
 	    purchaseDTO.setUserId(loggedInUser.getUserId());
-	    purchaseDTO.setEpId(episodeDTO.getEpId());
-	    	    
+	    purchaseDTO.setEpId(episodeDTO.getEpId());	    	    
 	    purchaseService.purchase(purchaseDTO, episodeDTO.getPrice());
+
+	    //중앙처리로 toonId, epId 세션 삭제 (혹시나 남아 있을 세션 메모리 누수 방지를 위해)
+	    sessionservice.clearPurchaseSessionData(request);
 
 	    
 	    rttr.addAttribute("toonId", episodeDTO.getToonId());

@@ -6,7 +6,7 @@ $(() => {
     $('.charge_btn').click((e) => {
         var confirmPurchase = confirm("충전 하시겠습니까?");
         if (confirmPurchase) {
-        location.href = `/charge?epId=${epId}`;
+        location.href = `/charge`;
         }
     });
     // -- 충전하기 버튼 누를시 페이지 이동 end --

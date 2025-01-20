@@ -27,7 +27,7 @@
 		
 		<div class="btn-group">
 			<button class="btn" id="charge">
-				<a href="/charge?origin=myinfo">코코아충전</a>
+				<a href="/charge">코코아충전</a>
 			</button>
 			
 			<button class="btn" id="cocoahistory">

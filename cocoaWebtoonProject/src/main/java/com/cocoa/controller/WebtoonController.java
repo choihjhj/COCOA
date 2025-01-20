@@ -50,6 +50,9 @@ public class WebtoonController {
 	        model.addAttribute("purchasedEpIds", purchasedEpIds);
 	    }
 		
+		//중앙처리로 toonId, epId 세션 삭제 (혹시나 남아 있을 세션 메모리 누수 방지를 위해)
+	    sessionservice.clearPurchaseSessionData(request);
+	    
 		return "toondetail"; // 웹툰 상세 페이지로 리턴
 	}
 

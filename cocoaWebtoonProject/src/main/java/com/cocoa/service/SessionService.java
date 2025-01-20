@@ -10,5 +10,13 @@ public class SessionService {
     public ToonUserDTO getLoggedInUser(HttpServletRequest request) {
         return (ToonUserDTO) request.getSession().getAttribute("ToonUserDTO");
     }
+    
+    //중앙화된 세션 관리(세션에 저장된 데이터 삭제 관리 = 메모리 누수 관련)
+    //get /toondetail, post /purchase 에서 사용
+    public void clearPurchaseSessionData(HttpServletRequest request) {
+        request.getSession().removeAttribute("toonId");
+        request.getSession().removeAttribute("epId");
+    }
+
 
 }

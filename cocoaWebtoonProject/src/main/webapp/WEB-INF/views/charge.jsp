@@ -36,7 +36,6 @@
 			<input type="text" placeholder="신용카드번호 입력(숫자만 입력하세요)" name="creditNumber" required pattern="[0-9]+"  required>
 			<input type="text" placeholder="신용카드 비밀번호 입력" name="creditPwd" required required pattern="[0-9]+">
 
-			<input type="hidden" id="origin" name="epId" value="${epId}">
 			<button id="charge-btn" type="submit">충전</button>
 			
 			
