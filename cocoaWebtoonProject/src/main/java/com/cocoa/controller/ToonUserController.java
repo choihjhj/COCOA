@@ -35,8 +35,9 @@ public class ToonUserController {
 			Model model, HttpServletRequest request) {
 		log.info("로그인 페이지 요청"+ origin);
 		
-		HttpSession session = request.getSession();
-		ToonUserDTO ToonUserDTO = (ToonUserDTO) session.getAttribute("ToonUserDTO");
+
+		ToonUserDTO ToonUserDTO = sessionservice.getLoggedInUser(request);
+
 		//로그인 안했을 때
 		if (ToonUserDTO == null) {	
 			//로그인 안하고 유료 회차 클릭 시
@@ -164,11 +165,7 @@ public class ToonUserController {
 	@ResponseBody
 	public String iddupcheck(@RequestParam("userId") String userId) {
 		log.info("아이디 중복체크" + userId);
-		if (toonUserService.idDupCheck(userId)) {
-			return "0";
-		} else {
-			return "1";
-		}
+		return toonUserService.idDupCheck(userId) ? "0":"1";
 	}
 	
 	
