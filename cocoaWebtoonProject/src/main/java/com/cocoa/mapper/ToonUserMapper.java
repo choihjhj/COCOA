@@ -15,5 +15,4 @@ public interface ToonUserMapper {
 		
 	public List<CphistoryDTO> selectCphistory(String userId);
 	
-	public int idDupCheck(String userId);
 }

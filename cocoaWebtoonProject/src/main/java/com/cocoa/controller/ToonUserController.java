@@ -33,7 +33,7 @@ public class ToonUserController {
 
 	@GetMapping("/login")
 	public String loginPage(@RequestParam(name = "origin", required = false) String origin, 
-			@RequestParam(name = "redirect", required = false) String redirectURL,
+			//@RequestParam(name = "redirect", required = false) String redirectURL,
 			Model model, HttpServletRequest request) {
 		log.info("로그인 페이지 요청 origin: " + origin);
 		
@@ -44,7 +44,7 @@ public class ToonUserController {
 		if (ToonUserDTO == null) {	
 			//로그인 안하고 유료 회차 클릭 시
 			model.addAttribute("origin", origin);
-			model.addAttribute("redirect", redirectURL);
+			//model.addAttribute("redirect", redirectURL);
 			return "login";
 		} else {
 			// 이미 로그인 되있을 시
@@ -60,21 +60,24 @@ public class ToonUserController {
 			HttpServletRequest request) {
 		log.info("로그인 요청" + user);
 		HttpSession session = request.getSession();
+		
 		// 회원 모든 정보가 담겨있는 객체를 세션에 저장
 		ToonUserDTO loginUser = toonUserService.login(user);
 		if (loginUser == null) {
 			log.info("로그인 실패");
 			rttr.addFlashAttribute("loginResult", "0");
 			rttr.addAttribute("origin",origin);
-			rttr.addAttribute("redirect",redirectURL);
+			//rttr.addAttribute("redirect",redirectURL);
 			return "redirect:/login";
 		} else {
 			log.info("로그인 성공");
 			session.setAttribute("ToonUserDTO", loginUser);
 			session.setMaxInactiveInterval(60 * 60);
-			//구매페이지에서 로그인 할 떼
-			if(origin.equals("purchase")) {
-				//rttr.addAttribute("toonId",toonId);
+			//구매페이지에서 로그인 할 때
+			if(origin.equals("purchase")) {				
+				Integer toonId = (Integer)session.getAttribute("toonId");
+				log.info("toonId : "+toonId);
+				rttr.addAttribute("toonId",toonId);
 				return "redirect:/toondetail";
 			//댓글작성에서 로그인 할 때
 			} else if(origin.equals("comment")) {

@@ -33,17 +33,18 @@ public class PurchaseController {
 	
 	@GetMapping("/purchase")
 	public String purchase(Integer toonId, Integer epId, HttpServletRequest request, RedirectAttributes rttr, Model model) {
-		
+
 		ToonUserDTO loggedInUser  = sessionservice.getLoggedInUser(request);
+		
+		//구매하려는 toonId, epId 세션에 저장(충전하고 세션데이터 읽어서/purchase?toonId={toonId}&epId={epId}로 들어오려고)
+		request.getSession().setAttribute("toonId", toonId);
+		request.getSession().setAttribute("epId", epId);
 
 		if (loggedInUser  == null) {
 			rttr.addAttribute("origin", "purchase"); //origin 어느 페이지에서 접속요청 했는지 확인하는 flag
 			return "redirect:/login"; // 로그인 페이지 URL
 		} 
 		
-		//구매하려는 toonId, epId 세션에 저장(충전하고 세션데이터 읽어서/purchase?toonId={toonId}&epId={epId}로 들어오려고)
-		request.getSession().setAttribute("toonId", toonId);
-		request.getSession().setAttribute("epId", epId);
 				
 		EpisodeDTO episode = episodeService.getEpisode(epId);
 		model.addAttribute("EpisodeDTO", episode);

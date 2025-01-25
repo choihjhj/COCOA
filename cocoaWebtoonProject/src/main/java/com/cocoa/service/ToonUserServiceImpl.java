@@ -16,15 +16,17 @@ import lombok.extern.log4j.Log4j;
 public class ToonUserServiceImpl implements ToonUserService {
 
 	private final ToonUserMapper toonUserMapper;
+	
+	// 중복 아이디 조회 메서드 추출
+	private ToonUserDTO checkUserExistsById(String userId) {
+		return toonUserMapper.selectUserById(userId);
+	}
 
 	@Override
 	@Transactional
-	public int signUp(ToonUserDTO user) {
-
-		log.info(user);
-		
-		// 아이디 중복 확인
-		ToonUserDTO existingUser = toonUserMapper.selectUserById(user.getUserId());
+	public int signUp(ToonUserDTO user) {	
+		log.info(user);		
+		ToonUserDTO existingUser = checkUserExistsById(user.getUserId());
 		if (existingUser != null) { //이미 userid 존재
 	        return 0;
 	    }
@@ -37,18 +39,8 @@ public class ToonUserServiceImpl implements ToonUserService {
 	@Override
 	@Transactional(readOnly = true)
 	public ToonUserDTO login(ToonUserDTO user) {
-		try {
-			ToonUserDTO dbUser = toonUserMapper.selectUserById(user.getUserId());
-			if (dbUser.getPwd().equals(user.getPwd())) {
-				// 로그인 성공
-				return dbUser;
-			} else {
-				// 로그인 실패
-				return null;
-			}
-		} catch (Exception e) {
-			return null;
-		}
+		ToonUserDTO existingUser = checkUserExistsById(user.getUserId());
+		return (existingUser != null && existingUser.getPwd().equals(user.getPwd())) ? existingUser : null;
 	}
 
 	@Override
