@@ -32,8 +32,9 @@ public class ToonUserController {
 	public String loginPage(@RequestParam(name = "toonId", required = false) Integer toonId,
 			@RequestParam(name = "origin", required = false) String origin, 
 			@RequestParam(name = "redirect", required = false) String redirectURL,
+			@RequestParam(name = "signupResult", required = false) Integer signupResult,
 			Model model, HttpServletRequest request) {
-		log.info("로그인 페이지 요청"+ origin);
+		log.info("로그인 페이지 요청 origin: " + origin + ", signupResult: " + signupResult);
 		
 
 		ToonUserDTO ToonUserDTO = sessionservice.getLoggedInUser(request);
@@ -44,6 +45,7 @@ public class ToonUserController {
 			model.addAttribute("origin", origin);
 			model.addAttribute("toonId", toonId);
 			model.addAttribute("redirect", redirectURL);
+			model.addAttribute("signupResult", signupResult);
 			return "login";
 		} else {
 			// 이미 로그인 되있을 시
@@ -85,13 +87,12 @@ public class ToonUserController {
 	}
 
 	@PostMapping("/signup")
-	public String singup(ToonUserDTO user, RedirectAttributes rttr) {
+	public String singup(ToonUserDTO user) {
 		log.info("회원가입 요청 정보 : " + user);
 		int signupResult = toonUserService.signUp(user);
 		// 1 또는 0
 		log.info("회원가입 결과 :" + signupResult);
-		rttr.addFlashAttribute("signupResult", signupResult);
-		return "redirect:/login";
+		return "redirect:/login?signupResult=" + signupResult; //rttr.addFlashAttribute("signupResult", signupResult) 전달이 잘 안되니까 URL 명시적으로 해서 전달하기.
 	}
 
 	@GetMapping("/myinfo")
@@ -99,53 +100,48 @@ public class ToonUserController {
 		log.info("myinfo 페이지 요청");
 		
 		ToonUserDTO loggedInUser  = sessionservice.getLoggedInUser(request);
+		if(loggedInUser == null)
+			return "redirect:/login";
+		
+		model.addAttribute("ToonUserDTO",toonUserService.login(loggedInUser));
+		return "myinfo";
 
-		if (loggedInUser != null) {
-			model.addAttribute("ToonUserDTO",toonUserService.login(loggedInUser));
-			return "myinfo";
-		} else {
-			// loginUser가 null인 경우 로그인 페이지로 리다이렉트 또는 다른 처리를 수행
-			rttr.addFlashAttribute("origin", "myinfo");
-			return "redirect:/login"; // 로그인 페이지 URL
-		}
 	}
 
-	@GetMapping("/logout")
+	
+	@PostMapping("/logout")
 	public String logout(HttpServletRequest request) {
 		log.info("logout 요청");
 		HttpSession session = request.getSession();
 		session.invalidate(); // 세션 무효화 (로그아웃)
 		return "redirect:/layout";
 	}
+	
 
 	@DeleteMapping("/remove")
 	@ResponseBody
 	public ResponseEntity<String> remove(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		ToonUserDTO toonUserDTO = (ToonUserDTO) session.getAttribute("ToonUserDTO");
-		
-		if (toonUserDTO == null) {
-	        log.warn("회원 탈퇴 요청 중 로그인되지 않은 사용자.");
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
-	    }
 
-	    try {
-	        log.info("회원 탈퇴 유저 : " + toonUserDTO);
-	        toonUserService.removeUser(toonUserDTO.getUserId());
-	        session.invalidate(); // 세션 무효화
-	        log.info("회원탈퇴 완료");
-	        return ResponseEntity.ok("회원탈퇴가 완료되었습니다.");
-	    } catch (Exception e) {
-	        log.error("회원 탈퇴 중 오류 발생", e);
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원탈퇴에 실패했습니다.");
-	    }
+		if (toonUserDTO == null) {
+			log.warn("회원 탈퇴 요청 중 로그인되지 않은 사용자.");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+		}
+
+
+		log.info("회원 탈퇴 유저 : " + toonUserDTO);
+		toonUserService.removeUser(toonUserDTO.getUserId());
+		session.invalidate(); // 세션 무효화
+		log.info("회원탈퇴 완료");
+		return ResponseEntity.ok("회원탈퇴가 완료되었습니다.");
+
 	}
 
 	@GetMapping("/cocoahistory")
-	public String cocoahistory(RedirectAttributes rttr, HttpServletRequest request, Model model) {
+	public String cocoahistory(HttpServletRequest request, Model model) {
 		log.info("cocoahistory 페이지 요청");
-		HttpSession session = request.getSession();
-		ToonUserDTO toonUserDTO = (ToonUserDTO) session.getAttribute("ToonUserDTO");
+		ToonUserDTO toonUserDTO = sessionservice.getLoggedInUser(request);
 
 		// loginUser가 null이 아닌 경우에만 cocoahistory.jsp를 반환
 		if (toonUserDTO != null) {
@@ -171,8 +167,8 @@ public class ToonUserController {
 	
 	@GetMapping("/mystorage")
 	public void mystorage(HttpServletRequest request, Model model) {
-		HttpSession session = request.getSession();
-		ToonUserDTO toonUserDTO = (ToonUserDTO) session.getAttribute("ToonUserDTO");
+		
+		ToonUserDTO toonUserDTO = sessionservice.getLoggedInUser(request);
 		
 		// 로그인 했으면 구매한 에피소드 목록을 전송해야 함
 		if(toonUserDTO != null) {

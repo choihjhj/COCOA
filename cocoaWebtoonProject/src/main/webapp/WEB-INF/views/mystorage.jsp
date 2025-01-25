@@ -15,7 +15,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <link rel="stylesheet" href="/resources/css/storage.css">
 <link rel="stylesheet" href="/resources/css/header.css">
-<script src="/resources/js/storage.js"></script>
+<script src="/resources/js/mystorage.js"></script>
 </head>
 
 <body>

@@ -34,7 +34,7 @@
 				<a href="/cocoahistory">코코아 사용내역</a>
 			</button>
 			
-			<form id="logoutForm" method="get" action="/logout">
+			<form id="logoutForm" method="POST" action="/logout">
 			<button class="btn" id="logout">
 				<a href="/logout">로그아웃</a>
 			</button>

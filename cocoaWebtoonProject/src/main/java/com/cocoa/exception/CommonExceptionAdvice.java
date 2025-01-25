@@ -15,7 +15,8 @@ public class CommonExceptionAdvice {
 	@ExceptionHandler(Exception.class)
 	public  ResponseEntity<String> except(Exception e, Model model) 
 	{			
-		log.error("오류 핸들러 : "+e.getMessage());
+		log.error("오류 발생: " + e.getMessage(), e);
+		
 		model.addAttribute("exception",e); // view로 전달할 때를 위해 넣어두기
 		return ResponseEntity.badRequest().body("Invalid request data : " + e.getMessage()); //바로 클라이언트로 return
 		
