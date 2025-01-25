@@ -1,5 +1,8 @@
 package com.cocoa.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
@@ -29,12 +32,10 @@ public class ToonUserController {
 	private final SessionService sessionservice;
 
 	@GetMapping("/login")
-	public String loginPage(@RequestParam(name = "toonId", required = false) Integer toonId,
-			@RequestParam(name = "origin", required = false) String origin, 
+	public String loginPage(@RequestParam(name = "origin", required = false) String origin, 
 			@RequestParam(name = "redirect", required = false) String redirectURL,
-			@RequestParam(name = "signupResult", required = false) Integer signupResult,
 			Model model, HttpServletRequest request) {
-		log.info("로그인 페이지 요청 origin: " + origin + ", signupResult: " + signupResult);
+		log.info("로그인 페이지 요청 origin: " + origin);
 		
 
 		ToonUserDTO ToonUserDTO = sessionservice.getLoggedInUser(request);
@@ -43,9 +44,7 @@ public class ToonUserController {
 		if (ToonUserDTO == null) {	
 			//로그인 안하고 유료 회차 클릭 시
 			model.addAttribute("origin", origin);
-			model.addAttribute("toonId", toonId);
 			model.addAttribute("redirect", redirectURL);
-			model.addAttribute("signupResult", signupResult);
 			return "login";
 		} else {
 			// 이미 로그인 되있을 시
@@ -54,7 +53,7 @@ public class ToonUserController {
 	}
 
 	@PostMapping("/login")
-	public String login(@RequestParam(name = "toonId", required = false) Integer toonId,
+	public String login(
 			@RequestParam(name = "origin", required = false) String origin,
 			@RequestParam(name = "redirect", required = false) String redirectURL,
 			RedirectAttributes rttr, ToonUserDTO user,
@@ -67,7 +66,6 @@ public class ToonUserController {
 			log.info("로그인 실패");
 			rttr.addFlashAttribute("loginResult", "0");
 			rttr.addAttribute("origin",origin);
-			rttr.addAttribute("toonId",toonId);
 			rttr.addAttribute("redirect",redirectURL);
 			return "redirect:/login";
 		} else {
@@ -76,7 +74,7 @@ public class ToonUserController {
 			session.setMaxInactiveInterval(60 * 60);
 			//구매페이지에서 로그인 할 떼
 			if(origin.equals("purchase")) {
-				rttr.addAttribute("toonId",toonId);
+				//rttr.addAttribute("toonId",toonId);
 				return "redirect:/toondetail";
 			//댓글작성에서 로그인 할 때
 			} else if(origin.equals("comment")) {
@@ -87,16 +85,27 @@ public class ToonUserController {
 	}
 
 	@PostMapping("/signup")
-	public String singup(ToonUserDTO user) {
+	@ResponseBody
+	public Map<String, Object> singup(ToonUserDTO user) {
 		log.info("회원가입 요청 정보 : " + user);
+		Map<String, Object> response = new HashMap<>();
+		
 		int signupResult = toonUserService.signUp(user);
-		// 1 또는 0
 		log.info("회원가입 결과 :" + signupResult);
-		return "redirect:/login?signupResult=" + signupResult; //rttr.addFlashAttribute("signupResult", signupResult) 전달이 잘 안되니까 URL 명시적으로 해서 전달하기.
+		
+		if (signupResult == 1) {
+			response.put("message", "회원가입 성공");
+        } else if (signupResult == 0) {
+        	response.put("message", "회원가입 실패: 중복된 아이디");
+        } else {
+        	 response.put("message", "회원가입 실패: 알 수 없는 오류");
+        }
+		return response;
+
 	}
 
 	@GetMapping("/myinfo")
-	public String myinfo(HttpServletRequest request, Model model, RedirectAttributes rttr) {
+	public String myinfo(HttpServletRequest request, Model model) {
 		log.info("myinfo 페이지 요청");
 		
 		ToonUserDTO loggedInUser  = sessionservice.getLoggedInUser(request);
@@ -154,16 +163,6 @@ public class ToonUserController {
 
 		}
 	}
-	
-
-	// 아이디 중복 체크 로직
-	@GetMapping(value = "/iddupcheck", produces = "text/plain; charset=UTF-8")
-	@ResponseBody
-	public String iddupcheck(@RequestParam("userId") String userId) {
-		log.info("아이디 중복체크" + userId);
-		return toonUserService.idDupCheck(userId) ? "0":"1";
-	}
-	
 	
 	@GetMapping("/mystorage")
 	public void mystorage(HttpServletRequest request, Model model) {

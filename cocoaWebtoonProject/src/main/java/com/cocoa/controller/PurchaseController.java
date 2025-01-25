@@ -38,7 +38,6 @@ public class PurchaseController {
 
 		if (loggedInUser  == null) {
 			rttr.addAttribute("origin", "purchase"); //origin 어느 페이지에서 접속요청 했는지 확인하는 flag
-			rttr.addAttribute("toonId", toonId); //-----------나중에 처리하기------
 			return "redirect:/login"; // 로그인 페이지 URL
 		} 
 		

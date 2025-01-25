@@ -15,5 +15,4 @@ public interface ToonUserService {
 	
 	public List<CphistoryDTO> findCphistory(String userId);
 	
-	public boolean idDupCheck(String userId);
 }

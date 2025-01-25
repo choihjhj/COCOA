@@ -51,11 +51,5 @@
         ]]>
 	</select>
 	
-	<select id="idDupCheck" resultType="int">
-		select count(*)
-		from toonuser
-		where userId = #{userId}
-	</select>
-	
-	
+
 </mapper>

@@ -25,14 +25,5 @@ public class ToonUserServiceTests {
 	@Setter(onMethod_ = @Autowired)
 	private ToonUserService service;
 
-//	@Test
-//	public void test() {
-//		service.findLatestComment(1).forEach(data -> log.info(data));
-//	}
-	
-	@Test
-	public void test() {
-		log.info(service.idDupCheck("1233"));
-	}
 
 }

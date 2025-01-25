@@ -63,8 +63,6 @@
 					name="birthday">
 			</div>
 
-			<input type="hidden" name="cocoa" value="0">
-
 			<div class="form-element">
 				<button id="submit-btn">Sign Up</button>
 			</div>
@@ -73,12 +71,9 @@
 
 
 		<input type="hidden" name="origin" value="${origin}" id="origin" />
-		<input type="hidden" name="toonId" value="${toonId}" id="toonId" />
 		<input type="hidden" name="redirect" id="redirectURL">
 	</form>
 
-
-	<input type="hidden" value="${signupResult}" id="signupResult" />
 	<input type="hidden" value="${loginResult}" id="loginResult" />
 
 

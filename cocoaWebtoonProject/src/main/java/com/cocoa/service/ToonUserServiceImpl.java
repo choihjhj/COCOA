@@ -20,15 +20,18 @@ public class ToonUserServiceImpl implements ToonUserService {
 	@Override
 	@Transactional
 	public int signUp(ToonUserDTO user) {
-		try {
-			log.info(user);
-			// 정상적으로 회원가입 되면 1을 반환
-			return toonUserMapper.insert(user);
-		} catch (Exception e) {
-			log.info("중복된 키값이 발견되었습니다.");
-			// 중복된 키값이 발견되면 0을 반환
-			return 0;
-		}
+
+		log.info(user);
+		
+		// 아이디 중복 확인
+		ToonUserDTO existingUser = toonUserMapper.selectUserById(user.getUserId());
+		if (existingUser != null) { //이미 userid 존재
+	        return 0;
+	    }
+		
+		// 중복되지 않으면 insert 실행
+		return toonUserMapper.insert(user);
+
 	}
 
 	@Override
@@ -72,12 +75,5 @@ public class ToonUserServiceImpl implements ToonUserService {
 		return list;
 	}
 
-	@Override
-	@Transactional(readOnly = true)
-	public boolean idDupCheck(String userId) {
-		int result = toonUserMapper.idDupCheck(userId);
-
-		return result == 0;
-	}
 
 }
