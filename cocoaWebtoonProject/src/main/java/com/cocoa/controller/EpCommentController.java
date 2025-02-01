@@ -2,22 +2,22 @@ package com.cocoa.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.cocoa.domain.EpCommentDTO;
 import com.cocoa.domain.ToonUserDTO;
 import com.cocoa.service.EpCommentService;
-
+import com.cocoa.service.SessionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
@@ -28,6 +28,7 @@ import lombok.extern.log4j.Log4j;
 public class EpCommentController {
 
 	private final EpCommentService epcommentservice;
+	private final SessionService sessionservice;
 
 	@GetMapping("/lastestComment")
 	public String lastestComment(@RequestParam(required = false) Integer epId, Model model) {
@@ -46,8 +47,8 @@ public class EpCommentController {
 
 	@PostMapping("/like/{commentId}")
 	public @ResponseBody boolean likeComment(@PathVariable int commentId, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		ToonUserDTO ToonUserDTO = (ToonUserDTO) session.getAttribute("ToonUserDTO");
+		
+		ToonUserDTO ToonUserDTO = sessionservice.getLoggedInUser(request);
 		if (epcommentservice.likeSelectEpcomment(commentId, ToonUserDTO.getUserId()) == 1) {// 좋아요 누른적 있음 취소해야함
 			epcommentservice.dislikeComment(commentId, ToonUserDTO.getUserId());
 			return false; // 좋아요 취소
@@ -62,8 +63,8 @@ public class EpCommentController {
 	@PostMapping(value = "/newcomment", produces = "application/json")
 	@ResponseBody
 	public int epcommentWrite(EpCommentDTO EpCommentDTO, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		ToonUserDTO ToonUserDTO = (ToonUserDTO) session.getAttribute("ToonUserDTO");
+
+		ToonUserDTO ToonUserDTO = sessionservice.getLoggedInUser(request);
 		EpCommentDTO ep = new EpCommentDTO();
 		ep.setUserId(ToonUserDTO.getUserId());
 		ep.setEpId(Integer.parseInt(request.getParameter("epid")));
@@ -71,23 +72,23 @@ public class EpCommentController {
 		return epcommentservice.newComment(ep);
 	}
 
-	@PostMapping(value = "/removecomment", produces = "application/json")
+	@DeleteMapping(value = "/removecomment", produces = "application/json")
 	@ResponseBody
-	public int deleteComment(int commentId) {
-		log.info(commentId);
+	public int deleteComment(@RequestParam("commentId") int commentId) {
+		log.info("삭제 요청된 댓글 ID: " + commentId);
 		return epcommentservice.deleteComment(commentId);
 
 	}
 
-	@PostMapping(value = "/modifycomment", produces = "application/json")
+	@PutMapping(value = "/modifycomment", produces = "application/json")
 	@ResponseBody
-	public int modifyComment(@RequestParam("commentId") Integer commentId,
-			@RequestParam("modifydata") String modifydata) throws NotFoundException {
-		EpCommentDTO ep = (EpCommentDTO) epcommentservice.findComment(commentId);
+	public int modifyComment(@RequestBody EpCommentDTO EpCommentDTO) throws NotFoundException {
+		log.info("댓글수정 : "+EpCommentDTO.getCommentId()+EpCommentDTO.getCommentBody());
+		EpCommentDTO ep = (EpCommentDTO) epcommentservice.findComment(EpCommentDTO.getCommentId());
 		if (ep == null) {
 			throw new NotFoundException("댓글을 찾을 수 없습니다");
 		}
-		ep.setCommentBody(modifydata);
+		ep.setCommentBody(EpCommentDTO.getCommentBody());
 		return epcommentservice.modifyComment(ep);
 	}
 

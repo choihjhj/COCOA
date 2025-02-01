@@ -248,11 +248,12 @@ $(() => {
 	$(document).on('click', '.removeButton', function (e) {
 		//var commentId = $(this).siblings(".likeButton").data("commentid");
 		var commentId = $(this).closest(".comment-item").find(".likeButton").data("commentid");
+		console.log('삭제'+commentId);
 		e.preventDefault();
 
 		$.ajax({
-			url: "/removecomment",
-			method: 'post',
+			url: "/removecomment?commentId=" + commentId,
+			method: 'DELETE',
 			data: {
 				"commentId": commentId
 			},
@@ -275,6 +276,7 @@ $(() => {
 	$(document).on('click', '.modifyButton', function (e) {
 
 		const commentId = $(this).closest(".comment-item").find(".likeButton").data("commentid");
+		alert('수정클릭'+commentId);
 		const remove = $(this).siblings(".removeButton");
 		const commentBody = $(this).closest('.comment-item').find('.commentbody');
 		const currentText = commentBody.text();
@@ -289,15 +291,17 @@ $(() => {
 
 
 		$('.saveButton').click((e) => {
+			console.log('수정'+commentId);
 			const modifydata = $(this).closest('.comment-item').find('.comment-input').val().trim();
 
 			$.ajax({
 				url: "/modifycomment",
-				method: "post",
-				data: {
-					"commentId": commentId,
-					"modifydata": modifydata
-				},
+				method: "PUT",
+				contentType: "application/json", // JSON 데이터 전송
+				data: JSON.stringify({
+        			commentId: commentId,
+        			commentBody: modifydata
+    			}),
 				success: (responseObj) => {
 					if (responseObj = 1) {
 						alert("댓글이 수정되었습니다");
