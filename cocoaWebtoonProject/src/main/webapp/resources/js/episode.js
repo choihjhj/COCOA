@@ -190,7 +190,7 @@ $(() => {
 	//--댓글 작성 start--
 	function redirectToLogin() {
 		let currentURL = window.location.href;
-		location.href = "/login?origin=comment&redirect=" + encodeURIComponent(currentURL);
+		location.href = "/login?origin=episode&redirect=" + encodeURIComponent(currentURL);
 	}
 
 
