@@ -44,4 +44,16 @@
 		<nature>org.eclipse.wst.common.modulecore.ModuleCoreNature</nature>
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>.gitignore</name>
+			<type>1</type>
+			<location>C:/Users/chg11/git/COCOA/.gitignore</location>
+		</link>
+		<link>
+			<name>README.md</name>
+			<type>1</type>
+			<location>C:/Users/chg11/git/COCOA/README.md</location>
+		</link>
+	</linkedResources>
 </projectDescription>
