@@ -70,9 +70,8 @@ public class PurchaseController {
 
 		Integer epId = (Integer) request.getSession().getAttribute("epId"); 
 		log.info("epId = " + epId);
-	    if (epId == null) {
-	    	
-	        rttr.addFlashAttribute("errorMMessage", "에피소드 정보가 없습니다. 다시 시도해 주세요.");
+	    if (epId == null) {	    	
+	        rttr.addFlashAttribute("errorMessage", "에피소드 정보가 없습니다. 다시 시도해 주세요.");
 	        return "redirect:/errorPage";  // errorPage.jsp로 리다이렉트
 	    }
 
@@ -91,11 +90,9 @@ public class PurchaseController {
 			return "redirect:/toondetail";
 		}
 		else {
-			rttr.addFlashAttribute("errorMMessage", "구매 작업이 실패했습니다. 다시 시도해 주세요.");
+			rttr.addFlashAttribute("errorMessage", "구매 작업이 실패했습니다. 다시 시도해 주세요.");
 			return "redirect:/errorPage";
 		}
-
-
 
 	}
 

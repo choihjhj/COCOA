@@ -49,11 +49,11 @@
         <div class="error-title">오류가 발생했습니다.</div>
         <div class="error-message">
             <!-- errorMessage가 있을 경우 그 내용을 출력 -->
-            <c:if test="${not empty errorMMessage}">
-                ${errorMMessage}
+            <c:if test="${not empty errorMessage}">
+                ${errorMessage}
             </c:if>
             <!-- errorMessage가 비어있을 경우 기본 메시지 출력 -->
-            <c:if test="${empty errorMMessage}">
+            <c:if test="${empty errorMessage}">
                 예상치 못한 오류가 발생했습니다. 다시 시도해 주세요.
             </c:if>
             
