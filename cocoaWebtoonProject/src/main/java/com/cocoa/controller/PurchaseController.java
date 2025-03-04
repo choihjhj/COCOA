@@ -76,23 +76,22 @@ public class PurchaseController {
 	    }
 
 
-		// 구매 로직
-		EpisodeDTO episodeDTO = episodeService.getEpisode(epId);	    
-		PurchaseDTO purchaseDTO = new PurchaseDTO();
-		purchaseDTO.setUserId(loggedInUser.getUserId());
-		purchaseDTO.setEpId(episodeDTO.getEpId());
-		
-		int purchaseResult = purchaseService.insertPurchase(purchaseDTO, episodeDTO.getPrice());
-		if(purchaseResult == 1) {
-			//중앙처리로 toonId, epId 세션 삭제 (혹시나 남아 있을 세션 메모리 누수 방지를 위해)
-			sessionservice.clearPurchaseSessionData(request);		    
-			rttr.addAttribute("toonId", episodeDTO.getToonId());
-			return "redirect:/toondetail";
-		}
-		else {
-			rttr.addFlashAttribute("errorMessage", "구매 작업이 실패했습니다. 다시 시도해 주세요.");
-			return "redirect:/errorPage";
-		}
+	    // 구매 로직
+	    EpisodeDTO episodeDTO = episodeService.getEpisode(epId);	    
+	    PurchaseDTO purchaseDTO = new PurchaseDTO();
+	    purchaseDTO.setUserId(loggedInUser.getUserId());
+	    purchaseDTO.setEpId(episodeDTO.getEpId());
+
+	    int purchaseResult = purchaseService.insertPurchase(purchaseDTO, episodeDTO.getPrice());
+	    if(purchaseResult == 0) {
+	    	rttr.addFlashAttribute("errorMessage", "구매 작업이 실패했습니다. 다시 시도해 주세요.");
+	    	return "redirect:/errorPage";
+	    }
+	    
+	    //중앙처리로 toonId, epId 세션 삭제 (혹시나 남아 있을 세션 메모리 누수 방지를 위해)
+	    sessionservice.clearPurchaseSessionData(request);		    
+	    rttr.addAttribute("toonId", episodeDTO.getToonId());
+	    return "redirect:/toondetail";
 
 	}
 
