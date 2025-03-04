@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.cocoa.service.WebToonService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
-
+@Log4j
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
@@ -34,6 +35,16 @@ public class HomeController {
 	    model.addAttribute("dayOfWeek", numericDayOfWeek);
 
 	    return "layout";
+	}
+	
+	
+	@GetMapping(value = "/errorPage")
+	public String error(Model model) {
+		String Message = (String) model.asMap().get("errorMMessage");
+		log.info("errorMMessage : "+Message);
+		
+		model.addAttribute("errorMMessage", Message);
+		return "errorPage";
 	}
 	
 }

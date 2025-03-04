@@ -30,12 +30,12 @@ public class PurchaseController {
 	private final ToonUserService toonUserService;
 	private final WebToonService webtoonservice;
 	private final SessionService sessionservice;
-	
+
 	@GetMapping("/purchase")
 	public String purchase(Integer toonId, Integer epId, HttpServletRequest request, RedirectAttributes rttr, Model model) {
 
 		ToonUserDTO loggedInUser  = sessionservice.getLoggedInUser(request);
-		
+
 		//구매하려는 toonId, epId 세션에 저장(충전하고 세션데이터 읽어서/purchase?toonId={toonId}&epId={epId}로 들어오려고)
 		request.getSession().setAttribute("toonId", toonId);
 		request.getSession().setAttribute("epId", epId);
@@ -44,47 +44,60 @@ public class PurchaseController {
 			rttr.addAttribute("origin", "purchase"); //origin 어느 페이지에서 접속요청 했는지 확인하는 flag
 			return "redirect:/login"; // 로그인 페이지 URL
 		} 
-		
-				
+
+
 		EpisodeDTO episode = episodeService.getEpisode(epId);
 		model.addAttribute("EpisodeDTO", episode);
-		
+
 		WebToonDTO webtoon = webtoonservice.getWebToon(toonId);
 		model.addAttribute("ToonName", webtoon.getToonName()); //웹툰 Name 출력위해 model에 담기
-		
+
 		model.addAttribute("UserCocoa", toonUserService.login(loggedInUser).getCocoa()); //변동된 유저 Cocoa잔액 출력위해 model에 담기
 		return "/purchase";
-		
-		
+
+
 	}		
 
 	@PostMapping(value = "/purchase")
 	public String purchaseaction(HttpServletRequest request, RedirectAttributes rttr) throws Exception {
 
 		log.info("purchase post 들어옴");
+		
 		ToonUserDTO loggedInUser  = sessionservice.getLoggedInUser(request);		
 		if (loggedInUser == null) {
-	        return "redirect:/login";
+			return "redirect:/login";
+		}
+
+		Integer epId = (Integer) request.getSession().getAttribute("epId"); 
+		log.info("epId = " + epId);
+	    if (epId == null) {
+	    	
+	        rttr.addFlashAttribute("errorMMessage", "에피소드 정보가 없습니다. 다시 시도해 주세요.");
+	        return "redirect:/errorPage";  // errorPage.jsp로 리다이렉트
 	    }
+
+
+		// 구매 로직
+		EpisodeDTO episodeDTO = episodeService.getEpisode(epId);	    
+		PurchaseDTO purchaseDTO = new PurchaseDTO();
+		purchaseDTO.setUserId(loggedInUser.getUserId());
+		purchaseDTO.setEpId(episodeDTO.getEpId());
 		
-		int epId = (Integer) request.getSession().getAttribute("epId"); //epId가 null이면 NullPointerException 발생
+		int purchaseResult = purchaseService.insertPurchase(purchaseDTO, episodeDTO.getPrice());
+		if(purchaseResult == 1) {
+			//중앙처리로 toonId, epId 세션 삭제 (혹시나 남아 있을 세션 메모리 누수 방지를 위해)
+			sessionservice.clearPurchaseSessionData(request);		    
+			rttr.addAttribute("toonId", episodeDTO.getToonId());
+			return "redirect:/toondetail";
+		}
+		else {
+			rttr.addFlashAttribute("errorMMessage", "구매 작업이 실패했습니다. 다시 시도해 주세요.");
+			return "redirect:/errorPage";
+		}
 
-	    // 구매 로직
-	    EpisodeDTO episodeDTO = episodeService.getEpisode(epId);	    
-	    PurchaseDTO purchaseDTO = new PurchaseDTO();
-	    purchaseDTO.setUserId(loggedInUser.getUserId());
-	    purchaseDTO.setEpId(episodeDTO.getEpId());	    	    
-	    purchaseService.insertPurchase(purchaseDTO, episodeDTO.getPrice());
 
-	    //중앙처리로 toonId, epId 세션 삭제 (혹시나 남아 있을 세션 메모리 누수 방지를 위해)
-	    sessionservice.clearPurchaseSessionData(request);
-
-	    
-	    rttr.addAttribute("toonId", episodeDTO.getToonId());
-	    return "redirect:/toondetail";
-		
 
 	}
-	
+
 
 }
