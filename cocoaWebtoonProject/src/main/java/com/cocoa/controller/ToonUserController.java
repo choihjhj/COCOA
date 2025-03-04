@@ -173,9 +173,9 @@ public class ToonUserController {
 		
 		// 로그인 했으면 구매한 에피소드 목록을 전송해야 함
 		if(toonUserDTO != null) {
-			log.info(purchaseService.getPurchasedEpToonId(toonUserDTO.getUserId()));
+			//log.info(purchaseService.getPurchasedEpToonId(toonUserDTO.getUserId()));
 			model.addAttribute("loginresult", 1);
-			model.addAttribute("PurchaseVO",purchaseService.getPurchasedEpToonId(toonUserDTO.getUserId()));	
+			model.addAttribute("PurchaseVO",purchaseService.getPurchasedEpisodesByUserId(toonUserDTO.getUserId()));	
 		} else {
 			model.addAttribute("loginresult", 0);
 		}

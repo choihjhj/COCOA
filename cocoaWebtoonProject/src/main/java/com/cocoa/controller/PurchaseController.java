@@ -74,7 +74,7 @@ public class PurchaseController {
 	    PurchaseDTO purchaseDTO = new PurchaseDTO();
 	    purchaseDTO.setUserId(loggedInUser.getUserId());
 	    purchaseDTO.setEpId(episodeDTO.getEpId());	    	    
-	    purchaseService.purchase(purchaseDTO, episodeDTO.getPrice());
+	    purchaseService.insertPurchase(purchaseDTO, episodeDTO.getPrice());
 
 	    //중앙처리로 toonId, epId 세션 삭제 (혹시나 남아 있을 세션 메모리 누수 방지를 위해)
 	    sessionservice.clearPurchaseSessionData(request);

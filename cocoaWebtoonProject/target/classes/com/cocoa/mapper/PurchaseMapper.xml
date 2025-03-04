@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cocoa.mapper.PurchaseMapper">
 
-	<select id="selectEpToonIdByUserId" resultType="com.cocoa.domain.PurchaseVO">
+	<select id="getPurchasedEpisodesByUserId" resultType="com.cocoa.domain.PurchaseVO">
 		select p.epid, e.toonid, e.epnumber
 		from purchase p 
 		join episode e
@@ -14,13 +14,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 
-	<select id="selectByUserId" resultType="java.lang.Integer">
+	<select id="getPurchasedEpisodeIdsByUserId" resultType="java.lang.Integer">
 	<![CDATA[
    	 select epid from purchase where userid = #{userid}
 	]]>
 	</select>
 	
-	<select id="select" resultType="int">
+	<select id="checkIfEpisodePurchasedByUser" resultType="int">
 	<![CDATA[
     	SELECT 
     	CASE 
@@ -36,14 +36,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 
-	<insert id="insert">		
+	<insert id="insertPurchase">		
 		<![CDATA[
 				INSERT INTO purchase (purchaseid, userid, epid,PURCHASEDATE )
 				VALUES (PURCHASE_ID_SEQ.NEXTVAL, #{userId}, #{epId},SYSDATE)
 		]]>
 	</insert>
 
-	<update id="update">
+	<update id="updateCocoaBalanceAfterPurchase">
 	<![CDATA[
 		UPDATE 
 				toonuser

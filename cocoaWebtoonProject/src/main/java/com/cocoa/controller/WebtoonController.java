@@ -46,7 +46,7 @@ public class WebtoonController {
 				
 		// 로그인 한 상태일 때 구매한 웹툰Id를 jsp로 전달
 		if (loggedInUser != null) {
-	        List<Integer> purchasedEpIds = purchaseservice.getPurchasedEpId(loggedInUser.getUserId());
+	        List<Integer> purchasedEpIds = purchaseservice.getPurchasedEpisodeIdsByUserId(loggedInUser.getUserId());
 	        model.addAttribute("purchasedEpIds", purchasedEpIds);
 	    }
 		

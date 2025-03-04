@@ -31,11 +31,11 @@ public class PurchaseMapperTests {
         purchase.setEpId(72);
 
         //when
-        mapper.insert(purchase);
+        mapper.insertPurchase(purchase);
 
         //then
         log.info("Inserted Purchase ID: " + purchase.getPurchaseId());
-		List<Integer> result = mapper.selectByUserId("aaa");
+		List<Integer> result = mapper.getPurchasedEpisodeIdsByUserId("aaa");
 		result.forEach(var -> log.info(var));
 	}
 }

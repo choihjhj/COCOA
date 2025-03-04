@@ -18,25 +18,25 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<PurchaseVO> getPurchasedEpToonId(String userId) {
-		return purchaseMapper.selectEpToonIdByUserId(userId);
+	public List<PurchaseVO> getPurchasedEpisodesByUserId(String userId) {
+		return purchaseMapper.getPurchasedEpisodesByUserId(userId);
 	}
 	
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<Integer> getPurchasedEpId(String userId) {
+	public List<Integer> getPurchasedEpisodeIdsByUserId(String userId) {
 		log.info(userId);
-		return purchaseMapper.selectByUserId(userId);
+		return purchaseMapper.getPurchasedEpisodeIdsByUserId(userId);
 	}
 
 	@Transactional
 	@Override
-	public int purchase(PurchaseDTO p, int price) {
+	public int insertPurchase(PurchaseDTO p, int price) {
 
 		log.info("purchase");
-		if (purchaseMapper.select(p) == 0) {
-			return (purchaseMapper.insert(p) == 1 && purchaseMapper.update(p, price)) ? 1 : 0;
+		if (purchaseMapper.checkIfEpisodePurchasedByUser(p) == 0) { //구매 여부 확인 후 insert & update 작업
+			return (purchaseMapper.insertPurchase(p) == 1 && purchaseMapper.updateCocoaBalanceAfterPurchase(p, price)) ? 1 : 0;
 		} else {
 			return 0;
 		}
