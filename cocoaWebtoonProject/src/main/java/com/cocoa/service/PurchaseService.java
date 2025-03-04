@@ -10,5 +10,5 @@ public interface PurchaseService {
 	
 	public List<Integer> getPurchasedEpId (String userId);
 	
-	public int purchase(PurchaseDTO p, int price);	
+	public int purchase(PurchaseDTO p, int price);	//구매 insert 후 toonuser cocoa 차감 업데이트
 }

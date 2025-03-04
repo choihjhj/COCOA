@@ -36,18 +36,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 
-	<insert id="insert">
-		<selectKey keyProperty="purchaseId" resultType="int" order="BEFORE">
-		<![CDATA[
-				SELECT 
-						PURCHASE_ID_SEQ.nextval 
-				FROM 
-						dual
-		]]>
-		</selectKey>		
+	<insert id="insert">		
 		<![CDATA[
 				INSERT INTO purchase (purchaseid, userid, epid,PURCHASEDATE )
-				VALUES (#{purchaseId}, #{userId}, #{epId},SYSDATE)
+				VALUES (PURCHASE_ID_SEQ.NEXTVAL, #{userId}, #{epId},SYSDATE)
 		]]>
 	</insert>
 

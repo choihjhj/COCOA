@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cocoa.domain.PurchaseDTO;
 
@@ -22,8 +23,19 @@ public class PurchaseMapperTests {
 	private PurchaseMapper mapper;
 
 	@Test
-	public void test() {
-		List<Integer> result = mapper.selectByUserId("qwe");
+	@Transactional
+	public void insertTest() {
+		//given
+        PurchaseDTO purchase = new PurchaseDTO();
+        purchase.setUserId("aaa");
+        purchase.setEpId(72);
+
+        //when
+        mapper.insert(purchase);
+
+        //then
+        log.info("Inserted Purchase ID: " + purchase.getPurchaseId());
+		List<Integer> result = mapper.selectByUserId("aaa");
 		result.forEach(var -> log.info(var));
 	}
 }
