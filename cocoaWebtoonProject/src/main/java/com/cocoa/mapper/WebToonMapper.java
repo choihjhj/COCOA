@@ -9,7 +9,5 @@ public interface WebToonMapper {
 	
 	public WebToonDTO getWebToon(int toodId);
 	
-	public List<WebToonDTO> selectByToonId(int toonId);
-	
 	
 }
