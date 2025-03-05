@@ -16,7 +16,7 @@ public class EpisodeServiceImpl implements EpisodeService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<EpisodeDTO> findBytoonId(int toonId) {
+	public List<EpisodeDTO> getEpisodesBytoonId(int toonId) {
 
 		return mapper.selectByToonId(toonId);
 	}
@@ -29,7 +29,7 @@ public class EpisodeServiceImpl implements EpisodeService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<Integer> findMinMaxEpBytoonId(int toonId) {
+	public List<Integer> getEpidsByToonId(int toonId) {
 		return mapper.selectEpidByToonId(toonId);
 	}
 

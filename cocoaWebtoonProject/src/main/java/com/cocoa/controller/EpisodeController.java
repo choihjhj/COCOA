@@ -40,7 +40,7 @@ public class EpisodeController {
 		// 모델에 데이터 추가
 		model.addAttribute("EpisodeDTO", episodeDTO);
 		model.addAttribute("EpCommentDTO", epComments);
-		model.addAttribute("EpIds", episodeService.findMinMaxEpBytoonId(toonId));
+		model.addAttribute("EpIds", episodeService.getEpidsByToonId(toonId)); //페이징처리 위해 epid 리스트 저장
 
 		return "episode";
 

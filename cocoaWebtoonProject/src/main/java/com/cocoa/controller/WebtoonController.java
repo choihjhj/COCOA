@@ -38,7 +38,7 @@ public class WebtoonController {
 		model.addAttribute("WebToonDTO", webtoon);
 		
 		// 웹툰id에 해당하는 에피소드 정보 가져오기
-		List<EpisodeDTO> episodes = episodeservice.findBytoonId(toonId);
+		List<EpisodeDTO> episodes = episodeservice.getEpisodesBytoonId(toonId);
 		model.addAttribute("episodes", episodes);
 		
 		// 로그인 상태 확인 후, 구매한 에피소드 정보 전달
