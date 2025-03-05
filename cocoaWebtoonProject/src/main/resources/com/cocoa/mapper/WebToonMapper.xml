@@ -10,14 +10,6 @@
 		FROM WebToon
 		WHERE dayofweek = #{dayOfWeek}
 	</select>
-
-	<select id="selectByToonId" parameterType="int" resultType="com.cocoa.domain.WebToonDTO">
-		SELECT w.*, e.*
-		FROM WEBTOON w
-		JOIN EPISODE e ON w.toonid = e.toonid
-		WHERE w.toonid = #{toonId}
-	</select>	
-
 	
 	<select id="getWebToon" parameterType="int" resultType="com.cocoa.domain.WebToonDTO">
 		SELECT *

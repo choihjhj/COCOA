@@ -24,14 +24,6 @@ public class WebToonServiceImpl implements WebToonService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<WebToonDTO> findById(int toonId){
-		log.info("툰아이디 : " + toonId);
-		return mapper.selectByToonId(toonId);
-	}
-	
-	
-	@Override
-	@Transactional(readOnly = true)
 	public WebToonDTO getWebToon(int toonId) {
 		log.info("toonId : " + toonId);
 		return mapper.getWebToon(toonId);
