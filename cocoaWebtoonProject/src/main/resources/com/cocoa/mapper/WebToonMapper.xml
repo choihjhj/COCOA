@@ -18,12 +18,6 @@
 		WHERE w.toonid = #{toonId}
 	</select>	
 
-	<select id="selectBySearchBox" parameterType="string" resultType="com.cocoa.domain.WebToonDTO">
-		SELECT *
-        FROM WEBTOON
-        WHERE REPLACE(toonname, ' ', '') LIKE '%' || REPLACE(#{keyword}, ' ', '') || '%'
-      	OR REPLACE(author, ' ', '') LIKE '%' || REPLACE(#{keyword}, ' ', '') || '%'
-	</select>
 	
 	<select id="getWebToon" parameterType="int" resultType="com.cocoa.domain.WebToonDTO">
 		SELECT *

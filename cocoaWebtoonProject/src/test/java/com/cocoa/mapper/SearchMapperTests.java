@@ -7,31 +7,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import com.cocoa.domain.PurchaseDTO;
+import com.cocoa.domain.WebToonDTO;
 import lombok.extern.log4j.Log4j;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
 @Log4j
-public class PurchaseMapperTests {
-
+public class SearchMapperTests {
+	
 	@Autowired
-	private PurchaseMapper mapper;
-
+	private SearchMapper mapper;
+	
 	@Test
 	@Transactional
-	public void insertTest() {
+	public void searchTest() {
 		//given
-        PurchaseDTO purchase = new PurchaseDTO();
-        purchase.setUserId("aaa");
-        purchase.setEpId(72);
-
-        //when
-        mapper.insertPurchase(purchase);
-
-        //then
-        log.info("Inserted Purchase ID: " + purchase.getPurchaseId());
-		List<Integer> result = mapper.getPurchasedEpisodeIdsByUserId("aaa");
-		result.forEach(var -> log.info(var));
+		
+		String keyword = "미";
+		
+		//when
+		List<WebToonDTO> result = mapper.selectBySearchBox(keyword);
+		
+		//then
+		//assertNotNull(result);
+	    //assertTrue(result.size() > 0);
+		
+		result.stream().forEach(webToonDTO -> log.info("--- WebToon: " + webToonDTO));
 	}
+
 }

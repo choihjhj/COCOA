@@ -29,12 +29,6 @@ public class WebToonServiceImpl implements WebToonService {
 		return mapper.selectByToonId(toonId);
 	}
 	
-	@Override
-	@Transactional(readOnly = true)
-	public List<WebToonDTO> search(String searchBox){
-		log.info("검색값 : " + searchBox);
-		return mapper.selectBySearchBox(searchBox);
-	}
 	
 	@Override
 	@Transactional(readOnly = true)

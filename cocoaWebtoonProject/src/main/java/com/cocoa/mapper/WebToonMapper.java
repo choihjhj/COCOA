@@ -11,6 +11,5 @@ public interface WebToonMapper {
 	
 	public List<WebToonDTO> selectByToonId(int toonId);
 	
-	public List<WebToonDTO> selectBySearchBox(String searchBox);
 	
 }

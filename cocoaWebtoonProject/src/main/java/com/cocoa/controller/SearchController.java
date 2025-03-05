@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.cocoa.domain.WebToonDTO;
-import com.cocoa.service.WebToonService;
+import com.cocoa.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
@@ -17,7 +17,7 @@ import lombok.extern.log4j.Log4j;
 @RequiredArgsConstructor
 public class SearchController {
 	
-	private final WebToonService webtoonservice;
+	private final SearchService searchservice;
 	
 	
 	@GetMapping
@@ -32,7 +32,7 @@ public class SearchController {
         log.info("Search keyword (Ajax): " + keyword);
 
         if (keyword != null && !keyword.trim().isEmpty()) {
-            return webtoonservice.search(keyword); // JSON으로 자동 변환
+            return searchservice.search(keyword); // JSON으로 자동 변환
         }
         return List.of(); // 빈 리스트 반환
     }
