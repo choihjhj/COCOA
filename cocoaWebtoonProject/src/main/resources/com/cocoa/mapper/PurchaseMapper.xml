@@ -22,16 +22,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="checkIfEpisodePurchasedByUser" resultType="int">
 	<![CDATA[
-    	SELECT 
-    	CASE 
-    	WHEN EXISTS (
-        	SELECT 1 
-        	FROM purchase 
-        	WHERE userid = #{userId} AND epid = #{epId}
-    	) THEN 1 ELSE 0 
-    	END
-    	FROM 
-    		dual
+    	SELECT COUNT(1)
+    	FROM purchase
+    	WHERE userid = #{userId} AND epid = #{epId}
 	]]>
 	</select>
 	

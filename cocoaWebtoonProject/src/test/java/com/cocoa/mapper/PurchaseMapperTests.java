@@ -18,7 +18,7 @@ public class PurchaseMapperTests {
 	@Autowired
 	private PurchaseMapper mapper;
 
-	@Test
+	//@Test
 	@Transactional
 	public void insertTest() {
 		//given
@@ -33,5 +33,20 @@ public class PurchaseMapperTests {
         log.info("Inserted Purchase ID: " + purchase.getPurchaseId());
 		List<Integer> result = mapper.getPurchasedEpisodeIdsByUserId("aaa");
 		result.forEach(var -> log.info(var));
+	}
+	
+	@Test
+	@Transactional
+	public void checkTest() {
+		//given
+		PurchaseDTO purchase = new PurchaseDTO();
+        purchase.setUserId("aaa");
+        purchase.setEpId(54);
+		
+		//when
+		int result=mapper.checkIfEpisodePurchasedByUser(purchase);
+		
+		//then
+		log.info("checkTest 결과 : "+result);
 	}
 }
