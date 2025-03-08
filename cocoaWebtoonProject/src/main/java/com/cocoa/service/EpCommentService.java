@@ -2,11 +2,14 @@ package com.cocoa.service;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import com.cocoa.domain.EpCommentDTO;
+import com.cocoa.domain.ToonUserDTO;
 
 public interface EpCommentService {
 
-	public EpCommentDTO findComment(int commentId);					//댓글 여부 체크
+	//public int checkIfEpComment(int commentId, String userId);		//댓글 여부 체크
 
 	public List<EpCommentDTO> findBestComment(int epId); 			//베스트 댓글 조회
 
@@ -22,5 +25,5 @@ public interface EpCommentService {
 
 	public int deleteComment(int commentId);						//댓글 삭제
 
-	public int modifyComment(EpCommentDTO epcomment);				//댓글 수정
+	public ResponseEntity<String> modifyComment(EpCommentDTO epcomment, ToonUserDTO loggedInUser);		//댓글 수정
 }

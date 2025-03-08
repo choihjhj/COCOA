@@ -303,9 +303,11 @@ $(() => {
         			commentBody: modifydata
     			}),
 				success: (responseObj) => {
-					if (responseObj = 1) {
+					if (responseObj === "success") {
 						alert("댓글이 수정되었습니다");
 						$('#latest').trigger('click');
+					} else {
+						alert("댓글 수정 실패. 다시 시도해 주세요.");
 					}
 				},
 				error: function (xhr) {

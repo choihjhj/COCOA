@@ -91,12 +91,20 @@
 		commentbody = #{commentBody},
 		writedate = sysdate
 		WHERE
-		commentid = #{commentId}
+		commentid = #{commentId} AND userid = #{userId}
 	</update>
 
-	<select id="selectComment" resultType="com.cocoa.domain.EpCommentDTO">
-		SELECT *
-		FROM epcomment
-		WHERE COMMENTID = #{commentId}
+	<select id="checkIfEpComment" resultType="com.cocoa.domain.EpCommentDTO">
+		<![CDATA[
+		SELECT CASE 
+				WHEN EXISTS (
+               		SELECT 1
+               		FROM epcomment
+               		WHERE userid = #{userId} AND commentid = #{commentId}
+           		) THEN 1 
+           		ELSE 0
+           END
+		FROM dual
+ 	]]>
 	</select>
 </mapper>

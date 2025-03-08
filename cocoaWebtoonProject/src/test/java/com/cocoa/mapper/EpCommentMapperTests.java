@@ -19,7 +19,7 @@ public class EpCommentMapperTests {
 	
 	@Test
 	@Transactional
-	public void likeSelectEpcommentTest() {
+	public void selectCommentTest() {
 		//given
 		int commentId = 65;
 		String userId = "122";

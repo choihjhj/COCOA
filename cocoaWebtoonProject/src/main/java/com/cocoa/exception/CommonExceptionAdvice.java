@@ -1,5 +1,7 @@
 package com.cocoa.exception;
 
+import org.apache.ibatis.javassist.NotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -34,6 +36,7 @@ public class CommonExceptionAdvice {
 
         rttr.addFlashAttribute("errorMessage", "필수 파라미터 '" + e.getParameterName() + "'가 누락되었습니다. 다시 시도해 주세요.");
         return "redirect:/errorPage"; 
+        //return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("필수 파라미터 '" + e.getParameterName() + "'가 누락되었습니다.");
     }
 
 	// IllegalArgumentException 처리
@@ -43,6 +46,7 @@ public class CommonExceptionAdvice {
 
 		rttr.addFlashAttribute("errorMessage", "잘못된 인자가 포함되었습니다. 다시 시도해 주세요.");
 		return "redirect:/errorPage"; 
+		//return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("잘못된 인자가 포함되었습니다.");
 	}
 
 	// NullPointerException 처리
@@ -52,5 +56,14 @@ public class CommonExceptionAdvice {
 
 		rttr.addFlashAttribute("errorMessage", "서버에서 NullPointerException이 발생했습니다. 문제를 해결하기 위해 관리자에게 문의해주세요.");
 		return "redirect:/errorPage"; 
+		//return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버에서 NullPointerException이 발생했습니다. 문제를 해결하기 위해 관리자에게 문의해주세요.");
+	}
+	
+	// NotFoundException 처리
+	@ExceptionHandler(NotFoundException.class)
+	public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
+		log.error("NotFoundException 발생: " + e.getMessage(), e);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		
 	}
 }

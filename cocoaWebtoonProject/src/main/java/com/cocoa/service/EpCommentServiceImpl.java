@@ -1,9 +1,13 @@
 package com.cocoa.service;
 
 import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.cocoa.domain.EpCommentDTO;
+import com.cocoa.domain.ToonUserDTO;
+import com.cocoa.exception.NotFoundException;
 import com.cocoa.mapper.EpCommentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -69,16 +73,28 @@ public class EpCommentServiceImpl implements EpCommentService {
 
 	@Override
 	@Transactional
-	public int modifyComment(EpCommentDTO epcomment) {
-		log.info(epcomment);
-		return epcommentmapper.updateComment(epcomment);
+	public ResponseEntity<String> modifyComment(EpCommentDTO epcomment, ToonUserDTO loggedInUser) {
+		epcomment.setUserId(loggedInUser.getUserId()); 
+		
+		//댓글 존재 여부 체크
+		int checkResult = checkIfEpComment(epcomment);
+        if (checkResult == 0) {
+            throw new NotFoundException("댓글을 찾을 수 없습니다.");
+        }
+        
+        // 댓글 수정 로직        
+        int isModified = epcommentmapper.updateComment(epcomment);
+        if(isModified == 1) {
+        	return ResponseEntity.ok("success");
+        } else {
+        	throw new IllegalArgumentException("failure");
+        }
+		
 	}
 
-	@Override
-	@Transactional(readOnly = true)
-	public EpCommentDTO findComment(int commentId) {
-		log.info("commentId : " + commentId);
-		return epcommentmapper.selectComment(commentId);
+
+	public int checkIfEpComment(EpCommentDTO epcomment) {
+		return epcommentmapper.checkIfEpComment(epcomment);
 	}
 
 }

@@ -3,6 +3,8 @@ package com.cocoa.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.ibatis.javassist.NotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -92,14 +94,25 @@ public class EpCommentController {
 
 	@PutMapping(value = "/modifycomment", produces = "application/json")
 	@ResponseBody
-	public int modifyComment(@RequestBody EpCommentDTO EpCommentDTO) throws NotFoundException {
+	public ResponseEntity<String> modifyComment(@RequestBody EpCommentDTO EpCommentDTO, HttpServletRequest request) {
 		log.info("댓글수정 : "+EpCommentDTO.getCommentId()+EpCommentDTO.getCommentBody());
-		EpCommentDTO ep = (EpCommentDTO) epcommentservice.findComment(EpCommentDTO.getCommentId());
-		if (ep == null) {
-			throw new NotFoundException("댓글을 찾을 수 없습니다");
+		
+		//로그인 여부 체크
+		ToonUserDTO loggedInUser = sessionservice.getLoggedInUser(request);
+		if (loggedInUser  == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다."); 
+		} 
+		
+		return epcommentservice.modifyComment(EpCommentDTO, loggedInUser);
+/*		
+		//댓글 여부 채크
+		int checkResult = epcommentservice.checkIfEpComment(EpCommentDTO.getCommentId(),loggedInUser.getUserId());
+		if (checkResult == 0) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("댓글을 찾을 수 없습니다.");
 		}
-		ep.setCommentBody(EpCommentDTO.getCommentBody());
-		return epcommentservice.modifyComment(ep);
+		
+		return epcommentservice.modifyComment(EpCommentDTO);
+*/
 	}
 
 }

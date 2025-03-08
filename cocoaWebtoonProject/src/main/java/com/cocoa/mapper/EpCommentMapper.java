@@ -27,6 +27,6 @@ public interface EpCommentMapper {
 	
 	public int updateComment(EpCommentDTO epcomment);
 	
-	public EpCommentDTO selectComment(int commentId);
+	public int checkIfEpComment(EpCommentDTO epcomment);
 	
 }
