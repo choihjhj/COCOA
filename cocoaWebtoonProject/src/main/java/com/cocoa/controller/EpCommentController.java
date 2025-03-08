@@ -29,17 +29,27 @@ public class EpCommentController {
 
 	private final EpCommentService epcommentservice;
 	private final SessionService sessionservice;
-
+	
+	/*
+     * 최신 댓글 목록 조회
+     * GET /lastestComment?epId={epId}
+     * return "comment"
+     * */
 	@GetMapping("/lastestComment")
-	public String lastestComment(@RequestParam(required = false) Integer epId, Model model) {
+	public String lastestComment(@RequestParam Integer epId, Model model) {
 		log.info("값:" + epId);
 		List<EpCommentDTO> epct = epcommentservice.findLatestComment(epId);
 		model.addAttribute("EpCommentDTO", epct);
 		return "comment";
 	}
 
+	/*
+     * 베스트 댓글 목록 조회
+     * GET /bestComment?epId={epId}
+     * return "comment"
+     * */
 	@GetMapping("/bestComment")
-	public String bestComment(@RequestParam(required = false) Integer epId, Model model) {
+	public String bestComment(@RequestParam Integer epId, Model model) {
 		List<EpCommentDTO> epct = epcommentservice.findBestComment(epId);
 		model.addAttribute("EpCommentDTO", epct);
 		return "comment";
@@ -49,7 +59,7 @@ public class EpCommentController {
 	public @ResponseBody boolean likeComment(@PathVariable int commentId, HttpServletRequest request) {
 		
 		ToonUserDTO ToonUserDTO = sessionservice.getLoggedInUser(request);
-		if (epcommentservice.likeSelectEpcomment(commentId, ToonUserDTO.getUserId()) == 1) {// 좋아요 누른적 있음 취소해야함
+		if (epcommentservice.likeSelectEpcomment(commentId, ToonUserDTO.getUserId()) == 1) {// 좋아요 여부 체크(좋아요 누른적 있으면 취소 처리)
 			epcommentservice.dislikeComment(commentId, ToonUserDTO.getUserId());
 			return false; // 좋아요 취소
 

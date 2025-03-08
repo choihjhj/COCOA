@@ -43,9 +43,15 @@
 
 	<select id="likeSelectEpcomment" resultType="int">
 	<![CDATA[
-		SELECT count(*) 
-		FROM likecomment 
-		WHERE userid=#{userId} AND commentid=#{commentId}
+		SELECT CASE 
+				WHEN EXISTS (
+               		SELECT 1
+               		FROM likecomment
+               		WHERE userid = #{userId} AND commentid = #{commentId}
+           		) THEN 1 
+           		ELSE 0
+           END
+		FROM dual
  	]]>
 	</select>
 	<!-- 좋아요 취소 쿼리 -->

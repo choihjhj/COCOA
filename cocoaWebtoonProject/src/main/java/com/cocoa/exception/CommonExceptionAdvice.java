@@ -2,6 +2,7 @@ package com.cocoa.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -25,24 +26,31 @@ public class CommonExceptionAdvice {
 		return ResponseEntity.badRequest().body("Invalid request data : " + e.getMessage()); //바로 클라이언트로 return
 
 	}
+	
+	// MissingServletRequestParameterException 처리
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public String handleMissingParam(MissingServletRequestParameterException e, RedirectAttributes rttr) {
+        log.error("필수 파라미터 누락: " + e.getParameterName(), e);
 
-	// IllegalArgumentException을 처리하는 핸들러
+        rttr.addFlashAttribute("errorMessage", "필수 파라미터 '" + e.getParameterName() + "'가 누락되었습니다. 다시 시도해 주세요.");
+        return "redirect:/errorPage"; 
+    }
+
+	// IllegalArgumentException 처리
 	@ExceptionHandler(IllegalArgumentException.class)
 	public String handleIllegalArgumentException(IllegalArgumentException e,RedirectAttributes rttr) {
 		log.error("잘못된 인자: " + e.getMessage(), e);
 
-		// 예외 발생 시 RedirectAttributes에 에러 메시지 추가
 		rttr.addFlashAttribute("errorMessage", "잘못된 인자가 포함되었습니다. 다시 시도해 주세요.");
-		return "redirect:/errorPage"; // errorPage로 리다이렉트
+		return "redirect:/errorPage"; 
 	}
 
-	// NullPointerException을 처리하는 핸들러
+	// NullPointerException 처리
 	@ExceptionHandler(NullPointerException.class)
 	public String handleNullPointerException(NullPointerException e,RedirectAttributes rttr) {
 		log.error("NullPointerException 발생: " + e.getMessage(), e);
 
-		// 예외 발생 시 RedirectAttributes에 에러 메시지 추가
 		rttr.addFlashAttribute("errorMessage", "서버에서 NullPointerException이 발생했습니다. 문제를 해결하기 위해 관리자에게 문의해주세요.");
-		return "redirect:/errorPage"; // errorPage로 리다이렉트
+		return "redirect:/errorPage"; 
 	}
 }

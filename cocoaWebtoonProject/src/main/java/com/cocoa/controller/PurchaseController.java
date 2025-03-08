@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cocoa.domain.EpisodeDTO;
 import com.cocoa.domain.PurchaseDTO;
@@ -31,8 +32,13 @@ public class PurchaseController {
 	private final WebToonService webtoonservice;
 	private final SessionService sessionservice;
 
+	/*
+     * 유료 에피소드 구매 페이지 요청
+     * GET /purchase?toonId={toonId}&epId={epId}
+     * return "purchase"
+     * */
 	@GetMapping("/purchase")
-	public String purchase(Integer toonId, Integer epId, HttpServletRequest request, RedirectAttributes rttr, Model model) {
+	public String purchase(@RequestParam Integer toonId, @RequestParam Integer epId, HttpServletRequest request, RedirectAttributes rttr, Model model) {
 
 		ToonUserDTO loggedInUser  = sessionservice.getLoggedInUser(request);
 
@@ -58,6 +64,11 @@ public class PurchaseController {
 
 	}		
 
+	/*
+     * 유료 에피소드 구매 추가
+     * POST /purchase
+     * return "redirect:/toondetail"
+     * */
 	@PostMapping(value = "/purchase")
 	public String purchaseaction(HttpServletRequest request, RedirectAttributes rttr) throws Exception {
 

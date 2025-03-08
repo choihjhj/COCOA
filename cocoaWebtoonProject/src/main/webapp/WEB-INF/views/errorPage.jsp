@@ -48,15 +48,16 @@
     <div class="error-container">
         <div class="error-title">오류가 발생했습니다.</div>
         <div class="error-message">
-            <!-- errorMessage가 있을 경우 그 내용을 출력 -->
+            <!-- errorMessage가 null 또는 빈 문자열이 아닐 경우 그 내용을 출력 -->
             <c:if test="${not empty errorMessage}">
                 ${errorMessage}
             </c:if>
-            <!-- errorMessage가 비어있을 경우 기본 메시지 출력 -->
+            
+            <!-- errorMessage가 null이거나 빈 문자열일 경우 기본 메시지 출력 
             <c:if test="${empty errorMessage}">
                 예상치 못한 오류가 발생했습니다. 다시 시도해 주세요.
             </c:if>
-            
+            -->
         </div>
         <button class="back-button" onclick="history.back()">뒤로 가기</button>
     </div>
