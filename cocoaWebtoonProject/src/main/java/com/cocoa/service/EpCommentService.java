@@ -9,8 +9,6 @@ import com.cocoa.domain.ToonUserDTO;
 
 public interface EpCommentService {
 
-	//public int checkIfEpComment(int commentId, String userId);		//댓글 여부 체크
-
 	public List<EpCommentDTO> findBestComment(int epId); 			//베스트 댓글 조회
 
 	public List<EpCommentDTO> findLatestComment(int epId); 			//최신 댓글 조회

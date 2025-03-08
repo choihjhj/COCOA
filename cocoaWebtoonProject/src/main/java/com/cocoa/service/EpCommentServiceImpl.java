@@ -2,6 +2,7 @@ package com.cocoa.service;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,10 +85,14 @@ public class EpCommentServiceImpl implements EpCommentService {
         
         // 댓글 수정 로직        
         int isModified = epcommentmapper.updateComment(epcomment);
+        System.out.println("isModified : "+isModified);
+        
         if(isModified == 1) {
+        	System.out.println("success");
         	return ResponseEntity.ok("success");
         } else {
-        	throw new IllegalArgumentException("failure");
+        	System.out.println("failure");
+        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("failure");
         }
 		
 	}

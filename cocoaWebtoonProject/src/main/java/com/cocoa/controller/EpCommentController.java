@@ -104,15 +104,7 @@ public class EpCommentController {
 		} 
 		
 		return epcommentservice.modifyComment(EpCommentDTO, loggedInUser);
-/*		
-		//댓글 여부 채크
-		int checkResult = epcommentservice.checkIfEpComment(EpCommentDTO.getCommentId(),loggedInUser.getUserId());
-		if (checkResult == 0) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("댓글을 찾을 수 없습니다.");
-		}
-		
-		return epcommentservice.modifyComment(EpCommentDTO);
-*/
+
 	}
 
 }

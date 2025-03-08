@@ -94,7 +94,7 @@
 		commentid = #{commentId} AND userid = #{userId}
 	</update>
 
-	<select id="checkIfEpComment" resultType="com.cocoa.domain.EpCommentDTO">
+	<select id="checkIfEpComment" resultType="int">
 		<![CDATA[
 		SELECT CASE 
 				WHEN EXISTS (
