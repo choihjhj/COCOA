@@ -3,8 +3,11 @@ package com.cocoa.service;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import com.cocoa.domain.ToonUserDTO;
+import com.cocoa.exception.UnauthorizedAccessException;
+import lombok.extern.log4j.Log4j;
 
 @Service
+@Log4j
 public class SessionService {
 	// 세션에서 로그인된 사용자 정보 가져오기
     public ToonUserDTO getLoggedInUser(HttpServletRequest request) {

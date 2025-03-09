@@ -22,6 +22,11 @@ public class ChargeController {
 	private final ChargeService chargeservice;
 	private final SessionService sessionservice;
 
+	/*
+     * 충전 페이지 요청
+     * GET /charge
+     * return "charge"
+     * */
 	@GetMapping("/charge")
 	public String charge(HttpServletRequest request) {
 		log.info("/charge get 요청 ");
@@ -31,11 +36,22 @@ public class ChargeController {
 		
 	}
 
+	/*
+     * 충전 
+     * POST /charge
+     * return "redirect:/myinfo"
+     * */
 	@PostMapping(value = "/charge")
 	public String charge(HttpServletRequest request, ChargeDTO ChargeDTO, RedirectAttributes rttr) throws Exception {
 		log.info("charge post 요청 : " + ChargeDTO);
 		
 		ToonUserDTO loggedInUser = sessionservice.getLoggedInUser(request);
+		
+		//로그인 여부 체크
+		if (loggedInUser  == null) {
+			return "redirect:/login";
+		} 
+		
 		ChargeDTO.setUserId(loggedInUser.getUserId());		
 		
 		int chargeresult = chargeservice.charge(ChargeDTO);

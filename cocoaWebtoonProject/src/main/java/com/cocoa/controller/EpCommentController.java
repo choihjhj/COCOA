@@ -115,7 +115,7 @@ public class EpCommentController {
 
 	}
 	
-	//로그인 여부 체크 메서드
+	//로그인 여부 체크 메서드 - return userId
 	private String validateLoggedInUser(HttpServletRequest request) {
 		ToonUserDTO loggedInUser = sessionservice.getLoggedInUser(request);
 		log.info("loggedInUser : "+loggedInUser);
