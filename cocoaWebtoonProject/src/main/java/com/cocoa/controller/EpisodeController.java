@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cocoa.domain.EpCommentDTO;
 import com.cocoa.domain.EpisodeDTO;
@@ -23,8 +24,16 @@ public class EpisodeController {
 	private final EpCommentService epCommentService;
 
 
+	/*
+	 * 에피소드 페이지 요청
+	 * GET /episode?toonId={toonId}&epId={epId}
+	 * return "episode"
+	 * */
 	@GetMapping("/episode")
-	public String episode(int toonId, int epId, Model model, RedirectAttributes rttr) {
+	public String episode(@RequestParam("toonId")int toonId,
+						  @RequestParam("epId") int epId,
+						  Model model,
+						  RedirectAttributes rttr) {
 		log.info("에피소드 요청 툰아이디: " + toonId + " 에피소드 아이디: " + epId);
 
 		// 에피소드 정보 가져오기

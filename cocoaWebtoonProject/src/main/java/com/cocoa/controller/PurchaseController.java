@@ -37,7 +37,11 @@ public class PurchaseController {
      * return "purchase"
      * */
 	@GetMapping("/purchase")
-	public String purchase(@RequestParam Integer toonId, @RequestParam Integer epId, HttpServletRequest request, RedirectAttributes rttr, Model model) {
+	public String purchase(@RequestParam("toonId") Integer toonId, 
+						   @RequestParam("epId") Integer epId, 
+						   HttpServletRequest request, 
+						   RedirectAttributes rttr, 
+						   Model model) {
 
 		ToonUserDTO loggedInUser  = sessionservice.getLoggedInUser(request);
 

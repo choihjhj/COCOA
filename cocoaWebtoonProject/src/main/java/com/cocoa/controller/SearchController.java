@@ -19,22 +19,26 @@ public class SearchController {
 	
 	private final SearchService searchservice;
 	
-	
+	/*
+     * 검색 페이지 요청
+     * GET /search
+     * return "search"
+     * */
 	@GetMapping
 	public String search(){
 		return "search"; //search.jsp 요청
 	}
 	
-	// 검색 Ajax 요청 처리: JSON 반환
-    @GetMapping("/ajax")
+	/*
+     * 웹툰 검색어 조회
+     * GET /search/ajax?keyword={keyword}
+     * return List<WebToonDTO> //JSON 반환
+     * */
+    @GetMapping("/ajax") // search 페이지요청 URL과 구분하기 위해 요청명 이렇게 함
     @ResponseBody
-    public List<WebToonDTO> searchAjax(@RequestParam(name="keyword", required = false) String keyword) {
-        log.info("Search keyword (Ajax): " + keyword);
-
-        if (keyword != null && !keyword.trim().isEmpty()) {
-            return searchservice.search(keyword); // JSON으로 자동 변환
-        }
-        return List.of(); // 빈 리스트 반환
+    public List<WebToonDTO> searchAjax(@RequestParam(name="keyword") String keyword) {
+        log.info("Search keyword (Ajax): '" + keyword + "'");
+        return searchservice.search(keyword);
     }
 
 }

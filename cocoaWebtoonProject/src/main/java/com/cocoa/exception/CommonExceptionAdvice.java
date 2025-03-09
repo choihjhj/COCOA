@@ -34,7 +34,7 @@ public class CommonExceptionAdvice {
     public String handleMissingParam(MissingServletRequestParameterException e, RedirectAttributes rttr) {
         log.error("필수 파라미터 누락: " + e.getParameterName(), e);
 
-        rttr.addFlashAttribute("errorMessage", "필수 파라미터 '" + e.getParameterName() + "'가 누락되었습니다. 다시 시도해 주세요.");
+        rttr.addAttribute("errorMessage", "필수 파라미터 '" + e.getParameterName() + "'가 누락되었습니다. 다시 시도해 주세요.");
         return "redirect:/errorPage"; 
         //return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("필수 파라미터 '" + e.getParameterName() + "'가 누락되었습니다.");
     }
@@ -44,7 +44,7 @@ public class CommonExceptionAdvice {
 	public String handleIllegalArgumentException(IllegalArgumentException e,RedirectAttributes rttr) {
 		log.error("잘못된 인자: " + e.getMessage(), e);
 
-		rttr.addFlashAttribute("errorMessage", "잘못된 인자가 포함되었습니다. 다시 시도해 주세요.");
+		rttr.addAttribute("errorMessage", "잘못된 인자가 포함되었습니다. 다시 시도해 주세요.");
 		return "redirect:/errorPage"; 
 		//return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("잘못된 인자가 포함되었습니다.");
 	}
@@ -54,7 +54,7 @@ public class CommonExceptionAdvice {
 	public String handleNullPointerException(NullPointerException e,RedirectAttributes rttr) {
 		log.error("NullPointerException 발생: " + e.getMessage(), e);
 
-		rttr.addFlashAttribute("errorMessage", "서버에서 NullPointerException이 발생했습니다. 문제를 해결하기 위해 관리자에게 문의해주세요.");
+		rttr.addAttribute("errorMessage", "서버에서 NullPointerException이 발생했습니다. 문제를 해결하기 위해 관리자에게 문의해주세요.");
 		return "redirect:/errorPage"; 
 		//return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버에서 NullPointerException이 발생했습니다. 문제를 해결하기 위해 관리자에게 문의해주세요.");
 	}
@@ -74,9 +74,5 @@ public class CommonExceptionAdvice {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     }
     
-	// RuntimeException 처리
-//	@ExceptionHandler(RuntimeException.class)
-//    public ResponseEntity<String> handleLoginException(RuntimeException e) {
-//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-//    }
+
 }

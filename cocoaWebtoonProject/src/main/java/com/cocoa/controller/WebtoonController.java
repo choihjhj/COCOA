@@ -28,6 +28,11 @@ public class WebtoonController {
 	private final PurchaseService purchaseservice;
 	private final SessionService sessionservice;
 
+	/*
+     * 웹툰 페이지 요청
+     * GET /toondetail?toonId={toonId}
+     * return "toondetail"
+     * */
 	@GetMapping(value ="/toondetail")
 	public String toondetail(@RequestParam("toonId") int toonId, HttpServletRequest request, Model model) {
 		log.info("toondetail 요청 toonId 값 : "+toonId);

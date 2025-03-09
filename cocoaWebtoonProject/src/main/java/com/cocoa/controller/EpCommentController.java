@@ -37,7 +37,7 @@ public class EpCommentController {
      * return "comment"
      * */
 	@GetMapping("/lastestComment")
-	public String lastestComment(@RequestParam Integer epId, Model model) {
+	public String lastestComment(@RequestParam("epId") Integer epId, Model model) {
 		log.info("값:" + epId);
 		List<EpCommentDTO> epct = epcommentservice.findLatestComment(epId);
 		model.addAttribute("EpCommentDTO", epct);
@@ -50,7 +50,7 @@ public class EpCommentController {
      * return "comment"
      * */
 	@GetMapping("/bestComment")
-	public String bestComment(@RequestParam Integer epId, Model model) {
+	public String bestComment(@RequestParam("epId") Integer epId, Model model) {
 		List<EpCommentDTO> epct = epcommentservice.findBestComment(epId);
 		model.addAttribute("EpCommentDTO", epct);
 		return "comment";
