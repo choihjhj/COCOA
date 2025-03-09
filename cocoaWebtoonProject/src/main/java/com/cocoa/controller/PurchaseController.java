@@ -82,7 +82,7 @@ public class PurchaseController {
 		Integer epId = (Integer) request.getSession().getAttribute("epId"); 
 		log.info("epId = " + epId);
 	    if (epId == null) {	    	
-	        rttr.addFlashAttribute("errorMessage", "에피소드 정보가 없습니다. 다시 시도해 주세요.");
+	        rttr.addAttribute("errorMessage", "에피소드 정보가 없습니다. 다시 시도해 주세요.");
 	        return "redirect:/errorPage";  // errorPage.jsp로 리다이렉트
 	    }
 

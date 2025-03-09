@@ -39,11 +39,11 @@ public class HomeController {
 	
 	
 	@GetMapping(value = "/errorPage")
-	public String error(Model model) {
-		String Message = (String) model.asMap().get("errorMessage");
-		log.info("errorMessage : "+Message);
+	public String error(@RequestParam("errorMessage") String message, Model model) {
+		//String Message = (String) model.asMap().get("errorMessage");
+		log.info("errorMessage : "+message);
 		
-		model.addAttribute("errorMessage", Message);
+		model.addAttribute("errorMessage", message);
 		return "errorPage";
 	}
 	

@@ -52,16 +52,13 @@ public class ChargeController {
 			return "redirect:/login";
 		} 
 		
-		ChargeDTO.setUserId(loggedInUser.getUserId());		
-		
-		int chargeresult = chargeservice.charge(ChargeDTO);
-		if(chargeresult == 0) {
+		//충전 처리 로직			
+		if(chargeservice.charge(ChargeDTO,loggedInUser.getUserId()) == 0) {
 			rttr.addFlashAttribute("errorMessage", "충전 작업이 실패했습니다. 다시 시도해 주세요.");
 			return "redirect:/errorPage";
 		}
 		
-		Integer epId = (Integer) request.getSession().getAttribute("epId");
-		
+		Integer epId = (Integer) request.getSession().getAttribute("epId");		
 		if (epId != null) { //구매하다가 충전하러 온거면
 			rttr.addAttribute("toonId", request.getSession().getAttribute("toonId"));
 			rttr.addAttribute("epId", epId);
