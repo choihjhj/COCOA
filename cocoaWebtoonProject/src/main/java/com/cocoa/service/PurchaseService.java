@@ -10,5 +10,5 @@ public interface PurchaseService {
 	
 	public List<Integer> getPurchasedEpisodeIdsByUserId (String userId); //toondetail에서 구매epid목록 조회
 	
-	public int insertPurchase(PurchaseDTO p, int price);	//구매 insert
+	public int insertPurchase(String userId,int epId);	//구매 insert
 }

@@ -31,6 +31,13 @@
 	  ]]>
 	</select>
 
+	<select id="selectPriceByEpId" parameterType="int" resultType="int">
+	  <![CDATA[
+	    SELECT price
+	    FROM EPISODE
+	    WHERE epid = #{epId} 
+	  ]]>
+	</select>
 	
 
 </mapper>

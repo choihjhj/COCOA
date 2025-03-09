@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cocoa.domain.EpisodeDTO;
-import com.cocoa.domain.PurchaseDTO;
 import com.cocoa.domain.ToonUserDTO;
 import com.cocoa.domain.WebToonDTO;
 import com.cocoa.service.EpisodeService;
@@ -46,6 +45,7 @@ public class PurchaseController {
 		request.getSession().setAttribute("toonId", toonId);
 		request.getSession().setAttribute("epId", epId);
 
+		//로그인 여부 체크
 		if (loggedInUser  == null) {
 			rttr.addAttribute("origin", "purchase"); //origin 어느 페이지에서 접속요청 했는지 확인하는 flag
 			return "redirect:/login"; // 로그인 페이지 URL
@@ -74,34 +74,32 @@ public class PurchaseController {
 
 		log.info("purchase post 들어옴");
 		
+		//로그인 여부 체크
 		ToonUserDTO loggedInUser  = sessionservice.getLoggedInUser(request);		
 		if (loggedInUser == null) {
 			return "redirect:/login";
 		}
 
+		//epId, toonId 여부 체크
 		Integer epId = (Integer) request.getSession().getAttribute("epId"); 
-		log.info("epId = " + epId);
-	    if (epId == null) {	    	
+		Integer toonId = (Integer) request.getSession().getAttribute("toonId"); 
+		log.info("epId : " + epId + ", toonId :"+toonId);		
+	    if( (epId == null) || (toonId == null) ) {	    	
 	        rttr.addAttribute("errorMessage", "에피소드 정보가 없습니다. 다시 시도해 주세요.");
 	        return "redirect:/errorPage";  // errorPage.jsp로 리다이렉트
 	    }
 
 
-	    // 구매 로직
-	    EpisodeDTO episodeDTO = episodeService.getEpisode(epId);	    
-	    PurchaseDTO purchaseDTO = new PurchaseDTO();
-	    purchaseDTO.setUserId(loggedInUser.getUserId());
-	    purchaseDTO.setEpId(episodeDTO.getEpId());
-
-	    int purchaseResult = purchaseService.insertPurchase(purchaseDTO, episodeDTO.getPrice());
-	    if(purchaseResult == 0) {
+	    /*--- 구매 로직 ---*/
+	    if(purchaseService.insertPurchase(loggedInUser.getUserId(),epId) == 0) {
 	    	rttr.addFlashAttribute("errorMessage", "구매 작업이 실패했습니다. 다시 시도해 주세요.");
 	    	return "redirect:/errorPage";
 	    }
 	    
 	    //중앙처리로 toonId, epId 세션 삭제 (혹시나 남아 있을 세션 메모리 누수 방지를 위해)
 	    sessionservice.clearPurchaseSessionData(request);		    
-	    rttr.addAttribute("toonId", episodeDTO.getToonId());
+	    
+	    rttr.addAttribute("toonId", toonId);
 	    return "redirect:/toondetail";
 
 	}
