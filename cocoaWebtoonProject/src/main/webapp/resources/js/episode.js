@@ -220,12 +220,14 @@ $(() => {
                     url: "/newcomment",
                     method: 'post',
                     data: {
-                        "writedata": writedata,
-                        "epid": epIdFromUrl
+                        "commentBody": writedata,
+                        "epId": epIdFromUrl
 
                     },
+                    dataType: "text",
+            		cache: false,
                     success: (responseObj) => {
-                        if (responseObj == 1) {
+                        if (responseObj === "success") {
 
                             $('#latest').trigger('click');
                             $('#write').val('')
@@ -257,12 +259,15 @@ $(() => {
             data: {
                 "commentId": commentId
             },
+            dataType: "text",
+            cache: false,
             success: (responseObj) => {
-                if (responseObj == 1) {
+                if (responseObj === "success") {
                     alert("댓글이 삭제되었습니다");
                     $('#latest').trigger('click');
-
-                }
+                }else {
+                        alert("댓글 삭제 실패. 다시 시도해 주세요.");
+                    }
             },
             error: function (xhr) {
                 alert('Error: ' + xhr.status);
@@ -276,7 +281,6 @@ $(() => {
     $(document).on('click', '.modifyButton', function (e) {
 
         const commentId = $(this).closest(".comment-item").find(".likeButton").data("commentid");
-        alert('수정클릭' + commentId);
         const remove = $(this).siblings(".removeButton");
         const commentBody = $(this).closest('.comment-item').find('.commentbody');
         const currentText = commentBody.text();

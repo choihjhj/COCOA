@@ -1,7 +1,6 @@
 package com.cocoa.controller;
 
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +24,7 @@ public class EpisodeController {
 
 
 	@GetMapping("/episode")
-	public String episode(int toonId, int epId, Model model, RedirectAttributes rttr, HttpServletRequest request) {
+	public String episode(int toonId, int epId, Model model, RedirectAttributes rttr) {
 		log.info("에피소드 요청 툰아이디: " + toonId + " 에피소드 아이디: " + epId);
 
 		// 에피소드 정보 가져오기

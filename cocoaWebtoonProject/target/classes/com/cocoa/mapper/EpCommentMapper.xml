@@ -74,15 +74,14 @@
 		INSERT INTO
 		EPCOMMENT(COMMENTID, USERID, EPID,
 		COMMENTBODY)
-		VALUES (COMMENT_ID_SEQ.NEXTVAL, #{userId}, #{epId},
-		#{commentBody})
+		VALUES (COMMENT_ID_SEQ.NEXTVAL, #{userId}, #{epId}, #{commentBody})
 	</insert>
 
 	<delete id="deleteComment">
 		DELETE FROM
 		EPCOMMENT
 		WHERE
-		commentid = #{commentId}
+		commentid = #{commentId} AND userid = #{userId}
 	</delete>
 
 	<update id="updateComment">

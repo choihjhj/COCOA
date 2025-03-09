@@ -1,11 +1,9 @@
 package com.cocoa.service;
 
 import java.util.List;
-
 import org.springframework.http.ResponseEntity;
-
 import com.cocoa.domain.EpCommentDTO;
-import com.cocoa.domain.ToonUserDTO;
+
 
 public interface EpCommentService {
 
@@ -19,9 +17,9 @@ public interface EpCommentService {
 
 	public boolean dislikeComment(int commentId, String userId);	//좋아요 삭제
 
-	public int newComment(EpCommentDTO epcommnet);					//댓글 추가
+	public ResponseEntity<String> newComment(EpCommentDTO epcommnet, String userId);		//댓글 추가
 
-	public int deleteComment(int commentId);						//댓글 삭제
+	public ResponseEntity<String> deleteComment(int commentId, String userId);				//댓글 삭제
 
-	public ResponseEntity<String> modifyComment(EpCommentDTO epcomment, ToonUserDTO loggedInUser);		//댓글 수정
+	public ResponseEntity<String> modifyComment(EpCommentDTO epcomment, String userId);		//댓글 수정
 }

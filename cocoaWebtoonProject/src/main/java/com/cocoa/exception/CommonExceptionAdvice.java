@@ -66,4 +66,17 @@ public class CommonExceptionAdvice {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		
 	}
+	
+	// UnauthorizedAccessException 처리
+    @ExceptionHandler(UnauthorizedAccessException.class)
+    public ResponseEntity<String> handleUnauthorizedAccessException(UnauthorizedAccessException e) {
+        log.error("Unauthorized access: " + e.getMessage(), e);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+    }
+    
+	// RuntimeException 처리
+//	@ExceptionHandler(RuntimeException.class)
+//    public ResponseEntity<String> handleLoginException(RuntimeException e) {
+//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+//    }
 }

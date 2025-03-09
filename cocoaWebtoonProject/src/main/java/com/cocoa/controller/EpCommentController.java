@@ -2,8 +2,6 @@ package com.cocoa.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.ibatis.javassist.NotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.cocoa.domain.EpCommentDTO;
 import com.cocoa.domain.ToonUserDTO;
+import com.cocoa.exception.UnauthorizedAccessException;
 import com.cocoa.service.EpCommentService;
 import com.cocoa.service.SessionService;
 import lombok.RequiredArgsConstructor;
@@ -72,39 +71,58 @@ public class EpCommentController {
 		}
 	}
 
+	/*
+     * 댓글 추가
+     * POST /newcomment
+     * return @ResponseBody int
+     * */
 	@PostMapping(value = "/newcomment", produces = "application/json")
 	@ResponseBody
-	public int epcommentWrite(EpCommentDTO EpCommentDTO, HttpServletRequest request) {
-
-		ToonUserDTO ToonUserDTO = sessionservice.getLoggedInUser(request);
-		EpCommentDTO ep = new EpCommentDTO();
-		ep.setUserId(ToonUserDTO.getUserId());
-		ep.setEpId(Integer.parseInt(request.getParameter("epid")));
-		ep.setCommentBody(request.getParameter("writedata"));
-		return epcommentservice.newComment(ep);
+	public ResponseEntity<String> epcommentWrite(EpCommentDTO EpCommentDTO, HttpServletRequest request) {
+		log.info("댓글내용 : "+EpCommentDTO.getCommentBody()+", epid : "+EpCommentDTO.getEpId());
+		
+		//로그인 여부 체크 후 댓글 추가		
+		return epcommentservice.newComment(EpCommentDTO, validateLoggedInUser(request));
 	}
 
+	/*
+     * 댓글 삭제
+     * DELETE /removecomment
+     * return @ResponseBody int
+     * */
 	@DeleteMapping(value = "/removecomment", produces = "application/json")
 	@ResponseBody
-	public int deleteComment(@RequestParam("commentId") int commentId) {
+	public ResponseEntity<String> deleteComment(@RequestParam("commentId") int commentId, HttpServletRequest request) {
 		log.info("삭제 요청된 댓글 ID: " + commentId);
-		return epcommentservice.deleteComment(commentId);
+		
+		//로그인 여부 체크 후 댓글 삭제
+		return epcommentservice.deleteComment(commentId, validateLoggedInUser(request));
 
 	}
 
+	/*
+     * 댓글 수정
+     * PUT /modifycomment
+     * return @ResponseBody ResponseEntity<String>
+     * */
 	@PutMapping(value = "/modifycomment", produces = "application/json")
 	@ResponseBody
 	public ResponseEntity<String> modifyComment(@RequestBody EpCommentDTO EpCommentDTO, HttpServletRequest request) {
 		log.info("댓글수정 : "+EpCommentDTO.getCommentId()+EpCommentDTO.getCommentBody());
 		
-		//로그인 여부 체크
-		ToonUserDTO loggedInUser = sessionservice.getLoggedInUser(request);
-		if (loggedInUser  == null) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다."); 
-		} 
-		
-		return epcommentservice.modifyComment(EpCommentDTO, loggedInUser);
+		//로그인 여부 체크 후 댓글 수정		
+		return epcommentservice.modifyComment(EpCommentDTO, validateLoggedInUser(request));
 
+	}
+	
+	//로그인 여부 체크 메서드
+	private String validateLoggedInUser(HttpServletRequest request) {
+		ToonUserDTO loggedInUser = sessionservice.getLoggedInUser(request);
+		log.info("loggedInUser : "+loggedInUser);
+		if (loggedInUser  == null) {
+			throw new UnauthorizedAccessException("로그인이 필요합니다.");
+		} 
+		return loggedInUser.getUserId();
 	}
 
 }

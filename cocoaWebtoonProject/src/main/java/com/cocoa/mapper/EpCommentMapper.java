@@ -23,7 +23,7 @@ public interface EpCommentMapper {
 
 	public int insertComment(EpCommentDTO epcommnet);
 
-	public int deleteComment(int commentId);
+	public int deleteComment(EpCommentDTO epcomment);
 	
 	public int updateComment(EpCommentDTO epcomment);
 	

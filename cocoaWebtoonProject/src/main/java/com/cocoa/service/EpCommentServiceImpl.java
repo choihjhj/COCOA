@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.cocoa.domain.EpCommentDTO;
-import com.cocoa.domain.ToonUserDTO;
 import com.cocoa.exception.NotFoundException;
 import com.cocoa.mapper.EpCommentMapper;
 import lombok.RequiredArgsConstructor;
@@ -59,46 +58,62 @@ public class EpCommentServiceImpl implements EpCommentService {
 
 	@Override
 	@Transactional
-	public int newComment(EpCommentDTO epcommnet) {
-		log.info(epcommnet);
-		return epcommentmapper.insertComment(epcommnet);
-
-	}
-
-	@Override
-	@Transactional
-	public int deleteComment(int epcommentId) {
-		log.info(epcommentId);
-		return epcommentmapper.deleteComment(epcommentId);
-	}
-
-	@Override
-	@Transactional
-	public ResponseEntity<String> modifyComment(EpCommentDTO epcomment, ToonUserDTO loggedInUser) {
-		epcomment.setUserId(loggedInUser.getUserId()); 
+	public ResponseEntity<String> newComment(EpCommentDTO epcommnet, String userId) {
+		log.info("epcommnet : "+epcommnet+",userId : "+userId);
 		
+		epcommnet.setUserId(userId);
+		
+		//댓글 추가 로직
+		return handleCommentResult(epcommentmapper.insertComment(epcommnet));
+
+	}
+
+	@Override
+	@Transactional
+	public ResponseEntity<String> deleteComment(int epcommentId,String userId) {
+		log.info("epcommentId : "+epcommentId+", userId : "+userId);
+		
+		EpCommentDTO epcomment = new EpCommentDTO();
+		epcomment.setCommentId(epcommentId);
+		epcomment.setUserId(userId);
+
 		//댓글 존재 여부 체크
 		int checkResult = checkIfEpComment(epcomment);
-        if (checkResult == 0) {
+		if (checkResult == 0) {
+			throw new NotFoundException("댓글을 찾을 수 없습니다.");
+		}
+
+		//댓글 삭제
+		return handleCommentResult(epcommentmapper.deleteComment(epcomment));
+		
+	}
+
+	@Override
+	@Transactional
+	public ResponseEntity<String> modifyComment(EpCommentDTO epcomment, String userId) {
+		epcomment.setUserId(userId); 
+		
+		//댓글 존재 여부 체크
+        if (checkIfEpComment(epcomment) == 0) {
             throw new NotFoundException("댓글을 찾을 수 없습니다.");
         }
         
         // 댓글 수정 로직        
-        int isModified = epcommentmapper.updateComment(epcomment);
-        System.out.println("isModified : "+isModified);
-        
-        if(isModified == 1) {
-        	System.out.println("success");
-        	return ResponseEntity.ok("success");
-        } else {
-        	System.out.println("failure");
-        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("failure");
-        }
-		
+        return handleCommentResult(epcommentmapper.updateComment(epcomment));		
 	}
 
 
-	public int checkIfEpComment(EpCommentDTO epcomment) {
+	private ResponseEntity<String> handleCommentResult(int result) {
+		if (result == 1) {
+			log.info("success");
+			return ResponseEntity.ok("success");
+		} else {
+			log.info("failure");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("failure");
+		}
+	}
+
+	private int checkIfEpComment(EpCommentDTO epcomment) {
 		return epcommentmapper.checkIfEpComment(epcomment);
 	}
 
