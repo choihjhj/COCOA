@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.cocoa.domain.EpCommentDTO;
+import com.cocoa.domain.ToonUserDTO;
 import com.cocoa.exception.NotFoundException;
 import com.cocoa.mapper.EpCommentMapper;
 import lombok.RequiredArgsConstructor;
@@ -21,16 +22,33 @@ public class EpCommentServiceImpl implements EpCommentService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<EpCommentDTO> findBestComment(int epId) {
+	public List<EpCommentDTO> findBestComment(int epId, ToonUserDTO ToonUserDTO) {
 		log.info("epId : " + epId);
-		return epcommentmapper.selectLikDesc(epId);
+
+		if(ToonUserDTO != null) {			
+			return epcommentmapper.selectUserLikDesc(epId, ToonUserDTO.getUserId()); //로그인유저가 댓글 좋아요 누른 것 있는지 체크
+
+		} else {
+			return epcommentmapper.selectLikDesc(epId);
+		}
+
+
 	}
+
+
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<EpCommentDTO> findLatestComment(int epId) {
+	public List<EpCommentDTO> findLatestComment(int epId, ToonUserDTO ToonUserDTO) {
 		log.info("epId : " + epId);
-		return epcommentmapper.selecDateDesc(epId);
+		if(ToonUserDTO != null) {			
+			return epcommentmapper.selecUserDateDesc(epId, ToonUserDTO.getUserId()); //로그인유저가 댓글 좋아요 누른 것 있는지 체크
+
+		} else {
+			return epcommentmapper.selecDateDesc(epId);
+		}
+		
+
 	}
 
 	@Transactional

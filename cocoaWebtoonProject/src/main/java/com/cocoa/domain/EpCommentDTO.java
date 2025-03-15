@@ -12,4 +12,5 @@ public class EpCommentDTO {
 	private Date writeDate;
 	private int likeCnt;
 	private String commentBody;
+	private int isLiked = 0; //좋아요 누른적 없음이 디폴트 
 }

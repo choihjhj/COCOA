@@ -37,9 +37,10 @@ public class EpCommentController {
      * return "comment"
      * */
 	@GetMapping("/lastestComment")
-	public String lastestComment(@RequestParam("epId") Integer epId, Model model) {
+	public String lastestComment(@RequestParam("epId") Integer epId, Model model, HttpServletRequest request) {
 		log.info("값:" + epId);
-		List<EpCommentDTO> epct = epcommentservice.findLatestComment(epId);
+		ToonUserDTO ToonUserDTO = sessionservice.getLoggedInUser(request);
+		List<EpCommentDTO> epct = epcommentservice.findLatestComment(epId,ToonUserDTO);
 		model.addAttribute("EpCommentDTO", epct);
 		return "comment";
 	}
@@ -50,8 +51,9 @@ public class EpCommentController {
      * return "comment"
      * */
 	@GetMapping("/bestComment")
-	public String bestComment(@RequestParam("epId") Integer epId, Model model) {
-		List<EpCommentDTO> epct = epcommentservice.findBestComment(epId);
+	public String bestComment(@RequestParam("epId") Integer epId, Model model, HttpServletRequest request) {
+		ToonUserDTO ToonUserDTO = sessionservice.getLoggedInUser(request);
+		List<EpCommentDTO> epct = epcommentservice.findBestComment(epId,ToonUserDTO);
 		model.addAttribute("EpCommentDTO", epct);
 		return "comment";
 	}
@@ -59,7 +61,7 @@ public class EpCommentController {
 	/*
      * 좋아요 추가
      * POST /like/{commentId}
-     * return @ResponseBody boolean //True 취소 성공,false 추가 실패
+     * return @ResponseBody boolean //True 추가 성공
      * */
 	@PostMapping("/like/{commentId}")
 	public @ResponseBody boolean likeComment(@PathVariable int commentId, HttpServletRequest request) {
@@ -71,7 +73,7 @@ public class EpCommentController {
 	/*
      * 좋아요 취소
      * DELETE /removeLike/{commentId}
-     * return @ResponseBody boolean //false 취소 성공, True 취소 실패
+     * return @ResponseBody boolean //false 취소 성공
      * */
 	@DeleteMapping("/removeLike/{commentId}")
 	public @ResponseBody boolean removeLike(@PathVariable int commentId, HttpServletRequest request) {

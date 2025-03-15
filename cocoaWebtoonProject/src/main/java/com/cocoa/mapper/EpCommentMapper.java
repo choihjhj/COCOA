@@ -8,8 +8,12 @@ import com.cocoa.domain.EpCommentDTO;
 
 public interface EpCommentMapper {
 	public List<EpCommentDTO> selectLikDesc(int epId);
+	
+	public List<EpCommentDTO> selectUserLikDesc(@Param("epId") int epId, @Param("userId") String userId);
 
 	public List<EpCommentDTO> selecDateDesc(int epId);
+	
+	public List<EpCommentDTO> selecUserDateDesc(@Param("epId") int epId, @Param("userId") String userId);
 
 	public boolean likeUpdateEpcomment(int commentId);
 

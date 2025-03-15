@@ -8,7 +8,25 @@
 	    SELECT *
 	    FROM epcomment
 	    WHERE epId = #{epId}
-	    AND rownum <= 10
+	    ORDER BY likecnt DESC
+ 	]]>
+	</select>
+	
+	<select id="selectUserLikDesc"
+		resultType="com.cocoa.domain.EpCommentDTO">
+	<![CDATA[
+	    SELECT ec.*,
+	    	CASE
+	    		WHEN EXISTS (
+	    			SELECT 1
+	    			FROM likecomment lc
+            		WHERE lc.commentid = ec.commentid 
+            		AND lc.userid = #{userId}
+            		) THEN 1
+        			ELSE 0
+        	END AS isLiked
+	    FROM epcomment ec
+	    WHERE epId = #{epId}
 	    ORDER BY likecnt DESC
  	]]>
 	</select>
@@ -19,7 +37,25 @@
 	    SELECT *
 	    FROM epcomment
 	    WHERE epId = #{epId}
-	    AND rownum <= 10
+	    ORDER BY writedate DESC
+ 	]]>
+	</select>
+	
+	<select id="selecUserDateDesc"
+		resultType="com.cocoa.domain.EpCommentDTO">
+	<![CDATA[
+	    SELECT ec.*,
+	    	CASE
+	    		WHEN EXISTS (
+	    			SELECT 1
+	    			FROM likecomment lc
+            		WHERE lc.commentid = ec.commentid 
+            		AND lc.userid = #{userId}
+            		) THEN 1
+        			ELSE 0
+        	END AS isLiked
+	    FROM epcomment ec
+	    WHERE epId = #{epId}
 	    ORDER BY writedate DESC
  	]]>
 	</select>

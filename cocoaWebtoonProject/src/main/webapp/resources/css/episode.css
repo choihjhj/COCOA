@@ -188,7 +188,23 @@ body {
     cursor: pointer;
     border-radius: 5px;
 }
+.dislikeButton {
+    position: absolute; /* 부모 요소가 relative일 경우 자식 요소의 위치를 원하는 곳에 위치시킴 */
+    top: 0;
+    right: 70px;  /* like 버튼과 겹치지 않도록 조정 */
+    background-image: url('/resources/image/co.png'); /* 배경 이미지 설정 */
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: none;
+    cursor: pointer;
+    width: 35px;  /* 버튼의 크기 */
+    height: 35px; /* 버튼의 크기 */
+    transition: transform 0.2s;
+}
 
+.dislikeButton:hover {
+    transform: scale(1.10);  /* hover 시 버튼 크기 확대 */
+}
 
  .likeButton {
      position: absolute; /*부모요소가 relative일 경우 자식요소의 위치를 원하는곳에 위치시킨다. */

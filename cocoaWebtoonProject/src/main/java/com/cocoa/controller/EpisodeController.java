@@ -1,6 +1,9 @@
 package com.cocoa.controller;
 
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cocoa.domain.EpCommentDTO;
 import com.cocoa.domain.EpisodeDTO;
+import com.cocoa.domain.ToonUserDTO;
 import com.cocoa.service.EpCommentService;
 import com.cocoa.service.EpisodeService;
+import com.cocoa.service.SessionService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
@@ -22,6 +28,7 @@ public class EpisodeController {
 
 	private final EpisodeService episodeService;
 	private final EpCommentService epCommentService;
+	private final SessionService sessionservice;
 
 
 	/*
@@ -33,7 +40,8 @@ public class EpisodeController {
 	public String episode(@RequestParam("toonId")int toonId,
 						  @RequestParam("epId") int epId,
 						  Model model,
-						  RedirectAttributes rttr) {
+						  RedirectAttributes rttr,
+						  HttpServletRequest request) {
 		log.info("에피소드 요청 툰아이디: " + toonId + " 에피소드 아이디: " + epId);
 
 		// 에피소드 정보 가져오기
@@ -43,7 +51,8 @@ public class EpisodeController {
 		}
 
 		// 댓글 가져오기
-		List<EpCommentDTO> epComments = epCommentService.findBestComment(epId);
+		ToonUserDTO ToonUserDTO = sessionservice.getLoggedInUser(request);
+		List<EpCommentDTO> epComments = epCommentService.findBestComment(epId,ToonUserDTO);
 
 		// 모델에 데이터 추가
 		model.addAttribute("EpisodeDTO", episodeDTO);
