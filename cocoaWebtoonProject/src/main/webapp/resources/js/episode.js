@@ -142,25 +142,22 @@ $(() => {
         e.preventDefault(); // 기본 동작 방지 (form 전송 같은)
 
         const commentId = $(this).data('commentid');  // 댓글 ID 가져오기
-        const isLikeButton = $(this).hasClass('likeButton');    // 좋아요 상태 확인
-        const isDislikeButton = $(this).hasClass('dislikeButton');
+        const isLiked = $(this).data('isliked'); // 현재 좋아요 상태 가져오기 (0 또는 1)
 
         let url;
         let method;
-        let buttonToToggle;
+        
 
-        if (isLikeButton) {
+        if (isLiked === 1) {
             // 좋아요 클릭 시: 취소 요청 (DELETE)
             url = `/removeLike/${commentId}`;
-            method = 'DELETE';  // 좋아요 취소는 DELETE
-            buttonToToggle = $(this);
-        } else if (isDislikeButton) {
+            method = 'DELETE';  // 좋아요 취소는 DELETE           
+        } else {
             // 싫어요 클릭 시: 추가 요청 (POST)
             url = `/like/${commentId}`;
             method = 'POST';     // 좋아요 추가는 POST
-            buttonToToggle = $(this);
         }
-		console.log('isLikeButton: ' +isLikeButton+', method :'+method);
+
         // AJAX 요청
         $.ajax({
             url: url,
@@ -172,30 +169,23 @@ $(() => {
 
                 if (response === true) {  // 좋아요 추가
                     count++;
-                    // 버튼 상태 업데이트
-                    if (isLikeButton) {
-                        buttonToToggle.addClass('liked');  // 좋아요 버튼에 'liked' 클래스 추가
-                        $(this).siblings('.dislikeButton').removeClass('disliked');  // 싫어요 버튼에서 'disliked' 클래스 제거
-                    } else {
-                        $(this).addClass('disliked'); // 싫어요 버튼에 'disliked' 클래스 추가
-                    }
+                    $(this).data('isliked', 1);  // 좋아요 상태를 1로 업데이트
                 } else {  // 좋아요 취소
                     count--;
-                    // 버튼 상태 업데이트
-                    if (isLikeButton) {
-                        buttonToToggle.removeClass('liked');  // 좋아요 버튼에서 'liked' 클래스 제거
-                    } else {
-                        $(this).removeClass('disliked');  // 싫어요 버튼에서 'disliked' 클래스 제거
-                    }
+                    $(this).data('isliked', 0);  // 좋아요 상태를 0으로 업데이트
                 }
 
-                countElement.text(count);  // 좋아요 수 업데이트
+                // 좋아요 수 업데이트
+                countElement.text(count);
             },
             error: (xhr, status, error) => {
                 console.error('실패:', status, error);  // 에러 처리
             }
         });
+
+
     });
+
 
     //--댓글 좋아요 클릭 finish--
 

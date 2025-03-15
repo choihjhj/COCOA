@@ -17,15 +17,12 @@
 	<![CDATA[
 	    SELECT ec.*,
 	    	CASE
-	    		WHEN EXISTS (
-	    			SELECT 1
-	    			FROM likecomment lc
-            		WHERE lc.commentid = ec.commentid 
-            		AND lc.userid = #{userId}
-            		) THEN 1
-        			ELSE 0
-        	END AS isLiked
+	    		WHEN lc.commentid IS NOT NULL THEN 1 ELSE 0 
+	    	END AS isLiked
 	    FROM epcomment ec
+	    LEFT JOIN likecomment lc
+	    ON lc.commentid = ec.commentid
+	    AND lc.userid = #{userId}
 	    WHERE epId = #{epId}
 	    ORDER BY likecnt DESC
  	]]>
@@ -44,17 +41,14 @@
 	<select id="selecUserDateDesc"
 		resultType="com.cocoa.domain.EpCommentDTO">
 	<![CDATA[
-	    SELECT ec.*,
+		SELECT ec.*,
 	    	CASE
-	    		WHEN EXISTS (
-	    			SELECT 1
-	    			FROM likecomment lc
-            		WHERE lc.commentid = ec.commentid 
-            		AND lc.userid = #{userId}
-            		) THEN 1
-        			ELSE 0
-        	END AS isLiked
+	    		WHEN lc.commentid IS NOT NULL THEN 1 ELSE 0 
+	    	END AS isLiked
 	    FROM epcomment ec
+	    LEFT JOIN likecomment lc
+	    ON lc.commentid = ec.commentid
+	    AND lc.userid = #{userId}
 	    WHERE epId = #{epId}
 	    ORDER BY writedate DESC
  	]]>

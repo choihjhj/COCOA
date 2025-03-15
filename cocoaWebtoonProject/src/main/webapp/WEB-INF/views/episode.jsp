@@ -83,17 +83,7 @@
 										<div class="comment-header">
 											<span class="comment-author">${epcomment.userId}</span> 
 											<div class="comment-date"><fmt:formatDate value="${epcomment.writeDate}" pattern="yyyy-MM-dd HH:mm" /></div>
-							<!-- isLiked 값에 따라 버튼 변경 -->
-							<c:choose>
-								<c:when test="${epcomment.isLiked == 1}">
-									<button class="likeButton"
-										data-commentid="${epcomment.commentId}"></button>
-								</c:when>
-								<c:otherwise>
-									<button class="dislikeButton"
-										data-commentid="${epcomment.commentId}"></button>
-								</c:otherwise>
-							</c:choose>
+							<button class="likeButton" data-commentid="${epcomment.commentId}" data-isliked="${epcomment.isLiked}"></button>
 							<span class="comment-likes">${epcomment.likeCnt}</span>				
 										</div>
 										<div class="comment-body">
