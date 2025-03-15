@@ -139,46 +139,48 @@ $(() => {
 
     //--댓글 좋아요 클릭 start--
     $(document).on('click', '.likeButton', function (e) {
+        e.preventDefault(); // 기본 동작 방지 (form 전송 같은)
 
+        const commentId = $(this).data('commentid');  // 댓글 ID 가져오기
+        const isLiked = $(this).hasClass('liked');    // 좋아요 상태 확인
 
-        if (userId == '') {
-            alert('로그인 후 좋아요가 가능합니다.');
+        let url;
+        let method;
+
+        // 좋아요가 눌려 있으면 취소, 안 눌려 있으면 추가
+        if (isLiked) {
+            url = `/removeLike/${commentId}`;
+            method = 'DELETE';  // 좋아요 취소는 DELETE
         } else {
-
-            const commentId = $(this).data('commentid');
-            //const isLiked = $(this).hasClass('liked'); 
-
-
-            if (commentId !== undefined) {
-                $.ajax({
-                    url: `/like/${commentId}`,
-                    method: 'post', // Change to POST method
-                    dataType: 'json', // Expect JSON response
-                    success: (response) => {
-
-                        const countElement = $(this).siblings('.comment-likes');
-                        let count = parseInt(countElement.text());
-                        if (response === true) { //좋아요 성공                                   
-                            count++;
-                            // $(this).removeClass('liked');
-                        } else { //좋아요취소 성공
-
-                            count--;
-                            // $(this).addClass('liked');
-                        }
-                        countElement.text(count);
-                    },
-                    error: (xhr, status, error) => {
-                        console.error('실패:', status, error);
-                    }
-                });
-            }
-
+            url = `/like/${commentId}`;
+            method = 'POST';     // 좋아요 추가는 POST
         }
+		alert('isLiked: ' +isLiked+', method :'+method);
+        // AJAX 요청
+        $.ajax({
+            url: url,
+            method: method,
+            dataType: 'json',  // JSON 응답을 기대
+            success: (response) => {
+                const countElement = $(this).siblings('.comment-likes');  // 좋아요 수가 있는 요소
+                let count = parseInt(countElement.text());
 
+                if (response === true) {  // 좋아요 추가
+                    count++;
+                    $(this).addClass('liked');  // 버튼에 'liked' 클래스 추가
+                } else {  // 좋아요 취소
+                    count--;
+                    $(this).removeClass('liked');  // 버튼에서 'liked' 클래스 제거
+                }
 
-
+                countElement.text(count);  // 좋아요 수 업데이트
+            },
+            error: (xhr, status, error) => {
+                console.error('실패:', status, error);  // 에러 처리
+            }
+        });
     });
+
     //--댓글 좋아요 클릭 finish--
 
     const scrollToTopBtn = $('#up');
@@ -225,7 +227,7 @@ $(() => {
 
                     },
                     dataType: "text",
-            		cache: false,
+                    cache: false,
                     success: (responseObj) => {
                         if (responseObj === "success") {
 
@@ -265,9 +267,9 @@ $(() => {
                 if (responseObj === "success") {
                     alert("댓글이 삭제되었습니다");
                     $('#latest').trigger('click');
-                }else {
-                        alert("댓글 삭제 실패. 다시 시도해 주세요.");
-                    }
+                } else {
+                    alert("댓글 삭제 실패. 다시 시도해 주세요.");
+                }
             },
             error: function (xhr) {
                 alert('Error: ' + xhr.status);

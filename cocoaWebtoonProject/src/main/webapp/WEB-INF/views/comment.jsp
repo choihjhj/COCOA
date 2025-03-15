@@ -15,8 +15,9 @@
 				<div class="comment-header">
 					<span class="comment-author">${epcomment.userId}</span> 
 					<div class="comment-date"><fmt:formatDate value="${epcomment.writeDate}" pattern="yyyy-MM-dd HH:mm" /></div>
+					<span class="comment-likes">${epcomment.likeCnt}</span>
 					<button class="likeButton" data-commentid="${epcomment.commentId}"></button>	
-					<span class="comment-likes">${epcomment.likeCnt}</span>				
+					
 				</div>
 				<div class="comment-body">
 					<p class="commentbody">${epcomment.commentBody}</p>

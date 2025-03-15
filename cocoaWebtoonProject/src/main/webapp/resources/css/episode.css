@@ -179,8 +179,17 @@ body {
      background-color: pink; 
       
  }
- 
- 
+.reportButton {
+    display: inline-block; /* 버튼이 보이도록 */
+    background-color: #f44336; /* 신고 버튼의 배경 색상 */
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+
  .likeButton {
      position: absolute; /*부모요소가 relative일 경우 자식요소의 위치를 원하는곳에 위치시킨다. */
      top: 0; 
@@ -202,7 +211,6 @@ body {
  .likeButton:hover {
      transform: scale(1.10); 
  }
- 
  
  /* 이동 버튼 스타일 */
  .scroll{

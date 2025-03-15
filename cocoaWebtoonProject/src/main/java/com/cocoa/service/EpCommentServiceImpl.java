@@ -33,36 +33,57 @@ public class EpCommentServiceImpl implements EpCommentService {
 		return epcommentmapper.selecDateDesc(epId);
 	}
 
-	@Override
-	@Transactional(readOnly = true)
-	public int likeSelectEpcomment(int commentId, String userId) {
-		return epcommentmapper.likeSelectEpcomment(commentId, userId);
-	}
-
 	@Transactional
 	@Override
 	public boolean likeComment(int commentId, String userId) {
+		//좋아요 여부 체크
+		if (epcommentmapper.likeSelectEpcomment(commentId, userId) == 1) {  //좋아요 있는데 추가요청은 에러처리
+			throw new NotFoundException("좋아요 추가 요청 실패");
+		}
 
-		return epcommentmapper.likeUpdateEpcomment(commentId) ? epcommentmapper.likeInsertLikecomment(commentId, userId)
-				: false;
+		// 좋아요 추가
+		if (!epcommentmapper.likeInsertLikecomment(commentId, userId)) {
+			throw new NotFoundException("좋아요 추가 요청 실패");
+		}
+
+		// 좋아요 cnt 1증가 업데이트
+		if (!epcommentmapper.likeUpdateEpcomment(commentId)) {
+			throw new NotFoundException("좋아요 추가 요청 실패");
+		}
+
+		return true;	//추가처리 성공표시
+
 	}
 
 	@Transactional
 	@Override
 	public boolean dislikeComment(int commentId, String userId) {
+		//좋아요 여부 체크
+		if (epcommentmapper.likeSelectEpcomment(commentId, userId) == 0) { //좋아요 없는데 취소요청은 에러 처리
+			throw new NotFoundException("좋아요 취소 요청 실패");
+		}
 
-		return epcommentmapper.dislikeUpdateEpcomment(commentId)
-				? epcommentmapper.dislikeDeleteLikecomment(commentId, userId)
-				: false;
+		// 좋아요 취소
+		if (!epcommentmapper.dislikeDeleteLikecomment(commentId, userId)) {
+			throw new NotFoundException("좋아요 취소 요청 실패");
+		}
+
+		// 좋아요 cnt 1감소 업데이트
+		if (!epcommentmapper.dislikeUpdateEpcomment(commentId)) {
+			throw new NotFoundException("좋아요 취소 요청 실패");
+		}
+
+		return false; //취소처리 성공표시
+
 	}
 
 	@Override
 	@Transactional
 	public ResponseEntity<String> newComment(EpCommentDTO epcommnet, String userId) {
 		log.info("epcommnet : "+epcommnet+",userId : "+userId);
-		
+
 		epcommnet.setUserId(userId);
-		
+
 		//댓글 추가 로직
 		return handleCommentResult(epcommentmapper.insertComment(epcommnet));
 
@@ -72,7 +93,7 @@ public class EpCommentServiceImpl implements EpCommentService {
 	@Transactional
 	public ResponseEntity<String> deleteComment(int epcommentId,String userId) {
 		log.info("epcommentId : "+epcommentId+", userId : "+userId);
-		
+
 		EpCommentDTO epcomment = new EpCommentDTO();
 		epcomment.setCommentId(epcommentId);
 		epcomment.setUserId(userId);
@@ -85,21 +106,21 @@ public class EpCommentServiceImpl implements EpCommentService {
 
 		//댓글 삭제
 		return handleCommentResult(epcommentmapper.deleteComment(epcomment));
-		
+
 	}
 
 	@Override
 	@Transactional
 	public ResponseEntity<String> modifyComment(EpCommentDTO epcomment, String userId) {
 		epcomment.setUserId(userId); 
-		
+
 		//댓글 존재 여부 체크
-        if (checkIfEpComment(epcomment) == 0) {
-            throw new NotFoundException("댓글을 찾을 수 없습니다.");
-        }
-        
-        // 댓글 수정 로직        
-        return handleCommentResult(epcommentmapper.updateComment(epcomment));		
+		if (checkIfEpComment(epcomment) == 0) {
+			throw new NotFoundException("댓글을 찾을 수 없습니다.");
+		}
+
+		// 댓글 수정 로직        
+		return handleCommentResult(epcommentmapper.updateComment(epcomment));		
 	}
 
 

@@ -56,19 +56,28 @@ public class EpCommentController {
 		return "comment";
 	}
 
+	/*
+     * 좋아요 추가
+     * POST /like/{commentId}
+     * return @ResponseBody boolean //True 취소 성공,false 추가 실패
+     * */
 	@PostMapping("/like/{commentId}")
 	public @ResponseBody boolean likeComment(@PathVariable int commentId, HttpServletRequest request) {
-		
+		log.info("like");
 		ToonUserDTO ToonUserDTO = sessionservice.getLoggedInUser(request);
-		if (epcommentservice.likeSelectEpcomment(commentId, ToonUserDTO.getUserId()) == 1) {// 좋아요 여부 체크(좋아요 누른적 있으면 취소 처리)
-			epcommentservice.dislikeComment(commentId, ToonUserDTO.getUserId());
-			return false; // 좋아요 취소
-
-		} else {
-			epcommentservice.likeComment(commentId, ToonUserDTO.getUserId());
-			return true; // 좋아요한 것
-
-		}
+		return epcommentservice.likeComment(commentId, ToonUserDTO.getUserId());
+	}
+	
+	/*
+     * 좋아요 취소
+     * DELETE /removeLike/{commentId}
+     * return @ResponseBody boolean //false 취소 성공, True 취소 실패
+     * */
+	@DeleteMapping("/removeLike/{commentId}")
+	public @ResponseBody boolean removeLike(@PathVariable int commentId, HttpServletRequest request) {
+		log.info("removeLike");
+	    ToonUserDTO ToonUserDTO = sessionservice.getLoggedInUser(request);
+	    return epcommentservice.dislikeComment(commentId, ToonUserDTO.getUserId());
 	}
 
 	/*

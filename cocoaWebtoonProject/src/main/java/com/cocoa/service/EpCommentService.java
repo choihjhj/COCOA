@@ -11,8 +11,6 @@ public interface EpCommentService {
 
 	public List<EpCommentDTO> findLatestComment(int epId); 			//최신 댓글 조회
 
-	public int likeSelectEpcomment(int commentId, String userId);	//좋아요 여부 체크
-
 	public boolean likeComment(int commentId, String userId);		//좋아요 추가
 
 	public boolean dislikeComment(int commentId, String userId);	//좋아요 삭제
