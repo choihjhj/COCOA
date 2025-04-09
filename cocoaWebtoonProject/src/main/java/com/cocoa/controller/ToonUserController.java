@@ -198,7 +198,7 @@ public class ToonUserController {
 	}
 	
 	/*
-     * 보관함(에피소드 구매 내역) 조회
+     * 사용자가 구매한 에피소드 목록 조회
      * GET /mystorage
      * return "mystorage"
      * */

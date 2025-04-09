@@ -30,7 +30,7 @@ public class SearchController {
 	}
 	
 	/*
-     * 검색어 기반 웹툰 목록 조회
+     * 검색어를 기반으로 웹툰 목록 조회
      * GET /search/ajax?keyword={keyword}
      * return List<WebToonDTO> //JSON 반환
      * */
