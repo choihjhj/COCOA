@@ -28,7 +28,7 @@
       
 ## 🙂 프로젝트 기간 및 구성 인원
 - **총 프로젝트 기간** : 2023.07 ~ 2023.10    
-- **프로젝트 구성 인원** : front 1명, backend 1명 (총 2명)
+- **프로젝트 구성 인원 및 담당** : (Front 1명, Back 1명) 총 2명, Back-end [PL] 담당
  
 
    <br>
@@ -54,6 +54,7 @@
 |:------:|:---:|:---:|   
 |GET|/|홈페이지 요청|    
 |GET|/layout|특정 요일에 맞는 웹툰 목록 조회|       
+|GET|/errorPage|에러 페이지 요청|       
       
 **WEBTOON**    
 |HTTP|URI|설명|   
@@ -64,8 +65,8 @@
 **PURCHASE**    
 |HTTP|URI|설명|   
 |:------:|:---:|:---:|   
-|GET|/purchase|에피소드 구매 전 에피소드 가격 및 사용자 포인트 잔액 조회|   
-|POST|/purchase|에피소드 구매 처리| 
+|GET|/purchase|유료 에피소드 구매 전 에피소드 가격 및 사용자 포인트 잔액 조회|   
+|POST|/purchase|유료 에피소드 구매| 
 
       
       
@@ -73,7 +74,7 @@
 |HTTP|URI|설명|   
 |:------:|:---:|:---:|   
 |GET|/charge|포인트 충전 페이지 요청|   
-|POST|/charge|포인트 충전 처리|    
+|POST|/charge|포인트 충전|    
       
       
 **EPISODE**    
@@ -85,12 +86,14 @@
 **EPCOMMENT**    
 |HTTP|URI|설명|   
 |:------:|:---:|:---:|   
-|GET|/bestComment|베스트 댓글 목록 조회|  
 |GET|/lastestComment|최신 댓글 목록 조회|  
-|POST|/like/{commentId}|댓글의 좋아요 추가/취소 처리|  
+|GET|/bestComment|베스트 댓글 목록 조회|  
+|POST|/like/{commentId}|좋아요 추가|  
+|DELETE|/removeLike/{commentId}|좋아요 삭제|  
 |POST|/newcomment |댓글 추가|  
-|PUT|/modifycomment |댓글 수정| 
 |DELETE|/removecomment |댓글 삭제|  
+|PUT|/modifycomment |댓글 수정|   
+
       
       
 **SEARCH**    
@@ -103,13 +106,13 @@
 |HTTP|URI|설명|   
 |:------:|:---:|:---:|   
 |GET|/login|로그인 페이지 요청|  
-|POST|/login|로그인 처리|  
-|POST|/signup|회원가입 처리|  
-|GET|/myinfo|내정보 페이지 요청|  
+|POST|/login|로그인|  
+|POST|/signup|회원가입|  
+|GET|/myinfo|마이 페이지 요청|  
 |POST|/louout|로그아웃|  
 |DELETE|/remove|회원탈퇴|  
-|GET|/cocoahistory|포인트 사용 내역 목록 조회|
-|GET|/mystorage|사용자가 구매한 에피소드 목록 조회| 
+|GET|/cocoahistory|포인트 사용 내역 목록 조회|       
+|GET|/mystorage|사용자가 구매한 에피소드 목록 조회|     
 <br>
 <br>    
 
