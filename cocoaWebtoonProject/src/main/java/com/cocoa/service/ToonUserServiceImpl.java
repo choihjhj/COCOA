@@ -52,17 +52,17 @@ public class ToonUserServiceImpl implements ToonUserService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<CphistoryDTO> findCphistory(String userId) {
-		List<CphistoryDTO> list = toonUserMapper.selectCphistory(userId);
+		List<CphistoryDTO> cpList = toonUserMapper.selectCphistory(userId);
 		int sum = 0;
-		for (CphistoryDTO CphistoryDTO : list) {
+		for (CphistoryDTO CphistoryDTO : cpList) {
 			if (CphistoryDTO.getCpType().equals("충전")) {
 				CphistoryDTO.setBalance(sum += CphistoryDTO.getCocoa());
 			} else if (CphistoryDTO.getCpType().equals("결제")) {
 				CphistoryDTO.setBalance(sum -= CphistoryDTO.getCocoa());
 			}
 		}
-		Collections.reverse(list);
-		return list;
+		Collections.reverse(cpList);
+		return cpList;
 	}
 
 
