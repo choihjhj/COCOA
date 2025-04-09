@@ -32,7 +32,7 @@ public class EpisodeController {
 
 
 	/*
-	 * 에피소드 페이지 요청
+	 * 에피소드 내용 및 댓글 조회
 	 * GET /episode?toonId={toonId}&epId={epId}
 	 * return "episode"
 	 * */

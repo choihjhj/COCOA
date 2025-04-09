@@ -57,7 +57,7 @@ public class ToonUserController {
 	}
 
 	/*
-     * 로그인 요청
+     * 로그인
      * POST /login
      * return "redirect:/layout"
      * */
@@ -176,7 +176,7 @@ public class ToonUserController {
 	}
 
 	/*
-     * 포인트 사용내역 페이지 요청 
+     * 포인트 사용 내역 조회 
      * GET /cocoahistory
      * return "cocoahistory"
      * */
@@ -198,7 +198,7 @@ public class ToonUserController {
 	}
 	
 	/*
-     * 보관함(에피소드구매내역) 페이지 요청
+     * 보관함(에피소드 구매 내역) 조회
      * GET /mystorage
      * return "mystorage"
      * */

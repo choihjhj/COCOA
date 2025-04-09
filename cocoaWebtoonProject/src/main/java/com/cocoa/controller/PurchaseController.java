@@ -32,7 +32,7 @@ public class PurchaseController {
 	private final SessionService sessionservice;
 
 	/*
-     * 유료 에피소드 구매 페이지 요청
+     * 유료 에피소드 가격 및 사용자 포인트 잔액 조회
      * GET /purchase?toonId={toonId}&epId={epId}
      * return "purchase"
      * */
@@ -69,7 +69,7 @@ public class PurchaseController {
 	}		
 
 	/*
-     * 유료 에피소드 구매 추가
+     * 유료 에피소드 구매
      * POST /purchase
      * return "redirect:/toondetail"
      * */

@@ -23,7 +23,7 @@ public class ChargeController {
 	private final SessionService sessionservice;
 
 	/*
-     * 충전 페이지 요청
+     * 포인트 충전 페이지 요청
      * GET /charge
      * return "charge"
      * */
@@ -37,7 +37,7 @@ public class ChargeController {
 	}
 
 	/*
-     * 충전 
+     * 포인트 충전 
      * POST /charge
      * return "redirect:/myinfo"
      * */

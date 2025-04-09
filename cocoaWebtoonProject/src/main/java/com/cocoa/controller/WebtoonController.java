@@ -29,7 +29,7 @@ public class WebtoonController {
 	private final SessionService sessionservice;
 
 	/*
-     * 웹툰 페이지 요청
+     * 웹툰 상세 정보 및 에피소드 목록 조회
      * GET /toondetail?toonId={toonId}
      * return "toondetail"
      * */

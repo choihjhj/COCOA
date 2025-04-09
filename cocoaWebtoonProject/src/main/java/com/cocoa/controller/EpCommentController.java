@@ -71,7 +71,7 @@ public class EpCommentController {
 	}
 	
 	/*
-     * 좋아요 취소
+     * 좋아요 삭제
      * DELETE /removeLike/{commentId}
      * return @ResponseBody boolean //false 취소 성공
      * */

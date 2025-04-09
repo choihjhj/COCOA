@@ -16,13 +16,22 @@ public class HomeController {
 	
 	private final WebToonService webtoonservice;
 
-	
+	/*
+     * 홈페이지 요청
+     * GET /
+     * return "redirect:/layout"
+     * */
 	@GetMapping(value = "/")
 	public String home() {
 		return "redirect:/layout";
 	}
 
 	
+	/*
+     * 특정 요일에 맞는 웹툰 목록 조회
+     * GET /layout
+     * return "layout"
+     * */
 	@GetMapping(value = "/layout")
 	public String layout(@RequestParam(required = false) String dayOfWeek, Model model) {
 	    // 현재 날짜를 기반으로 요일 계산
@@ -36,11 +45,15 @@ public class HomeController {
 
 	    return "layout";
 	}
+
 	
-	
+	/*
+     * 에러 페이지 요청
+     * GET /errorPage
+     * return "errorPage"
+     * */
 	@GetMapping(value = "/errorPage")
 	public String error(@RequestParam("errorMessage") String message, Model model) {
-		//String Message = (String) model.asMap().get("errorMessage");
 		log.info("errorMessage : "+message);
 		
 		model.addAttribute("errorMessage", message);
