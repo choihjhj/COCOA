@@ -26,7 +26,7 @@ public class ToonUserServiceImpl implements ToonUserService {
 		log.info("회원가입 요청 정보 : " + user);
 	    
 	    
-	    int userExists = toonUserMapper.selectUserById(user.getUserId());
+	    int userExists = toonUserMapper.checkIfUser(user.getUserId());
 	    if (userExists == 1) {
 	        return 0;
 	    }
@@ -39,9 +39,7 @@ public class ToonUserServiceImpl implements ToonUserService {
 	@Override
 	@Transactional(readOnly = true)
 	public ToonUserDTO login(ToonUserDTO user) {
-		//ToonUserDTO existingUser = checkUserExistsById(user.getUserId());
-		//return (existingUser != null && existingUser.getPwd().equals(user.getPwd())) ? existingUser : null;
-		
+		return toonUserMapper.selectUserById(user);		
 	}
 
 	@Override

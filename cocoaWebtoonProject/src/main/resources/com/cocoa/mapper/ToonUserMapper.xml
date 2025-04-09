@@ -9,7 +9,7 @@
 			(#{userId},#{pwd},#{birthday},#{userName},#{phone},#{cocoa})
 	</insert>
 
-	<select id="selectUserById" resultType="int">
+	<select id="checkIfUser" resultType="int">
 		SELECT CASE 
 				WHEN EXISTS (
                		SELECT 1
@@ -20,6 +20,12 @@
            END
 		FROM dual
 	</select>	
+	
+	<select id="selectUserById" resultType="com.cocoa.domain.ToonUserDTO">
+        SELECT *
+        FROM toonuser
+        WHERE userid = #{userId} and pwd = #{pwd}
+    </select>
 		
 	<delete id="deleteByUserId">
 		DELETE FROM 
