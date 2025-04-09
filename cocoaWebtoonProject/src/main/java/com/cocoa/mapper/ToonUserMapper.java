@@ -9,7 +9,7 @@ public interface ToonUserMapper {
 	
 	public int insert(ToonUserDTO toonUser);
 	
-	public ToonUserDTO selectUserById(String userId);
+	public int selectUserById(String userId);
 	
 	public int deleteByUserId(String userId);
 		

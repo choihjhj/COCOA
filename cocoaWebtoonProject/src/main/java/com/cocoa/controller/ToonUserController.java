@@ -106,21 +106,17 @@ public class ToonUserController {
 	public Map<String, Object> singup(ToonUserDTO user) {
 		log.info("회원가입 요청 정보 : " + user);
 		Map<String, Object> response = new HashMap<>();
-		
+
 		int signupResult = toonUserService.signUp(user);
-		log.info("회원가입 결과 :" + signupResult);
-		
-		if (signupResult == 1) {
-			response.put("message", "회원가입 성공");
-        } else if (signupResult == 0) {
-        	response.put("message", "회원가입 실패: 중복된 아이디");
-        } else {
-        	 response.put("message", "회원가입 실패: 알 수 없는 오류");
-        }
+
+		response.put("message", signupResult == 1 ? "회원가입 성공" :
+			signupResult == 0 ? "회원가입 실패: 중복된 아이디" : 
+				"회원가입 실패: 알 수 없는 오류");
+
 		return response;
 
 	}
-	
+
 	/*
      * 마이페이지 요청 
      * GET /myinfo

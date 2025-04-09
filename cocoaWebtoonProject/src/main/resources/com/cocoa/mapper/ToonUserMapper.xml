@@ -9,14 +9,16 @@
 			(#{userId},#{pwd},#{birthday},#{userName},#{phone},#{cocoa})
 	</insert>
 
-	<select id="selectUserById" resultType="com.cocoa.domain.ToonUserDTO">
-	
-		SELECT 
-			*
-	 	FROM 
-	 		toonuser 
-	 	WHERE 
-	 		userid=#{userId}
+	<select id="selectUserById" resultType="int">
+		SELECT CASE 
+				WHEN EXISTS (
+               		SELECT 1
+               		FROM toonuser
+               		WHERE userid = #{userId}
+           		) THEN 1 
+           		ELSE 0
+           END
+		FROM dual
 	</select>	
 		
 	<delete id="deleteByUserId">
