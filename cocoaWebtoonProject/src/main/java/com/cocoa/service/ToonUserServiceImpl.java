@@ -53,7 +53,6 @@ public class ToonUserServiceImpl implements ToonUserService {
 	@Transactional(readOnly = true)
 	public List<CphistoryDTO> findCphistory(String userId) {
 		List<CphistoryDTO> list = toonUserMapper.selectCphistory(userId);
-		Collections.reverse(list);
 		int sum = 0;
 		for (CphistoryDTO CphistoryDTO : list) {
 			if (CphistoryDTO.getCpType().equals("충전")) {
