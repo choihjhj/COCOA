@@ -30,6 +30,11 @@ public class ToonUserController {
 	private final PurchaseService purchaseService;
 	private final SessionService sessionservice;
 
+	/*
+     * 로그인 페이지 요청
+     * GET /login
+     * return "login"
+     * */
 	@GetMapping("/login")
 	public String loginPage(@RequestParam(name = "origin", required = false) String origin, 
 			@RequestParam(name = "redirect", required = false) String redirectURL,
@@ -51,6 +56,11 @@ public class ToonUserController {
 		}
 	}
 
+	/*
+     * 로그인 요청
+     * POST /login
+     * return "redirect:/layout"
+     * */
 	@PostMapping("/login")
 	public String login(
 			@RequestParam(name = "origin", required = false) String origin,
@@ -86,6 +96,11 @@ public class ToonUserController {
 		}
 	}
 
+	/*
+     * 회원가입
+     * POST /signup
+     * return @ResponseBody Map<String, Object>
+     * */
 	@PostMapping("/signup")
 	@ResponseBody
 	public Map<String, Object> singup(ToonUserDTO user) {
@@ -105,7 +120,12 @@ public class ToonUserController {
 		return response;
 
 	}
-
+	
+	/*
+     * 마이페이지 요청 
+     * GET /myinfo
+     * return "myinfo"
+     * */
 	@GetMapping("/myinfo")
 	public String myinfo(HttpServletRequest request, Model model) {
 		log.info("myinfo 페이지 요청");
@@ -120,6 +140,11 @@ public class ToonUserController {
 	}
 
 	
+	/*
+     * 로그아웃 
+     * POST /logout
+     * return "redirect:/layout"
+     * */
 	@PostMapping("/logout")
 	public String logout(HttpServletRequest request) {
 		log.info("logout 요청");
@@ -129,6 +154,11 @@ public class ToonUserController {
 	}
 	
 
+	/*
+     * 회원탈퇴 
+     * DELETE /remove
+     * return @ResponseBody ResponseEntity<String>
+     * */
 	@DeleteMapping("/remove")
 	@ResponseBody
 	public ResponseEntity<String> remove(HttpServletRequest request) {
@@ -149,6 +179,11 @@ public class ToonUserController {
 
 	}
 
+	/*
+     * 포인트 사용내역 페이지 요청 
+     * GET /cocoahistory
+     * return "cocoahistory"
+     * */
 	@GetMapping("/cocoahistory")
 	public String cocoahistory(HttpServletRequest request, Model model) {
 		log.info("cocoahistory 페이지 요청");
@@ -166,8 +201,13 @@ public class ToonUserController {
 		}
 	}
 	
+	/*
+     * 보관함(에피소드구매내역) 페이지 요청
+     * GET /mystorage
+     * return "mystorage"
+     * */
 	@GetMapping("/mystorage")
-	public void mystorage(HttpServletRequest request, Model model) {
+	public String mystorage(HttpServletRequest request, Model model) {
 		
 		ToonUserDTO toonUserDTO = sessionservice.getLoggedInUser(request);
 		
@@ -180,6 +220,7 @@ public class ToonUserController {
 			model.addAttribute("loginresult", 0);
 		}
 		
+		return "mystorage";
 	}
 	
 	
