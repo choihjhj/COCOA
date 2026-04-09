@@ -6,10 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.cocoa.aop.LogExecutionTime;
 import com.cocoa.domain.EpCommentDTO;
 import com.cocoa.domain.ToonUserDTO;
 import com.cocoa.exception.NotFoundException;
 import com.cocoa.mapper.EpCommentMapper;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
@@ -22,6 +25,7 @@ public class EpCommentServiceImpl implements EpCommentService {
 
 	@Override
 	@Transactional(readOnly = true)
+	@LogExecutionTime
 	public List<EpCommentDTO> findBestComment(int epId, ToonUserDTO ToonUserDTO) {
 		log.info("epId : " + epId);
 

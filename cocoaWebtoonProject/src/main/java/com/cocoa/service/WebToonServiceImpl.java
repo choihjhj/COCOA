@@ -1,10 +1,15 @@
 package com.cocoa.service;
 
 import java.util.List;
+
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.cocoa.aop.LogExecutionTime;
 import com.cocoa.domain.WebToonDTO;
 import com.cocoa.mapper.WebToonMapper;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
@@ -17,9 +22,11 @@ public class WebToonServiceImpl implements WebToonService {
 
 	@Override
 	@Transactional(readOnly = true)
+	@LogExecutionTime
+//	@Cacheable(value = "webtoonsByDay", key = "#dayOfWeek")
 	public List<WebToonDTO> findAll(int dayOfWeek) {
 		log.info("요일 : " + dayOfWeek);
-		return mapper.selectAll(dayOfWeek);
+		return mapper.toonIdSelect(dayOfWeek);
 	}
 	
 	@Override

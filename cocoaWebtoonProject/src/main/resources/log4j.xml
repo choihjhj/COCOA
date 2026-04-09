@@ -10,6 +10,16 @@
 		</layout>
 	</appender>
 	
+	<!-- AOP 로그 패키지 -->
+    <logger name="com.cocoa.aop">
+        <level value="info" />
+    </logger>
+	
+	<!-- 서비스 패키지 로그 레벨 -->
+    <logger name="com.cocoa.service">
+        <level value="warn" />
+    </logger>
+	
 	<!-- Application Loggers -->
 	<logger name="com.cocoa.controller">
 		<level value="info" />
@@ -17,19 +27,19 @@
 	
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
-		<level value="info" />
+		<level value="warn" />
 	</logger>
 	
 	<logger name="org.springframework.beans">
-		<level value="info" />
+		<level value="warn" />
 	</logger>
 	
 	<logger name="org.springframework.context">
-		<level value="info" />
+		<level value="warn" />
 	</logger>
 
 	<logger name="org.springframework.web">
-		<level value="info" />
+		<level value="warn" />
 	</logger>
 
 	<!-- Root Logger -->

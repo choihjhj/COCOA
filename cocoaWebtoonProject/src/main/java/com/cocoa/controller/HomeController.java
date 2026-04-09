@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.cocoa.aop.LogExecutionTime;
 import com.cocoa.service.WebToonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -21,10 +23,10 @@ public class HomeController {
      * GET /
      * return "redirect:/layout"
      * */
-	@GetMapping(value = "/")
-	public String home() {
-		return "redirect:/layout";
-	}
+//	@GetMapping(value = "/")
+//	public String home() {
+//		return "redirect:/layout";
+//	}
 
 	
 	/*
@@ -32,7 +34,7 @@ public class HomeController {
      * GET /layout
      * return "layout"
      * */
-	@GetMapping(value = "/layout")
+	@GetMapping(value = {"/", "/layout"})
 	public String layout(@RequestParam(required = false) String dayOfWeek, Model model) {
 	    // 현재 날짜를 기반으로 요일 계산
 	    int numericDayOfWeek = (dayOfWeek == null)

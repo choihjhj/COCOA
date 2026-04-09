@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.cocoa.aop.LogExecutionTime;
 import com.cocoa.domain.EpCommentDTO;
 import com.cocoa.domain.EpisodeDTO;
 import com.cocoa.domain.ToonUserDTO;
@@ -37,6 +39,7 @@ public class EpisodeController {
 	 * return "episode"
 	 * */
 	@GetMapping("/episode")
+	@LogExecutionTime
 	public String episode(@RequestParam("toonId")int toonId,
 						  @RequestParam("epId") int epId,
 						  Model model,
