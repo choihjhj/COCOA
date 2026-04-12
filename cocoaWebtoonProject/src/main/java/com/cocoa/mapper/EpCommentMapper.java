@@ -31,8 +31,6 @@ public interface EpCommentMapper {
 	
 	public int updateComment(EpCommentDTO epcomment);
 	
-	public int checkIfEpComment(EpCommentDTO epcomment);
-	
 	public int getLikeCntByCommentId(int commentId);
 	
 }

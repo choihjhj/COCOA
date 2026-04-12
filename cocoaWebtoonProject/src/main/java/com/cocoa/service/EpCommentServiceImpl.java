@@ -112,14 +112,13 @@ public class EpCommentServiceImpl implements EpCommentService {
 		epcomment.setCommentId(epcommentId);
 		epcomment.setUserId(userId);
 
-		//댓글 존재 여부 체크
-		int checkResult = checkIfEpComment(epcomment);
-		if (checkResult == 0) {
-			throw new NotFoundException("댓글을 찾을 수 없습니다.");
-		}
+		int result = epcommentmapper.deleteComment(epcomment);
 
-		//댓글 삭제
-		return handleCommentResult(epcommentmapper.deleteComment(epcomment));
+	    if (result == 0) {
+	        throw new NotFoundException("댓글을 찾을 수 없습니다.");
+	    }
+
+	    return handleCommentResult(result);
 
 	}
 
@@ -128,13 +127,13 @@ public class EpCommentServiceImpl implements EpCommentService {
 	public ResponseEntity<String> modifyComment(EpCommentDTO epcomment, String userId) {
 		epcomment.setUserId(userId); 
 
-		//댓글 존재 여부 체크
-		if (checkIfEpComment(epcomment) == 0) {
-			throw new NotFoundException("댓글을 찾을 수 없습니다.");
-		}
+		int result = epcommentmapper.updateComment(epcomment);
 
-		// 댓글 수정 로직        
-		return handleCommentResult(epcommentmapper.updateComment(epcomment));		
+	    if (result == 0) {
+	        throw new NotFoundException("댓글을 찾을 수 없습니다.");
+	    }
+
+	    return handleCommentResult(result);	
 	}
 
 
@@ -146,10 +145,6 @@ public class EpCommentServiceImpl implements EpCommentService {
 			log.info("failure");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("failure");
 		}
-	}
-
-	private int checkIfEpComment(EpCommentDTO epcomment) {
-		return epcommentmapper.checkIfEpComment(epcomment);
 	}
 
 }

@@ -145,19 +145,6 @@
 		commentid = #{commentId} AND userid = #{userId}
 	</update>
 
-	<select id="checkIfEpComment" resultType="int">
-		<![CDATA[
-		SELECT CASE 
-				WHEN EXISTS (
-               		SELECT 1
-               		FROM epcomment
-               		WHERE userid = #{userId} AND commentid = #{commentId}
-           		) THEN 1 
-           		ELSE 0
-           END
-		FROM dual
- 	]]>
-	</select>
 	
 	<select id="getLikeCntByCommentId" resultType="int">
     SELECT likecnt
