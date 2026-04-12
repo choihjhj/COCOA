@@ -2,6 +2,7 @@ package com.cocoa.service;
 
 import java.util.List;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -58,44 +59,35 @@ public class EpCommentServiceImpl implements EpCommentService {
 	@Transactional
 	@Override
 	public boolean likeComment(int commentId, String userId) {
-		//좋아요 여부 체크
-		if (epcommentmapper.likeSelectEpcomment(commentId, userId) == 1) {  //좋아요 있는데 추가요청은 에러처리
-			throw new NotFoundException("좋아요 추가 요청 실패");
-		}
+		try {
+	        // 1. 무조건 INSERT 먼저 시도
+	        epcommentmapper.likeInsertLikecomment(commentId, userId);
 
-		// 좋아요 추가
-		if (!epcommentmapper.likeInsertLikecomment(commentId, userId)) {
-			throw new NotFoundException("좋아요 추가 요청 실패");
-		}
+	        // 2. 성공했을 때만 likecnt 증가
+	        epcommentmapper.likeUpdateEpcomment(commentId);
+	        return true;	//추가처리 성공표시
 
-		// 좋아요 cnt 1증가 업데이트
-		if (!epcommentmapper.likeUpdateEpcomment(commentId)) {
-			throw new NotFoundException("좋아요 추가 요청 실패");
-		}
-
-		return true;	//추가처리 성공표시
+	    } catch (DuplicateKeyException e) {
+	        // 이미 좋아요 누른 상태
+	        throw new IllegalStateException("이미 좋아요 상태");
+	    }
+		
 
 	}
 
 	@Transactional
 	@Override
 	public boolean dislikeComment(int commentId, String userId) {
-		//좋아요 여부 체크
-		if (epcommentmapper.likeSelectEpcomment(commentId, userId) == 0) { //좋아요 없는데 취소요청은 에러 처리
-			throw new NotFoundException("좋아요 취소 요청 실패");
-		}
+		int deleted = epcommentmapper.dislikeDeleteLikecomment(commentId, userId);
 
-		// 좋아요 취소
-		if (!epcommentmapper.dislikeDeleteLikecomment(commentId, userId)) {
-			throw new NotFoundException("좋아요 취소 요청 실패");
-		}
-
-		// 좋아요 cnt 1감소 업데이트
-		if (!epcommentmapper.dislikeUpdateEpcomment(commentId)) {
-			throw new NotFoundException("좋아요 취소 요청 실패");
-		}
-
-		return false; //취소처리 성공표시
+	    if (deleted == 1) {
+	        epcommentmapper.dislikeUpdateEpcomment(commentId);
+	        return false; //취소처리 성공표시
+	    } else {
+	        throw new IllegalStateException("좋아요 상태 아님");
+	    }
+	    
+	  
 
 	}
 

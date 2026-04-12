@@ -6,51 +6,67 @@
 		resultType="com.cocoa.domain.EpCommentDTO">
 	<![CDATA[
 	    SELECT *
-	    FROM epcomment
-	    WHERE epId = #{epId}
-	    ORDER BY likecnt DESC
+	    FROM ( 
+	    	SELECT *
+	    	FROM epcomment
+	    	WHERE epId = #{epId}
+	    	ORDER BY likecnt DESC
+	    	)
+	    WHERE ROWNUM <= 20
  	]]>
 	</select>
 	
 	<select id="selectUserLikDesc"
 		resultType="com.cocoa.domain.EpCommentDTO">
 	<![CDATA[
-	    SELECT ec.*,
-	    	CASE
-	    		WHEN lc.commentid IS NOT NULL THEN 1 ELSE 0 
-	    	END AS isLiked
-	    FROM epcomment ec
-	    LEFT JOIN likecomment lc
-	    ON lc.commentid = ec.commentid
-	    AND lc.userid = #{userId}
-	    WHERE epId = #{epId}
-	    ORDER BY likecnt DESC
+		SELECT *
+		FROM (
+	    	SELECT ec.*,
+	    		CASE
+	    			WHEN lc.commentid IS NOT NULL THEN 1 ELSE 0 
+	    		END AS isLiked
+	    	FROM epcomment ec
+	    	LEFT JOIN likecomment lc
+	    	ON lc.commentid = ec.commentid
+	    	AND lc.userid = #{userId}
+	    	WHERE epId = #{epId}
+	    	ORDER BY likecnt DESC
+	    	)
+	    WHERE ROWNUM <= 20
  	]]>
 	</select>
 
 	<select id="selecDateDesc"
 		resultType="com.cocoa.domain.EpCommentDTO">
 	<![CDATA[
-	    SELECT *
-	    FROM epcomment
-	    WHERE epId = #{epId}
-	    ORDER BY writedate DESC
+		SELECT *
+		FROM (
+	    	SELECT *
+	    	FROM epcomment
+	    	WHERE epId = #{epId}
+	    	ORDER BY writedate DESC
+	    	)
+	    WHERE ROWNUM <= 20
  	]]>
 	</select>
 	
 	<select id="selecUserDateDesc"
 		resultType="com.cocoa.domain.EpCommentDTO">
 	<![CDATA[
-		SELECT ec.*,
-	    	CASE
-	    		WHEN lc.commentid IS NOT NULL THEN 1 ELSE 0 
-	    	END AS isLiked
-	    FROM epcomment ec
-	    LEFT JOIN likecomment lc
-	    ON lc.commentid = ec.commentid
-	    AND lc.userid = #{userId}
-	    WHERE epId = #{epId}
-	    ORDER BY writedate DESC
+		SELECT *
+		FROM (
+			SELECT ec.*,
+	    		CASE
+	    			WHEN lc.commentid IS NOT NULL THEN 1 ELSE 0 
+	    		END AS isLiked
+	    	FROM epcomment ec
+	    	LEFT JOIN likecomment lc
+	    	ON lc.commentid = ec.commentid
+	    	AND lc.userid = #{userId}
+	    	WHERE ec.epId = #{epId}
+	    	ORDER BY writedate DESC
+	    	)
+	    WHERE ROWNUM <= 20
  	]]>
 	</select>
 
@@ -136,4 +152,10 @@
 		FROM dual
  	]]>
 	</select>
+	
+	<select id="getLikeCntByCommentId" resultType="int">
+    SELECT likecnt
+    FROM epcomment
+    WHERE commentid = #{commentId}
+</select>
 </mapper>

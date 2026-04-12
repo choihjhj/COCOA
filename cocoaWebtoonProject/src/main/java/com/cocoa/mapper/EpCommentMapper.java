@@ -15,15 +15,15 @@ public interface EpCommentMapper {
 	
 	public List<EpCommentDTO> selecUserDateDesc(@Param("epId") int epId, @Param("userId") String userId);
 
-	public boolean likeUpdateEpcomment(int commentId);
+	public int likeUpdateEpcomment(int commentId);
 
-	public boolean likeInsertLikecomment(@Param("commentId") int commentId, @Param("userId") String userId);
+	public int likeInsertLikecomment(@Param("commentId") int commentId, @Param("userId") String userId);
 
 	public int likeSelectEpcomment(@Param("commentId") int commentId, @Param("userId") String userId);
 
-	public boolean dislikeUpdateEpcomment(int commentId);
+	public int dislikeUpdateEpcomment(int commentId);
 
-	public boolean dislikeDeleteLikecomment(@Param("commentId") int commentId, @Param("userId") String userId);
+	public int dislikeDeleteLikecomment(@Param("commentId") int commentId, @Param("userId") String userId);
 
 	public int insertComment(EpCommentDTO epcommnet);
 
@@ -32,5 +32,7 @@ public interface EpCommentMapper {
 	public int updateComment(EpCommentDTO epcomment);
 	
 	public int checkIfEpComment(EpCommentDTO epcomment);
+	
+	public int getLikeCntByCommentId(int commentId);
 	
 }

@@ -55,6 +55,7 @@ public class EpisodeController {
 
 		// 댓글 가져오기
 		ToonUserDTO ToonUserDTO = sessionservice.getLoggedInUser(request);
+		log.info("class = "+ epCommentService.getClass());
 		List<EpCommentDTO> epComments = epCommentService.findBestComment(epId,ToonUserDTO);
 
 		// 모델에 데이터 추가
