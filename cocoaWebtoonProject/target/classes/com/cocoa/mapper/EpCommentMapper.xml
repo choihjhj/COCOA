@@ -73,10 +73,13 @@
 
 	<!-- 좋아요 증가 쿼리 -->
 	<update id="likeUpdateEpcomment">
-		UPDATE EPCOMMENT
-		SET likecnt = likecnt + 1
-		WHERE
-		commentid = #{commentId}
+		UPDATE EPCOMMENT e
+		SET likecnt = (
+			SELECT COUNT(*)
+    		FROM likecomment l
+    		WHERE l.commentid = e.commentid
+		)
+		WHERE e.commentid = #{commentId}
 	</update>
 
 	<insert id="likeInsertLikecomment">
@@ -103,10 +106,13 @@
 	<!-- 좋아요 취소 쿼리 -->
 
 	<update id="dislikeUpdateEpcomment">
-		UPDATE EPCOMMENT
-		SET likecnt = likecnt - 1
-		WHERE
-		commentid = #{commentId}
+		UPDATE EPCOMMENT e
+		SET likecnt = (
+    		SELECT COUNT(*)
+    		FROM likecomment l
+    		WHERE l.commentid = e.commentid
+		)
+		WHERE e.commentid = #{commentId}
 	</update>
 	<delete id="dislikeDeleteLikecomment">
 		DELETE FROM

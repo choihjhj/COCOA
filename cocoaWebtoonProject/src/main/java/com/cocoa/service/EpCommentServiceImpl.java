@@ -60,15 +60,14 @@ public class EpCommentServiceImpl implements EpCommentService {
 	@Override
 	public boolean likeComment(int commentId, String userId) {
 		try {
-	        // 1. 무조건 INSERT 먼저 시도
+	     
 	        epcommentmapper.likeInsertLikecomment(commentId, userId);
 
-	        // 2. 성공했을 때만 likecnt 증가
+	        // likecnt 재계산
 	        epcommentmapper.likeUpdateEpcomment(commentId);
 	        return true;	//추가처리 성공표시
 
 	    } catch (DuplicateKeyException e) {
-	        // 이미 좋아요 누른 상태
 	        throw new IllegalStateException("이미 좋아요 상태");
 	    }
 		
@@ -81,6 +80,7 @@ public class EpCommentServiceImpl implements EpCommentService {
 		int deleted = epcommentmapper.dislikeDeleteLikecomment(commentId, userId);
 
 	    if (deleted == 1) {
+	    	// likecnt 재계산
 	        epcommentmapper.dislikeUpdateEpcomment(commentId);
 	        return false; //취소처리 성공표시
 	    } else {
