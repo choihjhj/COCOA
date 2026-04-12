@@ -74,5 +74,15 @@ public class CommonExceptionAdvice {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     }
     
+    // ChargeFailException 처리(충전 실패)
+    @ExceptionHandler(ChargeFailException.class)
+    public String handleChargeFailException(ChargeFailException e, RedirectAttributes rttr) {
+
+        log.error("ChargeFailException 발생: " + e.getMessage(), e);
+
+        rttr.addFlashAttribute("errorMessage", "충전에 실패했습니다. 다시 시도해주세요.");
+        return "redirect:/errorPage";
+    }
+    
 
 }

@@ -43,7 +43,6 @@ public class ChargeController {
      * */
 	@PostMapping(value = "/charge")
 	public String charge(HttpServletRequest request, ChargeDTO ChargeDTO, RedirectAttributes rttr) throws Exception {
-		log.info("charge post 요청 : " + ChargeDTO);
 		
 		ToonUserDTO loggedInUser = sessionservice.getLoggedInUser(request);
 		
@@ -53,10 +52,7 @@ public class ChargeController {
 		} 
 		
 		//충전 처리 로직			
-		if(chargeservice.charge(ChargeDTO,loggedInUser.getUserId()) == 0) {
-			rttr.addFlashAttribute("errorMessage", "충전 작업이 실패했습니다. 다시 시도해 주세요.");
-			return "redirect:/errorPage";
-		}
+		chargeservice.charge(ChargeDTO, loggedInUser.getUserId());
 		
 		Integer epId = (Integer) request.getSession().getAttribute("epId");		
 		if (epId != null) { //구매하다가 충전하러 온거면
