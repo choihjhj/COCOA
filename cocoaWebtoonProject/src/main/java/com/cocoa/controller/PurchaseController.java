@@ -59,8 +59,8 @@ public class PurchaseController {
 		EpisodeDTO episode = episodeService.getEpisode(epId);
 		model.addAttribute("EpisodeDTO", episode);
 
-		WebToonDTO webtoon = webtoonservice.getWebToon(toonId);
-		model.addAttribute("ToonName", webtoon.getToonName()); //웹툰 Name 출력위해 model에 담기
+		String toonName = webtoonservice.getToonNameByToonId(toonId);
+		model.addAttribute("ToonName", toonName); //웹툰 Name 출력위해 model에 담기
 
 		model.addAttribute("UserCocoa", toonUserService.login(loggedInUser).getCocoa()); //변동된 유저 Cocoa잔액 출력위해 model에 담기
 		return "/purchase";

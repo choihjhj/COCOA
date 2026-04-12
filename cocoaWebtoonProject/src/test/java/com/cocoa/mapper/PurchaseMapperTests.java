@@ -44,9 +44,9 @@ public class PurchaseMapperTests {
         purchase.setEpId(54);
 		
 		//when
-		int result=mapper.checkIfEpisodePurchasedByUser(purchase);
+//		int result=mapper.checkIfEpisodePurchasedByUser(purchase);
 		
 		//then
-		log.info("checkTest 결과 : "+result);
+//		log.info("checkTest 결과 : "+result);
 	}
 }

@@ -1,6 +1,8 @@
 package com.cocoa.service;
 
 import java.util.List;
+
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.cocoa.domain.PurchaseDTO;
@@ -36,20 +38,30 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Override
 	public int insertPurchase(String userId,int epId) {
 
-		log.info("purchase");
+		int price = episodeMapper.selectPriceByEpId(epId);
 		
 		PurchaseDTO p = new PurchaseDTO();
 		p.setUserId(userId);
 		p.setEpId(epId);
 		
-		int price = episodeMapper.selectPriceByEpId(epId);
-		
-		if (purchaseMapper.checkIfEpisodePurchasedByUser(p) == 0) { //구매 여부 확인 후 insert & update 작업
-			return (purchaseMapper.insertPurchase(p) == 1 && purchaseMapper.updateCocoaBalanceAfterPurchase(p, price)) ? 1 : 0;
-		} else {
-			return 0;
-		}
+		// 1. 먼저 돈 차감 
+	    int updated = purchaseMapper.decreaseCocoa(userId, price);
 
+	    if (updated == 0) {
+	        return 0; // 잔액 부족
+	    }
+
+	    try {
+	        // 2. 구매 insert
+	        purchaseMapper.insertPurchase(p);
+	        return 1;
+
+	    } catch (DuplicateKeyException e) {
+	        // 이미 구매 → rollback 발생 (자동으로 돈도 복구)
+	        throw e;
+	    }
+		
+		
 	}
 
 }

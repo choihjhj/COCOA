@@ -17,6 +17,12 @@
 		WHERE dayofweek = #{dayOfWeek}
 	</select>
 	
+	<select id="getToonNameByToonId" parameterType="int" resultType="com.cocoa.domain.WebToonDTO">
+		SELECT toonname
+		FROM WebToon
+		WHERE toonid = #{toonId}
+	</select>
+	
 	<select id="getWebToon" parameterType="int" resultType="com.cocoa.domain.WebToonDTO">
 		SELECT *
 		FROM WebToon

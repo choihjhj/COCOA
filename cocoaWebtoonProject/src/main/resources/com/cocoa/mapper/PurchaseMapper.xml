@@ -20,20 +20,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	]]>
 	</select>
 	
-	<select id="checkIfEpisodePurchasedByUser" resultType="int">
-    <![CDATA[
-    	SELECT CASE 
-               	WHEN EXISTS (
-                   	SELECT 1
-                   	FROM purchase
-                   	WHERE userid = #{userId} AND epid = #{epId}
-               	) THEN 1 
-               	ELSE 0
-           END
-        FROM dual
-    ]]>
-	</select>
-
+	<update id="decreaseCocoa">
+    	UPDATE toonuser
+    	SET cocoa = cocoa - #{price}
+    	WHERE userid = #{userId}
+      	AND cocoa >= #{price}
+	</update>
 	
 
 	<insert id="insertPurchase">		
